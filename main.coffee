@@ -21,7 +21,7 @@ module.exports =
       []
 
   loadProperties: ->
-    @properties = []
+    @properties = {}
     fs.readFile path.join(__dirname, 'properties.json'), (error, content) =>
       @properties = JSON.parse(content) unless error?
       return
