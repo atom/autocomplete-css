@@ -8,7 +8,7 @@ packagesToTest =
     name: 'language-sass'
     file: 'test.scss'
 
-describe "CSS Autocompletions", ->
+describe "CSS property name and value autocompletions", ->
   editor = null
 
   getCompletions = ->
@@ -24,7 +24,7 @@ describe "CSS Autocompletions", ->
     provider.requestHandler(request)
 
   Object.keys(packagesToTest).forEach (packageLabel) ->
-    describe "#{packageLabel} package", ->
+    describe "#{packageLabel} files", ->
       beforeEach ->
         waitsForPromise -> atom.packages.activatePackage(packagesToTest[packageLabel].name)
         waitsForPromise -> atom.workspace.open(packagesToTest[packageLabel].file)
