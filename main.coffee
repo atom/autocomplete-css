@@ -21,7 +21,7 @@ module.exports =
   isCompletingValue: ({scope}) ->
     scope.getScopesArray().indexOf('meta.property-value.css') isnt -1
 
-  isCompletingName: ({scopes})->
+  isCompletingName: ({scope})->
     scope.getScopesArray().indexOf('meta.property-list.css') isnt -1
 
   isCursorAfterColon: ({cursor, editor}) ->
@@ -33,7 +33,7 @@ module.exports =
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
 
-  getPreviousPropertyNameOnCursorLine: (cursor, editor) ->
+  getPropertyNameOnCursorLine: (cursor, editor) ->
     line = editor.lineTextForBufferRow(cursor.getBufferRow())
     propertyNameWithColonPattern.exec(line)?[1]
 
