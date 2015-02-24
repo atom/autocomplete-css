@@ -1,4 +1,4 @@
-provider = require('../main').getProvider().providers[0]
+[provider] = require('../main').getProvider().providers
 
 packagesToTest =
   CSS:
