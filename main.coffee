@@ -25,14 +25,13 @@ module.exports =
   isCompletingName: ({scope})->
     scope.getScopesArray().indexOf('meta.property-list.css') isnt -1
 
-  isCursorAfterColon: ({cursor, editor}) ->
-    line = editor.lineTextForBufferRow(cursor.getBufferRow())
-    colonIndex = line.indexOf(':')
-    cursor.getBufferColumn() > colonIndex >= 0
-
   isPropertyValuePrefix: (prefix) ->
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
+
+  isPropertyNamePrefix: (prefix) ->
+    prefix = prefix.trim()
+    propertyNamePrefixPattern.test(prefix[0])
 
   getPropertyNameOnCursorLine: (cursor, editor) ->
     line = editor.lineTextForBufferRow(cursor.getBufferRow())
@@ -59,10 +58,6 @@ module.exports =
       ''
     else
       ': '
-
-  isPropertyNamePrefix: (prefix) ->
-    prefix = prefix.trim()
-    propertyNamePrefixPattern.test(prefix[0])
 
   getPropertyNameCompletions: ({cursor, editor, prefix}) ->
     suffix = @getPropertyNameSuffix(cursor, editor)
