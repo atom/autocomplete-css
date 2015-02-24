@@ -20,10 +20,12 @@ module.exports =
       []
 
   isCompletingValue: ({scope}) ->
-    scope.getScopesArray().indexOf('meta.property-value.css') isnt -1
+    scopes = scope.getScopesArray()
+    scopes.indexOf('meta.property-value.css') isnt -1 and scopes.indexOf('punctuation.separator.key-value.css') is -1
 
   isCompletingName: ({scope})->
-    scope.getScopesArray().indexOf('meta.property-list.css') isnt -1
+    scopes = scope.getScopesArray()
+    scopes.indexOf('meta.property-list.css') isnt -1
 
   isPropertyValuePrefix: (prefix) ->
     prefix = prefix.trim()
