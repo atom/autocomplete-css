@@ -56,7 +56,7 @@ module.exports =
   getPropertyNameSuffix: (cursor, editor) ->
     line = editor.lineTextForBufferRow(cursor.getBufferRow())
     colonIndex = line.indexOf(':')
-    if colonIndex > cursor.getBufferColumn()
+    if colonIndex >= cursor.getBufferColumn()
       ''
     else
       ': '
