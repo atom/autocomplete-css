@@ -1,5 +1,5 @@
-# Run this to update the static list of properties stored in this package's
-# package.json file.
+# Run this to update the static list of properties stored in the properties.json
+# file at the root of this repository.
 
 path = require 'path'
 fs = require 'fs'
