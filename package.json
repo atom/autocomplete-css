@@ -4,6 +4,7 @@
   "description": "CSS property name and value autocompletions",
   "main": "./main",
   "license": "MIT",
+  "repository": "https://github.com/atom/autocomplete-css",
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
