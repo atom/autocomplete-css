@@ -1,6 +1,7 @@
 {properties} = require './package.json'
 
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
+propertyNamePrefixPattern = /[a-z]/
 
 module.exports =
   selector: '.source.css'
@@ -59,10 +60,14 @@ module.exports =
     else
       ': '
 
+  isPropertyNamePrefix: (prefix) ->
+    prefix = prefix.trim()
+    propertyNamePrefixPattern.test(prefix[0])
+
   getPropertyNameCompletions: ({cursor, editor, prefix}) ->
     suffix = @getPropertyNameSuffix(cursor, editor)
     completions = []
-    if prefix.trim().length > 0
+    if @isPropertyNamePrefix(prefix)
       for property, values of properties when property.indexOf(prefix) is 0
         completions.push({word: property + suffix, prefix})
     else

@@ -24,6 +24,18 @@ describe "CSS Autocompletions", ->
     editor.setText('')
     expect(getCompletions().length).toBe 0
 
+  it "autocompletes property names without a prefix", ->
+    editor.setText """
+      body {
+
+      }
+    """
+    editor.setCursorBufferPosition([1, 0])
+    completions = getCompletions()
+    expect(completions.length).toBe 209
+    for completion in completions
+      expect(completion.word.length).toBeGreaterThan 0
+
   it "autocompletes property names with a prefix", ->
     editor.setText """
       body {
