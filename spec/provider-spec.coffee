@@ -48,6 +48,18 @@ describe "CSS Autocompletions", ->
     expect(completions[0].word).toBe 'direction: '
     expect(completions[1].word).toBe 'display: '
 
+  it "autocompletes property values without a prefix", ->
+    editor.setText """
+      body {
+        display:
+      }
+    """
+    editor.setCursorBufferPosition([1, 10])
+    completions = getCompletions()
+    expect(completions.length).toBe 21
+    for completion in completions
+      expect(completion.word.length).toBeGreaterThan 0
+
   it "autocompletes property values with a prefix", ->
     editor.setText """
       body {
