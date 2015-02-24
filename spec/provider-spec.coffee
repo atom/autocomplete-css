@@ -87,6 +87,18 @@ describe "CSS property name and value autocompletions", ->
         for completion in completions
           expect(completion.word.length).toBeGreaterThan 0
 
+        editor.setText """
+          body {
+            display:
+
+          }
+        """
+        editor.setCursorBufferPosition([2, 0])
+        completions = getCompletions()
+        expect(completions.length).toBe 21
+        for completion in completions
+          expect(completion.word.length).toBeGreaterThan 0
+
       it "autocompletes property values with a prefix", ->
         editor.setText """
           body {
@@ -94,6 +106,22 @@ describe "CSS property name and value autocompletions", ->
           }
         """
         editor.setCursorBufferPosition([1, 12])
+        completions = getCompletions()
+        expect(completions.length).toBe 6
+        expect(completions[0].word).toBe 'inline'
+        expect(completions[1].word).toBe 'inline-block'
+        expect(completions[2].word).toBe 'inline-flex'
+        expect(completions[3].word).toBe 'inline-grid'
+        expect(completions[4].word).toBe 'inline-table'
+        expect(completions[5].word).toBe 'inherit'
+
+        editor.setText """
+          body {
+            display:
+              i
+          }
+        """
+        editor.setCursorBufferPosition([2, 5])
         completions = getCompletions()
         expect(completions.length).toBe 6
         expect(completions[0].word).toBe 'inline'

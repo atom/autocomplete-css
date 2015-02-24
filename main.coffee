@@ -37,12 +37,17 @@ module.exports =
     prefix = prefix.trim()
     propertyNamePrefixPattern.test(prefix[0])
 
-  getPropertyNameOnCursorLine: (cursor, editor) ->
-    line = editor.lineTextForBufferRow(cursor.getBufferRow())
-    propertyNameWithColonPattern.exec(line)?[1]
+  getPreviousPropertyName: (cursor, editor) ->
+    row = cursor.getBufferRow()
+    while row >= 0
+      line = editor.lineTextForBufferRow(row)
+      propertyName = propertyNameWithColonPattern.exec(line)?[1]
+      return propertyName if propertyName
+      row--
+    return
 
   getPropertyValueCompletions: ({cursor, editor, prefix}) ->
-    property = @getPropertyNameOnCursorLine(cursor, editor)
+    property = @getPreviousPropertyName(cursor, editor)
     values = properties[property]?.values
     return [] unless values?
 
