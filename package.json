@@ -4,7 +4,7 @@
   "description": "",
   "main": "./main",
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
