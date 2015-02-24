@@ -1,4 +1,5 @@
-{properties} = require './package.json'
+fs = require 'fs'
+path = require 'path'
 
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
 propertyNamePrefixPattern = /[a-z]/
@@ -7,7 +8,7 @@ module.exports =
   selector: '.source.css'
   id: 'autocomplete-css-cssprovider'
 
-  activate: ->
+  activate: -> @loadProperties()
 
   getProvider: -> providers: [this]
 
@@ -18,6 +19,12 @@ module.exports =
       @getPropertyNameCompletions(request)
     else
       []
+
+  loadProperties: ->
+    @properties = []
+    fs.readFile path.join(__dirname, 'properties.json'), (error, content) =>
+      @properties = JSON.parse(content) unless error?
+      return
 
   isCompletingValue: ({scope}) ->
     scopes = scope.getScopesArray()
@@ -48,7 +55,7 @@ module.exports =
 
   getPropertyValueCompletions: ({cursor, editor, prefix}) ->
     property = @getPreviousPropertyName(cursor, editor)
-    values = properties[property]?.values
+    values = @properties[property]?.values
     return [] unless values?
 
     completions = []
@@ -72,9 +79,9 @@ module.exports =
     suffix = @getPropertyNameSuffix(cursor, editor)
     completions = []
     if @isPropertyNamePrefix(prefix)
-      for property, values of properties when property.indexOf(prefix) is 0
+      for property, values of @properties when property.indexOf(prefix) is 0
         completions.push({word: property + suffix, prefix})
     else
-      for property, values of properties
+      for property, values of @properties
         completions.push({word: property + suffix, prefix: ''})
     completions

@@ -1,9 +1,9 @@
 # Run this to update the static list of properties stored in this package's
 # package.json file.
 
+path = require 'path'
 fs = require 'fs'
 request = require 'request'
-metadata = require './package.json'
 
 requestOptions =
   url: 'https://raw.githubusercontent.com/adobe/brackets/master/src/extensions/default/CSSCodeHints/CSSProperties.json'
@@ -18,5 +18,4 @@ request requestOptions, (error, response, properties) ->
     console.error("Request for CSSProperties.json failed: #{response.statusCode}")
     return process.exit(1)
 
-  metadata.properties = properties
-  fs.writeFileSync(require.resolve('./package.json'), "#{JSON.stringify(metadata, null, 2)}\n")
+  fs.writeFileSync(path.join(__dirname, 'properties.json'), "#{JSON.stringify(properties, null, 0)}\n")

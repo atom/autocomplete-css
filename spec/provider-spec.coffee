@@ -1,5 +1,3 @@
-[provider] = require('../main').getProvider().providers
-
 packagesToTest =
   CSS:
     name: 'language-css'
@@ -9,7 +7,7 @@ packagesToTest =
     file: 'test.scss'
 
 describe "CSS property name and value autocompletions", ->
-  editor = null
+  [editor, provider] = []
 
   getCompletions = ->
     cursor = editor.getLastCursor()
@@ -22,6 +20,14 @@ describe "CSS property name and value autocompletions", ->
       scope: cursor.getScopeDescriptor()
       prefix: prefix
     provider.requestHandler(request)
+
+  beforeEach ->
+    waitsForPromise -> atom.packages.activatePackage('autocomplete-css')
+
+    runs ->
+      [provider] = atom.packages.getActivePackage('autocomplete-css').mainModule.getProvider().providers
+
+    waitsFor -> Object.keys(provider.properties).length > 0
 
   Object.keys(packagesToTest).forEach (packageLabel) ->
     describe "#{packageLabel} files", ->
