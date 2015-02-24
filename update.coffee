@@ -19,4 +19,4 @@ request requestOptions, (error, response, properties) ->
     return process.exit(1)
 
   metadata.properties = properties
-  fs.writeFileSync(require.resolve('./package.json'), JSON.stringify(metadata, null, 2))
+  fs.writeFileSync(require.resolve('./package.json'), "#{JSON.stringify(metadata, null, 2)}\n")
