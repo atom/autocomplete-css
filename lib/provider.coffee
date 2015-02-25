@@ -8,10 +8,6 @@ module.exports =
   selector: '.source.css'
   id: 'autocomplete-css-cssprovider'
 
-  activate: -> @loadProperties()
-
-  getProvider: -> providers: [this]
-
   requestHandler: (request) ->
     if @isCompletingValue(request)
       @getPropertyValueCompletions(request)
@@ -22,7 +18,7 @@ module.exports =
 
   loadProperties: ->
     @properties = {}
-    fs.readFile path.join(__dirname, 'properties.json'), (error, content) =>
+    fs.readFile path.resolve(__dirname, '..', 'properties.json'), (error, content) =>
       @properties = JSON.parse(content) unless error?
       return
 
