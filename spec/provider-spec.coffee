@@ -5,6 +5,9 @@ packagesToTest =
   SCSS:
     name: 'language-sass'
     file: 'test.scss'
+  Less:
+    name: 'language-less'
+    file: 'test.less'
 
 describe "CSS property name and value autocompletions", ->
   [editor, provider] = []
