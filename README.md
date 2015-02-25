@@ -10,4 +10,4 @@ This is powered by the list of CSS property and values [here](https://github.com
 
 You can update the prebuilt list of property names and values by running
 the `update.coffee` file at the root of the repository and then checking in
-the changed `package.json` file.
+the changed `properties.json` file.
