@@ -2,7 +2,7 @@ fs = require 'fs'
 path = require 'path'
 
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
-propertyNamePrefixPattern = /[a-z]/
+propertyNamePrefixPattern = /[a-z]+[-a-z]*$/
 
 module.exports =
   selector: '.source.css'
@@ -36,10 +36,6 @@ module.exports =
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
 
-  isPropertyNamePrefix: (prefix) ->
-    prefix = prefix.trim()
-    propertyNamePrefixPattern.test(prefix[0])
-
   getPreviousPropertyName: (cursor, editor) ->
     row = cursor.getBufferRow()
     while row >= 0
@@ -63,6 +59,11 @@ module.exports =
         completions.push({word: value, prefix: ''})
     completions
 
+  getPropertyNamePrefix: (cursor, editor) ->
+    line = editor.lineTextForBufferRow(cursor.getBufferRow())
+    line = line.substring(0, cursor.getBufferColumn())
+    propertyNamePrefixPattern.exec(line)?[0]
+
   getPropertyNameSuffix: (cursor, editor) ->
     line = editor.lineTextForBufferRow(cursor.getBufferRow())
     colonIndex = line.indexOf(':')
@@ -71,10 +72,11 @@ module.exports =
     else
       ': '
 
-  getPropertyNameCompletions: ({cursor, editor, prefix}) ->
+  getPropertyNameCompletions: ({cursor, editor}) ->
     suffix = @getPropertyNameSuffix(cursor, editor)
+    prefix = @getPropertyNamePrefix(cursor, editor)
     completions = []
-    if @isPropertyNamePrefix(prefix)
+    if prefix
       for property, values of @properties when property.indexOf(prefix) is 0
         completions.push({word: property + suffix, prefix})
     else

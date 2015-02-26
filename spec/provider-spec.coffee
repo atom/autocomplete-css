@@ -84,6 +84,37 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[0].word).toBe 'direction'
         expect(completions[1].word).toBe 'display'
 
+        editor.setText """
+          body {
+            border-
+          }
+        """
+        editor.setCursorBufferPosition([1, 9])
+        completions = getCompletions()
+        expect(completions.length).toBe 32
+        expect(completions[0].word).toBe 'border-collapse: '
+
+        editor.setText """
+          body {
+            border-bot
+          }
+        """
+        editor.setCursorBufferPosition([1, 12])
+        completions = getCompletions()
+        expect(completions.length).toBe 6
+        expect(completions[0].word).toBe 'border-bottom: '
+        expect(completions[1].word).toBe 'border-bottom-color: '
+
+        editor.setText """
+          body {
+            border-bottom-
+          }
+        """
+        editor.setCursorBufferPosition([1, 16])
+        completions = getCompletions()
+        expect(completions.length).toBe 5
+        expect(completions[0].word).toBe 'border-bottom-color: '
+
       it "autocompletes property values without a prefix", ->
         editor.setText """
           body {
