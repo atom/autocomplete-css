@@ -36,8 +36,8 @@ module.exports =
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
 
-  getPreviousPropertyName: (cursor, editor) ->
-    row = cursor.getBufferRow()
+  getPreviousPropertyName: (position, editor) ->
+    {row} = position
     while row >= 0
       line = editor.lineTextForBufferRow(row)
       propertyName = propertyNameWithColonPattern.exec(line)?[1]
@@ -45,8 +45,8 @@ module.exports =
       row--
     return
 
-  getPropertyValueCompletions: ({cursor, editor, prefix}) ->
-    property = @getPreviousPropertyName(cursor, editor)
+  getPropertyValueCompletions: ({position, editor, prefix}) ->
+    property = @getPreviousPropertyName(position, editor)
     values = @properties[property]?.values
     return [] unless values?
 
@@ -60,22 +60,21 @@ module.exports =
         completions.push({word: value, prefix: ''})
     completions
 
-  getPropertyNamePrefix: (cursor, editor) ->
-    line = editor.lineTextForBufferRow(cursor.getBufferRow())
-    line = line.substring(0, cursor.getBufferColumn())
+  getPropertyNamePrefix: (position, editor) ->
+    line = editor.getTextInRange([[position.row, 0], position])
     propertyNamePrefixPattern.exec(line)?[0]
 
-  getPropertyNameSuffix: (cursor, editor) ->
-    line = editor.lineTextForBufferRow(cursor.getBufferRow())
+  getPropertyNameSuffix: (position, editor) ->
+    line = editor.lineTextForBufferRow(position.row)
     colonIndex = line.indexOf(':')
-    if colonIndex >= cursor.getBufferColumn()
+    if colonIndex >= position.column
       ''
     else
       ': '
 
-  getPropertyNameCompletions: ({cursor, editor}) ->
-    suffix = @getPropertyNameSuffix(cursor, editor)
-    prefix = @getPropertyNamePrefix(cursor, editor)
+  getPropertyNameCompletions: ({position, editor}) ->
+    suffix = @getPropertyNameSuffix(position, editor)
+    prefix = @getPropertyNamePrefix(position, editor)
     completions = []
     if prefix
       lowerCasePrefix = prefix.toLowerCase()
