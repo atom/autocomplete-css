@@ -2,7 +2,7 @@ fs = require 'fs'
 path = require 'path'
 
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
-propertyNamePrefixPattern = /[a-z]+[-a-z]*$/
+propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 
 module.exports =
   selector: '.source.css'
@@ -52,7 +52,8 @@ module.exports =
 
     completions = []
     if @isPropertyValuePrefix(prefix)
-      for value in values when value.indexOf(prefix) is 0
+      lowerCasePrefix = prefix.toLowerCase()
+      for value in values when value.indexOf(lowerCasePrefix) is 0
         completions.push({word: value, prefix})
     else
       for value in values
@@ -77,7 +78,8 @@ module.exports =
     prefix = @getPropertyNamePrefix(cursor, editor)
     completions = []
     if prefix
-      for property, values of @properties when property.indexOf(prefix) is 0
+      lowerCasePrefix = prefix.toLowerCase()
+      for property, values of @properties when property.indexOf(lowerCasePrefix) is 0
         completions.push({word: property + suffix, prefix})
     else
       for property, values of @properties

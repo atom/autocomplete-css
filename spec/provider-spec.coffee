@@ -71,6 +71,19 @@ describe "CSS property name and value autocompletions", ->
         completions = getCompletions()
         expect(completions.length).toBe 2
         expect(completions[0].word).toBe 'direction: '
+        expect(completions[0].prefix).toBe 'd'
+        expect(completions[1].word).toBe 'display: '
+
+        editor.setText """
+          body {
+            D
+          }
+        """
+        editor.setCursorBufferPosition([1, 3])
+        completions = getCompletions()
+        expect(completions.length).toBe 2
+        expect(completions[0].word).toBe 'direction: '
+        expect(completions[0].prefix).toBe 'D'
         expect(completions[1].word).toBe 'display: '
 
         editor.setText """
@@ -149,6 +162,23 @@ describe "CSS property name and value autocompletions", ->
         completions = getCompletions()
         expect(completions.length).toBe 6
         expect(completions[0].word).toBe 'inline'
+        expect(completions[0].prefix).toBe 'i'
+        expect(completions[1].word).toBe 'inline-block'
+        expect(completions[2].word).toBe 'inline-flex'
+        expect(completions[3].word).toBe 'inline-grid'
+        expect(completions[4].word).toBe 'inline-table'
+        expect(completions[5].word).toBe 'inherit'
+
+        editor.setText """
+          body {
+            display: I
+          }
+        """
+        editor.setCursorBufferPosition([1, 12])
+        completions = getCompletions()
+        expect(completions.length).toBe 6
+        expect(completions[0].word).toBe 'inline'
+        expect(completions[0].prefix).toBe 'I'
         expect(completions[1].word).toBe 'inline-block'
         expect(completions[2].word).toBe 'inline-flex'
         expect(completions[3].word).toBe 'inline-grid'
@@ -165,6 +195,7 @@ describe "CSS property name and value autocompletions", ->
         completions = getCompletions()
         expect(completions.length).toBe 6
         expect(completions[0].word).toBe 'inline'
+        expect(completions[0].prefix).toBe 'i'
         expect(completions[1].word).toBe 'inline-block'
         expect(completions[2].word).toBe 'inline-flex'
         expect(completions[3].word).toBe 'inline-grid'
