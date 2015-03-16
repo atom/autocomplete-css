@@ -5,6 +5,9 @@
   "main": "./lib/main",
   "license": "MIT",
   "repository": "https://github.com/atom/autocomplete-css",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  },
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
