@@ -6,9 +6,8 @@ propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 
 module.exports =
   selector: '.source.css'
-  id: 'autocomplete-css-cssprovider'
 
-  requestHandler: (request) ->
+  getSuggestions: (request) ->
     if @isCompletingValue(request)
       @getPropertyValueCompletions(request)
     else if @isCompletingName(request)
@@ -22,13 +21,13 @@ module.exports =
       @properties = JSON.parse(content) unless error?
       return
 
-  isCompletingValue: ({scope}) ->
-    scopes = scope.getScopesArray()
+  isCompletingValue: ({scopeDescriptor}) ->
+    scopes = scopeDescriptor.getScopesArray()
     (scopes.indexOf('meta.property-value.css') isnt -1 and scopes.indexOf('punctuation.separator.key-value.css') is -1) or
     (scopes.indexOf('meta.property-value.scss') isnt -1 and scopes.indexOf('punctuation.separator.key-value.scss') is -1)
 
-  isCompletingName: ({scope})->
-    scopes = scope.getScopesArray()
+  isCompletingName: ({scopeDescriptor})->
+    scopes = scopeDescriptor.getScopesArray()
     scopes.indexOf('meta.property-list.css') isnt -1 or
     scopes.indexOf('meta.property-list.scss') isnt -1
 
@@ -36,8 +35,8 @@ module.exports =
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
 
-  getPreviousPropertyName: (position, editor) ->
-    {row} = position
+  getPreviousPropertyName: (bufferPosition, editor) ->
+    {row} = bufferPosition
     while row >= 0
       line = editor.lineTextForBufferRow(row)
       propertyName = propertyNameWithColonPattern.exec(line)?[1]
@@ -45,8 +44,8 @@ module.exports =
       row--
     return
 
-  getPropertyValueCompletions: ({position, editor, prefix}) ->
-    property = @getPreviousPropertyName(position, editor)
+  getPropertyValueCompletions: ({bufferPosition, editor, prefix}) ->
+    property = @getPreviousPropertyName(bufferPosition, editor)
     values = @properties[property]?.values
     return [] unless values?
 
@@ -60,21 +59,21 @@ module.exports =
         completions.push({word: value, prefix: ''})
     completions
 
-  getPropertyNamePrefix: (position, editor) ->
-    line = editor.getTextInRange([[position.row, 0], position])
+  getPropertyNamePrefix: (bufferPosition, editor) ->
+    line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     propertyNamePrefixPattern.exec(line)?[0]
 
-  getPropertyNameSuffix: (position, editor) ->
-    line = editor.lineTextForBufferRow(position.row)
+  getPropertyNameSuffix: (bufferPosition, editor) ->
+    line = editor.lineTextForBufferRow(bufferPosition.row)
     colonIndex = line.indexOf(':')
-    if colonIndex >= position.column
+    if colonIndex >= bufferPosition.column
       ''
     else
       ': '
 
-  getPropertyNameCompletions: ({position, editor}) ->
-    suffix = @getPropertyNameSuffix(position, editor)
-    prefix = @getPropertyNamePrefix(position, editor)
+  getPropertyNameCompletions: ({bufferPosition, editor}) ->
+    suffix = @getPropertyNameSuffix(bufferPosition, editor)
+    prefix = @getPropertyNamePrefix(bufferPosition, editor)
     completions = []
     if prefix
       lowerCasePrefix = prefix.toLowerCase()
