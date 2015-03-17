@@ -19,16 +19,16 @@ describe "CSS property name and value autocompletions", ->
     prefix = editor.getTextInRange([start, end])
     request =
       editor: editor
-      position: end
-      scope: cursor.getScopeDescriptor()
+      bufferPosition: end
+      scopeDescriptor: cursor.getScopeDescriptor()
       prefix: prefix
-    provider.requestHandler(request)
+    provider.getSuggestions(request)
 
   beforeEach ->
     waitsForPromise -> atom.packages.activatePackage('autocomplete-css')
 
     runs ->
-      [provider] = atom.packages.getActivePackage('autocomplete-css').mainModule.getProvider().providers
+      provider = atom.packages.getActivePackage('autocomplete-css').mainModule.getProvider()
 
     waitsFor -> Object.keys(provider.properties).length > 0
 
