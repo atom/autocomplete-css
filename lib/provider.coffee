@@ -53,10 +53,10 @@ module.exports =
     if @isPropertyValuePrefix(prefix)
       lowerCasePrefix = prefix.toLowerCase()
       for value in values when value.indexOf(lowerCasePrefix) is 0
-        completions.push({word: value, prefix})
+        completions.push({text: value, replacementPrefix: prefix})
     else
       for value in values
-        completions.push({word: value, prefix: ''})
+        completions.push({text: value, replacementPrefix: ''})
     completions
 
   getPropertyNamePrefix: (bufferPosition, editor) ->
@@ -78,8 +78,8 @@ module.exports =
     if prefix
       lowerCasePrefix = prefix.toLowerCase()
       for property, values of @properties when property.indexOf(lowerCasePrefix) is 0
-        completions.push({word: property + suffix, prefix})
+        completions.push({text: property + suffix, replacementPrefix: prefix})
     else
       for property, values of @properties
-        completions.push({word: property + suffix, prefix: ''})
+        completions.push({text: property + suffix, replacementPrefix: ''})
     completions
