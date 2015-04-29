@@ -15,6 +15,12 @@ module.exports =
     else
       []
 
+  onDidInsertSuggestion: ({editor, suggestion}) ->
+    setTimeout(@triggerAutocomplete.bind(this, editor), 1) if suggestion.type is 'property'
+
+  triggerAutocomplete: (editor) ->
+    atom.commands.dispatch(atom.views.getView(editor), 'autocomplete-plus:activate')
+
   loadProperties: ->
     @properties = {}
     fs.readFile path.resolve(__dirname, '..', 'properties.json'), (error, content) =>

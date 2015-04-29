@@ -136,6 +136,18 @@ describe "CSS property name and value autocompletions", ->
         expect(completions.length).toBe 5
         expect(completions[0].text).toBe 'border-bottom-color: '
 
+      it "triggers autocomplete when an property name has been inserted", ->
+        spyOn(atom.commands, 'dispatch')
+        suggestion = {type: 'property', text: 'whatever'}
+        provider.onDidInsertSuggestion({editor, suggestion})
+
+        advanceClock 1
+        expect(atom.commands.dispatch).toHaveBeenCalled()
+
+        args = atom.commands.dispatch.mostRecentCall.args
+        expect(args[0].tagName.toLowerCase()).toBe 'atom-text-editor'
+        expect(args[1]).toBe 'autocomplete-plus:activate'
+
       it "autocompletes property values without a prefix", ->
         editor.setText """
           body {
