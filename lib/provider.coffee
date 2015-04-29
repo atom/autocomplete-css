@@ -53,33 +53,35 @@ module.exports =
     if @isPropertyValuePrefix(prefix)
       lowerCasePrefix = prefix.toLowerCase()
       for value in values when value.indexOf(lowerCasePrefix) is 0
-        completions.push({text: value, replacementPrefix: prefix})
+        completions.push(@buildPropertyValueCompletion(value))
     else
       for value in values
-        completions.push({text: value, replacementPrefix: ''})
+        completions.push(@buildPropertyValueCompletion(value))
     completions
+
+  buildPropertyValueCompletion: (value) ->
+    type: 'value'
+    text: "#{value};"
+    displayText: value
 
   getPropertyNamePrefix: (bufferPosition, editor) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     propertyNamePrefixPattern.exec(line)?[0]
 
-  getPropertyNameSuffix: (bufferPosition, editor) ->
-    line = editor.lineTextForBufferRow(bufferPosition.row)
-    colonIndex = line.indexOf(':')
-    if colonIndex >= bufferPosition.column
-      ''
-    else
-      ': '
-
   getPropertyNameCompletions: ({bufferPosition, editor}) ->
-    suffix = @getPropertyNameSuffix(bufferPosition, editor)
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
     completions = []
     if prefix
       lowerCasePrefix = prefix.toLowerCase()
       for property, values of @properties when property.indexOf(lowerCasePrefix) is 0
-        completions.push({text: property + suffix, replacementPrefix: prefix})
+        completions.push(@buildPropertyNameCompletion(property, prefix))
     else
       for property, values of @properties
-        completions.push({text: property + suffix, replacementPrefix: ''})
+        completions.push(@buildPropertyNameCompletion(property, ''))
     completions
+
+  buildPropertyNameCompletion: (propertyName, prefix) ->
+    type: 'property'
+    text: "#{propertyName}: "
+    displayText: propertyName
+    replacementPrefix: prefix
