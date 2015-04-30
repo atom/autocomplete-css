@@ -230,3 +230,30 @@ describe "CSS property name and value autocompletions", ->
         for completion in completions
           text = (completion.text or completion.snippet)
           expect(text.length).toBeGreaterThan 0
+          expect(completion.type).toBe 'pseudo-selector'
+
+      it "autocompletes pseudo selectors with a prefix", ->
+        editor.setText """
+          div:f {
+          }
+        """
+        editor.setCursorBufferPosition([0, 5])
+        completions = getCompletions()
+        expect(completions.length).toBe 5
+        expect(completions[0].text).toBe ':first'
+        expect(completions[0].type).toBe 'pseudo-selector'
+        expect(completions[0].description.length).toBeGreaterThan 0
+        expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
+
+      it "autocompletes pseudo selectors with arguments", ->
+        editor.setText """
+          div:nth {
+          }
+        """
+        editor.setCursorBufferPosition([0, 7])
+        completions = getCompletions()
+        expect(completions.length).toBe 4
+        expect(completions[0].snippet).toBe ':nth-child(${1:an+b})'
+        expect(completions[0].type).toBe 'pseudo-selector'
+        expect(completions[0].description.length).toBeGreaterThan 0
+        expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0

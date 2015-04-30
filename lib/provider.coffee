@@ -119,7 +119,7 @@ module.exports =
       descriptionMoreURL: "https://developer.mozilla.org/en-US/docs/Web/CSS/#{pseudoSelector}"
 
     if argument?
-      completion.snippet = "#{pseudoSelector}(#{argument})"
+      completion.snippet = "#{pseudoSelector}(${1:#{argument}})"
     else
       completion.text = pseudoSelector
     completion
