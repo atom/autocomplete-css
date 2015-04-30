@@ -90,19 +90,19 @@ module.exports =
     completions = []
     if prefix
       lowerCasePrefix = prefix.toLowerCase()
-      for property, values of @properties when property.indexOf(lowerCasePrefix) is 0
-        completions.push(@buildPropertyNameCompletion(property, prefix))
+      for property, options of @properties when property.indexOf(lowerCasePrefix) is 0
+        completions.push(@buildPropertyNameCompletion(property, prefix, options))
     else
-      for property, values of @properties
-        completions.push(@buildPropertyNameCompletion(property, ''))
+      for property, options of @properties
+        completions.push(@buildPropertyNameCompletion(property, '', options))
     completions
 
-  buildPropertyNameCompletion: (propertyName, prefix) ->
+  buildPropertyNameCompletion: (propertyName, prefix, {description}) ->
     type: 'property'
     text: "#{propertyName}: "
     displayText: propertyName
     replacementPrefix: prefix
-    description: "#{propertyName}"
+    description: description
     descriptionMoreURL: "#{cssDocsURL}/#{propertyName}"
 
   getPseudoSelectorCompletions: ({bufferPosition, editor}) ->
