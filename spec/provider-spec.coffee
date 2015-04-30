@@ -41,13 +41,13 @@ describe "CSS property name and value autocompletions", ->
 
       it "returns no completions when not in a property list", ->
         editor.setText('')
-        expect(getCompletions().length).toBe 0
+        expect(getCompletions()).toBe null
 
         editor.setText('d')
         editor.setCursorBufferPosition([0, 0])
-        expect(getCompletions().length).toBe 0
+        expect(getCompletions()).toBe null
         editor.setCursorBufferPosition([0, 1])
-        expect(getCompletions().length).toBe 0
+        expect(getCompletions()).toBe null
 
       it "autocompletes property names without a prefix", ->
         editor.setText """
@@ -218,3 +218,15 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[3].text).toBe 'inline-grid;'
         expect(completions[4].text).toBe 'inline-table;'
         expect(completions[5].text).toBe 'inherit;'
+
+      it "autocompletes pseudo selectors without a prefix", ->
+        editor.setText """
+          div: {
+          }
+        """
+        editor.setCursorBufferPosition([0, 4])
+        completions = getCompletions()
+        expect(completions.length).toBe 43
+        for completion in completions
+          text = (completion.text or completion.snippet)
+          expect(text.length).toBeGreaterThan 0

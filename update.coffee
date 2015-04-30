@@ -18,4 +18,6 @@ request requestOptions, (error, response, properties) ->
     console.error("Request for CSSProperties.json failed: #{response.statusCode}")
     return process.exit(1)
 
-  fs.writeFileSync(path.join(__dirname, 'properties.json'), "#{JSON.stringify(properties, null, 0)}\n")
+  pseudoSelectors = JSON.parse(fs.readFileSync(path.join(__dirname, 'pseudo-selectors.json')))
+  completions = {properties, pseudoSelectors}
+  fs.writeFileSync(path.join(__dirname, 'completions.json'), "#{JSON.stringify(completions, null, 0)}\n")

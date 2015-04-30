@@ -3,6 +3,7 @@ path = require 'path'
 
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
+pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?/
 
 module.exports =
   selector: '.source.css'
@@ -12,8 +13,10 @@ module.exports =
       @getPropertyValueCompletions(request)
     else if @isCompletingName(request)
       @getPropertyNameCompletions(request)
+    else if @isCompletingPseudoSelector(request)
+      @getPseudoSelectorCompletions(request)
     else
-      []
+      null
 
   onDidInsertSuggestion: ({editor, suggestion}) ->
     setTimeout(@triggerAutocomplete.bind(this, editor), 1) if suggestion.type is 'property'
@@ -23,8 +26,8 @@ module.exports =
 
   loadProperties: ->
     @properties = {}
-    fs.readFile path.resolve(__dirname, '..', 'properties.json'), (error, content) =>
-      @properties = JSON.parse(content) unless error?
+    fs.readFile path.resolve(__dirname, '..', 'completions.json'), (error, content) =>
+      {@pseudoSelectors, @properties} = JSON.parse(content) unless error?
       return
 
   isCompletingValue: ({scopeDescriptor}) ->
@@ -36,6 +39,11 @@ module.exports =
     scopes = scopeDescriptor.getScopesArray()
     scopes.indexOf('meta.property-list.css') isnt -1 or
     scopes.indexOf('meta.property-list.scss') isnt -1
+
+  isCompletingPseudoSelector: ({scopeDescriptor}) ->
+    scopes = scopeDescriptor.getScopesArray()
+    scopes.indexOf('meta.selector.css') isnt -1 or
+    scopes.indexOf('meta.selector.scss') isnt -1
 
   isPropertyValuePrefix: (prefix) ->
     prefix = prefix.trim()
@@ -53,7 +61,7 @@ module.exports =
   getPropertyValueCompletions: ({bufferPosition, editor, prefix}) ->
     property = @getPreviousPropertyName(bufferPosition, editor)
     values = @properties[property]?.values
-    return [] unless values?
+    return null unless values?
 
     completions = []
     if @isPropertyValuePrefix(prefix)
@@ -91,3 +99,27 @@ module.exports =
     text: "#{propertyName}: "
     displayText: propertyName
     replacementPrefix: prefix
+
+  getPseudoSelectorCompletions: ({bufferPosition, editor}) ->
+    line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
+    prefix = line.match(pesudoSelectorPrefixPattern)?[0]
+    return null unless prefix
+
+    completions = []
+    lowerCasePrefix = prefix.toLowerCase()
+    for pseudoSelector, options of @pseudoSelectors when pseudoSelector.indexOf(lowerCasePrefix) is 0
+      completions.push(@buildPseudoSelectorCompletion(pseudoSelector, prefix, options))
+    completions
+
+  buildPseudoSelectorCompletion: (pseudoSelector, prefix, {argument, description}) ->
+    completion =
+      type: 'pseudo-selector'
+      replacementPrefix: prefix
+      description: description
+      descriptionMoreURL: "https://developer.mozilla.org/en-US/docs/Web/CSS/#{pseudoSelector}"
+
+    if argument?
+      completion.snippet = "#{pseudoSelector}(#{argument})"
+    else
+      completion.text = pseudoSelector
+    completion
