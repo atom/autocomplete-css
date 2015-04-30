@@ -4,6 +4,7 @@ path = require 'path'
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?/
+cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
   selector: '.source.css'
@@ -67,16 +68,18 @@ module.exports =
     if @isPropertyValuePrefix(prefix)
       lowerCasePrefix = prefix.toLowerCase()
       for value in values when value.indexOf(lowerCasePrefix) is 0
-        completions.push(@buildPropertyValueCompletion(value))
+        completions.push(@buildPropertyValueCompletion(value, property))
     else
       for value in values
-        completions.push(@buildPropertyValueCompletion(value))
+        completions.push(@buildPropertyValueCompletion(value, property))
     completions
 
-  buildPropertyValueCompletion: (value) ->
+  buildPropertyValueCompletion: (value, propertyName) ->
     type: 'value'
     text: "#{value};"
     displayText: value
+    description: "#{value} value for the #{propertyName} property"
+    descriptionMoreURL: "#{cssDocsURL}/#{propertyName}#Values"
 
   getPropertyNamePrefix: (bufferPosition, editor) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
@@ -99,6 +102,8 @@ module.exports =
     text: "#{propertyName}: "
     displayText: propertyName
     replacementPrefix: prefix
+    description: "#{propertyName}"
+    descriptionMoreURL: "#{cssDocsURL}/#{propertyName}"
 
   getPseudoSelectorCompletions: ({bufferPosition, editor}) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
@@ -116,7 +121,7 @@ module.exports =
       type: 'pseudo-selector'
       replacementPrefix: prefix
       description: description
-      descriptionMoreURL: "https://developer.mozilla.org/en-US/docs/Web/CSS/#{pseudoSelector}"
+      descriptionMoreURL: "#{cssDocsURL}/#{pseudoSelector}"
 
     if argument?
       completion.snippet = "#{pseudoSelector}(${1:#{argument}})"

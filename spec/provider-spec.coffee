@@ -61,6 +61,8 @@ describe "CSS property name and value autocompletions", ->
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
           expect(completion.type).toBe 'property'
+          expect(completion.description.length).toBeGreaterThan 0
+          expect(completion.descriptionMoreURL.length).toBeGreaterThan 0
 
       it "autocompletes property names with a prefix", ->
         editor.setText """
@@ -75,6 +77,8 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[0].displayText).toBe 'direction'
         expect(completions[0].type).toBe 'property'
         expect(completions[0].replacementPrefix).toBe 'd'
+        expect(completions[0].description.length).toBeGreaterThan 0
+        expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
         expect(completions[1].text).toBe 'display: '
         expect(completions[1].displayText).toBe 'display'
         expect(completions[1].type).toBe 'property'
@@ -159,6 +163,8 @@ describe "CSS property name and value autocompletions", ->
         expect(completions.length).toBe 21
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
+          expect(completion.description.length).toBeGreaterThan 0
+          expect(completion.descriptionMoreURL.length).toBeGreaterThan 0
 
         editor.setText """
           body {
@@ -182,6 +188,8 @@ describe "CSS property name and value autocompletions", ->
         completions = getCompletions()
         expect(completions.length).toBe 6
         expect(completions[0].text).toBe 'inline;'
+        expect(completions[0].description.length).toBeGreaterThan 0
+        expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
         expect(completions[1].text).toBe 'inline-block;'
         expect(completions[2].text).toBe 'inline-flex;'
         expect(completions[3].text).toBe 'inline-grid;'
