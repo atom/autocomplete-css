@@ -61,7 +61,6 @@ describe "CSS property name and value autocompletions", ->
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
           expect(completion.type).toBe 'property'
-          expect(completion.description.length).toBeGreaterThan 0
           expect(completion.descriptionMoreURL.length).toBeGreaterThan 0
 
       it "autocompletes property names with a prefix", ->

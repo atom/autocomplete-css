@@ -3,19 +3,19 @@ path = require 'path'
 
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
-pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?/
+pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
   selector: '.source.css'
 
   getSuggestions: (request) ->
-    if @isCompletingValue(request)
+    if @isCompletingPseudoSelector(request)
+      @getPseudoSelectorCompletions(request)
+    else if @isCompletingValue(request)
       @getPropertyValueCompletions(request)
     else if @isCompletingName(request)
       @getPropertyNameCompletions(request)
-    else if @isCompletingPseudoSelector(request)
-      @getPseudoSelectorCompletions(request)
     else
       null
 
@@ -41,10 +41,24 @@ module.exports =
     scopes.indexOf('meta.property-list.css') isnt -1 or
     scopes.indexOf('meta.property-list.scss') isnt -1
 
-  isCompletingPseudoSelector: ({scopeDescriptor}) ->
+  isCompletingPseudoSelector: ({editor, scopeDescriptor, bufferPosition}) ->
     scopes = scopeDescriptor.getScopesArray()
-    scopes.indexOf('meta.selector.css') isnt -1 or
-    scopes.indexOf('meta.selector.scss') isnt -1
+    if hasScope(scopes, 'meta.selector.css')
+      true
+    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
+      prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
+      if prefix
+        previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+        previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
+        previousScopesArray = previousScopes.getScopesArray()
+        not hasScope(previousScopesArray, 'meta.property-name.scss') and
+          not hasScope(previousScopesArray, 'meta.property-value.scss') and
+          not hasScope(previousScopesArray, 'support.type.property-name.css') and
+          not hasScope(previousScopesArray, 'support.type.property-value.css')
+      else
+        false
+    else
+      false
 
   isPropertyValuePrefix: (prefix) ->
     prefix = prefix.trim()
@@ -105,9 +119,12 @@ module.exports =
     description: description
     descriptionMoreURL: "#{cssDocsURL}/#{propertyName}"
 
-  getPseudoSelectorCompletions: ({bufferPosition, editor}) ->
+  getPseudoSelectorPrefix: (editor, bufferPosition) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
-    prefix = line.match(pesudoSelectorPrefixPattern)?[0]
+    line.match(pesudoSelectorPrefixPattern)?[0]
+
+  getPseudoSelectorCompletions: ({bufferPosition, editor}) ->
+    prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
     return null unless prefix
 
     completions = []
@@ -128,3 +145,6 @@ module.exports =
     else
       completion.text = pseudoSelector
     completion
+
+hasScope = (scopesArray, scope) ->
+  scopesArray.indexOf(scope) isnt -1
