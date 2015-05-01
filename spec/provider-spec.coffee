@@ -39,15 +39,20 @@ describe "CSS property name and value autocompletions", ->
         waitsForPromise -> atom.workspace.open(packagesToTest[packageLabel].file)
         runs -> editor = atom.workspace.getActiveTextEditor()
 
-      it "returns no completions when not in a property list", ->
+      it "returns tag completions when not in a property list", ->
         editor.setText('')
         expect(getCompletions()).toBe null
 
         editor.setText('d')
         editor.setCursorBufferPosition([0, 0])
         expect(getCompletions()).toBe null
+
         editor.setCursorBufferPosition([0, 1])
-        expect(getCompletions()).toBe null
+        completions = getCompletions()
+        expect(completions).toHaveLength 9
+        for completion in completions
+          expect(completion.text.length).toBeGreaterThan 0
+          expect(completion.type).toBe 'tag'
 
       it "autocompletes property names without a prefix", ->
         editor.setText """
@@ -71,7 +76,6 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 3])
         completions = getCompletions()
-        expect(completions.length).toBe 2
         expect(completions[0].text).toBe 'direction: '
         expect(completions[0].displayText).toBe 'direction'
         expect(completions[0].type).toBe 'property'
@@ -102,7 +106,6 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 3])
         completions = getCompletions()
-        expect(completions.length).toBe 2
         expect(completions[0].text).toBe 'direction: '
         expect(completions[1].text).toBe 'display: '
 
@@ -185,7 +188,6 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 12])
         completions = getCompletions()
-        expect(completions.length).toBe 6
         expect(completions[0].text).toBe 'inline;'
         expect(completions[0].description.length).toBeGreaterThan 0
         expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
@@ -218,13 +220,70 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([2, 5])
         completions = getCompletions()
-        expect(completions.length).toBe 6
         expect(completions[0].text).toBe 'inline;'
         expect(completions[1].text).toBe 'inline-block;'
         expect(completions[2].text).toBe 'inline-flex;'
         expect(completions[3].text).toBe 'inline-grid;'
         expect(completions[4].text).toBe 'inline-table;'
         expect(completions[5].text).toBe 'inherit;'
+
+      describe "tags", ->
+        it "autocompletes with a prefix", ->
+          editor.setText """
+            ca {
+            }
+          """
+          editor.setCursorBufferPosition([0, 2])
+          completions = getCompletions()
+          expect(completions.length).toBe 2
+          expect(completions[0].text).toBe 'canvas'
+          expect(completions[0].type).toBe 'tag'
+          expect(completions[0].description).toBe 'Selector for <canvas> elements'
+          expect(completions[1].text).toBe 'caption'
+
+          editor.setText """
+            canvas,ca {
+            }
+          """
+          editor.setCursorBufferPosition([0, 9])
+          completions = getCompletions()
+          expect(completions.length).toBe 2
+          expect(completions[0].text).toBe 'canvas'
+
+          editor.setText """
+            canvas ca {
+            }
+          """
+          editor.setCursorBufferPosition([0, 9])
+          completions = getCompletions()
+          expect(completions.length).toBe 2
+          expect(completions[0].text).toBe 'canvas'
+
+          editor.setText """
+            canvas, ca {
+            }
+          """
+          editor.setCursorBufferPosition([0, 10])
+          completions = getCompletions()
+          expect(completions.length).toBe 2
+          expect(completions[0].text).toBe 'canvas'
+
+        it "does not autocompletes when prefix is preceded by class or id char", ->
+          editor.setText """
+            .ca {
+            }
+          """
+          editor.setCursorBufferPosition([0, 3])
+          completions = getCompletions()
+          expect(completions).toBe null
+
+          editor.setText """
+            #ca {
+            }
+          """
+          editor.setCursorBufferPosition([0, 3])
+          completions = getCompletions()
+          expect(completions).toBe null
 
       describe "pseudo selectors", ->
         it "autocompletes without a prefix", ->
@@ -276,9 +335,29 @@ describe "CSS property name and value autocompletions", ->
           expect(completions.length).toBe 5
           expect(completions[0].text).toBe ':first'
 
-        it "autocompletes when nested in LESS and SCSS files", ->
-          return if packagesToTest[packageLabel].name is 'language-css'
+  Object.keys(packagesToTest).forEach (packageLabel) ->
+    if packageLabel[name] is 'language-css'
+      describe "#{packageLabel[name]} files", ->
+        beforeEach ->
+          waitsForPromise -> atom.packages.activatePackage(packagesToTest[packageLabel].name)
+          waitsForPromise -> atom.workspace.open(packagesToTest[packageLabel].file)
+          runs -> editor = atom.workspace.getActiveTextEditor()
 
+        it "autocompletes tags and properties when nesting inside the property list", ->
+          editor.setText """
+            .ca {
+              di
+            }
+          """
+          editor.setCursorBufferPosition([1, 4])
+          completions = getCompletions()
+          expect(completions.length).toBe 4
+          expect(completions[0].text).toBe 'direction: '
+          expect(completions[1].text).toBe 'display: '
+          expect(completions[2].text).toBe 'dialog'
+          expect(completions[3].text).toBe 'div'
+
+        it "autocompletes pseudo selectors when nested in LESS and SCSS files", ->
           editor.setText """
             .some-class {
               .a:f

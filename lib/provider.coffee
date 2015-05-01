@@ -4,20 +4,29 @@ path = require 'path'
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
+tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
   selector: '.source.css'
 
   getSuggestions: (request) ->
-    if @isCompletingPseudoSelector(request)
-      @getPseudoSelectorCompletions(request)
+    completions = null
+    isCompletingPseudoSelector = @isCompletingPseudoSelector(request)
+    if isCompletingPseudoSelector
+      completions = @getPseudoSelectorCompletions(request)
     else if @isCompletingValue(request)
-      @getPropertyValueCompletions(request)
+      completions = @getPropertyValueCompletions(request)
     else if @isCompletingName(request)
-      @getPropertyNameCompletions(request)
-    else
-      null
+      completions = @getPropertyNameCompletions(request)
+
+    if @isCompletingTagSelector(request)
+      tagCompletions = @getTagCompletions(request)
+      if tagCompletions?.length
+        completions ?= []
+        completions = completions.concat(tagCompletions)
+
+    completions
 
   onDidInsertSuggestion: ({editor, suggestion}) ->
     setTimeout(@triggerAutocomplete.bind(this, editor), 1) if suggestion.type is 'property'
@@ -28,7 +37,7 @@ module.exports =
   loadProperties: ->
     @properties = {}
     fs.readFile path.resolve(__dirname, '..', 'completions.json'), (error, content) =>
-      {@pseudoSelectors, @properties} = JSON.parse(content) unless error?
+      {@pseudoSelectors, @properties, @tags} = JSON.parse(content) unless error?
       return
 
   isCompletingValue: ({scopeDescriptor}) ->
@@ -40,6 +49,19 @@ module.exports =
     scopes = scopeDescriptor.getScopesArray()
     scopes.indexOf('meta.property-list.css') isnt -1 or
     scopes.indexOf('meta.property-list.scss') isnt -1
+
+  isCompletingTagSelector: ({editor, scopeDescriptor, bufferPosition}) ->
+    scopes = scopeDescriptor.getScopesArray()
+    tagSelectorPrefix = @getTagSelectorPrefix(editor, bufferPosition)
+    return false unless tagSelectorPrefix?.length
+
+    if hasScope(scopes, 'meta.selector.css')
+      true
+    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
+      not hasScope(scopes, 'meta.property-value.scss') and
+        not hasScope(scopes, 'support.type.property-value.css')
+    else
+      false
 
   isCompletingPseudoSelector: ({editor, scopeDescriptor, bufferPosition}) ->
     scopes = scopeDescriptor.getScopesArray()
@@ -145,6 +167,23 @@ module.exports =
     else
       completion.text = pseudoSelector
     completion
+
+  getTagSelectorPrefix: (editor, bufferPosition) ->
+    line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
+    tagSelectorPrefixPattern.exec(line)?[2]
+
+  getTagCompletions: ({bufferPosition, editor, prefix}) ->
+    completions = []
+    if prefix
+      lowerCasePrefix = prefix.toLowerCase()
+      for tag in @tags when tag.indexOf(lowerCasePrefix) is 0
+        completions.push(@buildTagCompletion(tag))
+    completions
+
+  buildTagCompletion: (tag) ->
+    type: 'tag'
+    text: tag
+    description: "Selector for <#{tag}> elements"
 
 hasScope = (scopesArray, scope) ->
   scopesArray.indexOf(scope) isnt -1
