@@ -226,41 +226,65 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[4].text).toBe 'inline-table;'
         expect(completions[5].text).toBe 'inherit;'
 
-      it "autocompletes pseudo selectors without a prefix", ->
-        editor.setText """
-          div: {
-          }
-        """
-        editor.setCursorBufferPosition([0, 4])
-        completions = getCompletions()
-        expect(completions.length).toBe 43
-        for completion in completions
-          text = (completion.text or completion.snippet)
-          expect(text.length).toBeGreaterThan 0
-          expect(completion.type).toBe 'pseudo-selector'
+      describe "pseudo selectors", ->
+        it "autocompletes without a prefix", ->
+          editor.setText """
+            div: {
+            }
+          """
+          editor.setCursorBufferPosition([0, 4])
+          completions = getCompletions()
+          expect(completions.length).toBe 43
+          for completion in completions
+            text = (completion.text or completion.snippet)
+            expect(text.length).toBeGreaterThan 0
+            expect(completion.type).toBe 'pseudo-selector'
 
-      it "autocompletes pseudo selectors with a prefix", ->
-        editor.setText """
-          div:f {
-          }
-        """
-        editor.setCursorBufferPosition([0, 5])
-        completions = getCompletions()
-        expect(completions.length).toBe 5
-        expect(completions[0].text).toBe ':first'
-        expect(completions[0].type).toBe 'pseudo-selector'
-        expect(completions[0].description.length).toBeGreaterThan 0
-        expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
+        it "autocompletes with a prefix", ->
+          editor.setText """
+            div:f {
+            }
+          """
+          editor.setCursorBufferPosition([0, 5])
+          completions = getCompletions()
+          expect(completions.length).toBe 5
+          expect(completions[0].text).toBe ':first'
+          expect(completions[0].type).toBe 'pseudo-selector'
+          expect(completions[0].description.length).toBeGreaterThan 0
+          expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
 
-      it "autocompletes pseudo selectors with arguments", ->
-        editor.setText """
-          div:nth {
-          }
-        """
-        editor.setCursorBufferPosition([0, 7])
-        completions = getCompletions()
-        expect(completions.length).toBe 4
-        expect(completions[0].snippet).toBe ':nth-child(${1:an+b})'
-        expect(completions[0].type).toBe 'pseudo-selector'
-        expect(completions[0].description.length).toBeGreaterThan 0
-        expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
+        it "autocompletes with arguments", ->
+          editor.setText """
+            div:nth {
+            }
+          """
+          editor.setCursorBufferPosition([0, 7])
+          completions = getCompletions()
+          expect(completions.length).toBe 4
+          expect(completions[0].snippet).toBe ':nth-child(${1:an+b})'
+          expect(completions[0].type).toBe 'pseudo-selector'
+          expect(completions[0].description.length).toBeGreaterThan 0
+          expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
+
+        it "autocompletes when nothing precedes the colon", ->
+          editor.setText """
+            :f {
+            }
+          """
+          editor.setCursorBufferPosition([0, 2])
+          completions = getCompletions()
+          expect(completions.length).toBe 5
+          expect(completions[0].text).toBe ':first'
+
+        it "autocompletes when nested in LESS and SCSS files", ->
+          return if packagesToTest[packageLabel].name is 'language-css'
+
+          editor.setText """
+            .some-class {
+              .a:f
+            }
+          """
+          editor.setCursorBufferPosition([1, 6])
+          completions = getCompletions()
+          expect(completions.length).toBe 5
+          expect(completions[0].text).toBe ':first'
