@@ -11,15 +11,7 @@ PropertiesURL = 'https://raw.githubusercontent.com/adobe/brackets/master/src/ext
 TagsURL = 'https://raw.githubusercontent.com/adobe/brackets/master/src/extensions/default/HTMLCodeHints/HtmlTags.json'
 
 propertyDescriptionsPromise = fetchPropertyDescriptions()
-propertiesPromise = new Promise (resolve) ->
-  request {json: true, url: PropertiesURL}, (error, response, properties) ->
-    if error?
-      console.error(error.message)
-      resolve(null)
-    if response.statusCode isnt 200
-      console.error("Request for CSSProperties.json failed: #{response.statusCode}")
-      resolve(null)
-    resolve(properties)
+
 tagsPromise = new Promise (resolve) ->
   request {json: true, url: TagsURL}, (error, response, properties) ->
     if error?
@@ -27,6 +19,16 @@ tagsPromise = new Promise (resolve) ->
       resolve(null)
     if response.statusCode isnt 200
       console.error("Request for HtmlTags.json failed: #{response.statusCode}")
+      resolve(null)
+    resolve(properties)
+
+propertiesPromise = new Promise (resolve) ->
+  request {json: true, url: PropertiesURL}, (error, response, properties) ->
+    if error?
+      console.error(error.message)
+      resolve(null)
+    if response.statusCode isnt 200
+      console.error("Request for CSSProperties.json failed: #{response.statusCode}")
       resolve(null)
     resolve(properties)
 
