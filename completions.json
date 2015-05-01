@@ -235,6 +235,10 @@
       "values": [],
       "description": "Specifies all borders on an HTMLElement."
     },
+    "border-radius": {
+      "values": [],
+      "description": "Allows Web authors to define how rounded border corners are."
+    },
     "border-top": {
       "values": [],
       "description": "A shorthand that sets the values of border-top-color, border-top-style…border-top-style, and border-top-width."
@@ -242,10 +246,6 @@
     "border-bottom": {
       "values": [],
       "description": "A shorthand that sets the values of border-bottom-color, border-bottom-style…border-bottom-style, and border-bottom-width."
-    },
-    "border-radius": {
-      "values": [],
-      "description": "Allows Web authors to define how rounded border corners are."
     },
     "border-left": {
       "values": [],
@@ -689,22 +689,6 @@
       ],
       "description": "Determines whether a table's borders are separated or collapsed."
     },
-    "border-top-left-radius": {
-      "values": [],
-      "description": "Sets the rounding of the top-left corner of the element."
-    },
-    "border-top-right-radius": {
-      "values": [],
-      "description": "Sets the rounding of the top-right corner of the element."
-    },
-    "border-bottom-left-radius": {
-      "values": [],
-      "description": "Sets the rounding of the bottom-left corner of the element"
-    },
-    "border-bottom-right-radius": {
-      "values": [],
-      "description": "Sets the rounding of the bottom-right corner of the element"
-    },
     "border-left-color": {
       "values": [
         "inherit"
@@ -832,6 +816,22 @@
         "inherit"
       ],
       "description": "Sets the width of the bottom border of a box."
+    },
+    "border-top-left-radius": {
+      "values": [],
+      "description": "Sets the rounding of the top-left corner of the element."
+    },
+    "border-top-right-radius": {
+      "values": [],
+      "description": "Sets the rounding of the top-right corner of the element."
+    },
+    "border-bottom-left-radius": {
+      "values": [],
+      "description": "Sets the rounding of the bottom-left corner of the element"
+    },
+    "border-bottom-right-radius": {
+      "values": [],
+      "description": "Sets the rounding of the bottom-right corner of the element"
     },
     "text-transform": {
       "values": [

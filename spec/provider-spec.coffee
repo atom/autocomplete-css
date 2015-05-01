@@ -76,14 +76,14 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 3])
         completions = getCompletions()
-        expect(completions[0].text).toBe 'direction: '
-        expect(completions[0].displayText).toBe 'direction'
+        expect(completions[0].text).toBe 'display: '
+        expect(completions[0].displayText).toBe 'display'
         expect(completions[0].type).toBe 'property'
         expect(completions[0].replacementPrefix).toBe 'd'
         expect(completions[0].description.length).toBeGreaterThan 0
         expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
-        expect(completions[1].text).toBe 'display: '
-        expect(completions[1].displayText).toBe 'display'
+        expect(completions[1].text).toBe 'direction: '
+        expect(completions[1].displayText).toBe 'direction'
         expect(completions[1].type).toBe 'property'
         expect(completions[1].replacementPrefix).toBe 'd'
 
@@ -95,8 +95,8 @@ describe "CSS property name and value autocompletions", ->
         editor.setCursorBufferPosition([1, 3])
         completions = getCompletions()
         expect(completions.length).toBe 2
-        expect(completions[0].text).toBe 'direction: '
-        expect(completions[1].text).toBe 'display: '
+        expect(completions[0].text).toBe 'display: '
+        expect(completions[1].text).toBe 'direction: '
         expect(completions[1].replacementPrefix).toBe 'D'
 
         editor.setText """
@@ -106,8 +106,8 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 3])
         completions = getCompletions()
-        expect(completions[0].text).toBe 'direction: '
-        expect(completions[1].text).toBe 'display: '
+        expect(completions[0].text).toBe 'display: '
+        expect(completions[1].text).toBe 'direction: '
 
         editor.setText """
           body {
@@ -117,8 +117,8 @@ describe "CSS property name and value autocompletions", ->
         editor.setCursorBufferPosition([1, 9])
         completions = getCompletions()
         expect(completions.length).toBe 32
-        expect(completions[0].text).toBe 'border-collapse: '
-        expect(completions[0].displayText).toBe 'border-collapse'
+        expect(completions[0].text).toBe 'border-radius: '
+        expect(completions[0].displayText).toBe 'border-radius'
         expect(completions[0].replacementPrefix).toBe 'border-'
 
         editor.setText """
