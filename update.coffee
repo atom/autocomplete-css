@@ -21,13 +21,18 @@ propertiesPromise = new Promise (resolve) ->
     resolve(properties)
 
 Promise.settle([propertiesPromise, propertyDescriptionsPromise]).then (results) ->
-
-  properties = results[0].value()
+  properties = {}
+  propertiesRaw = results[0].value()
   propertyDescriptions = results[1].value()
-  for propertyName, metadata of properties
+  sortedPropertyNames = JSON.parse(fs.readFileSync(path.join(__dirname, 'sorted-property-names.json')))
+  for propertyName in sortedPropertyNames
+    continue unless metadata = propertiesRaw[propertyName]
     metadata.description = propertyDescriptions[propertyName]
-    unless propertyDescriptions[propertyName]?
-      console.warn "No description for property #{propertyName}"
+    properties[propertyName] = metadata
+    console.warn "No description for property #{propertyName}" unless propertyDescriptions[propertyName]?
+
+  for propertyName, d of propertiesRaw
+    console.warn "Ignoring #{propertyName}; not in sorted-property-names.json" if sortedPropertyNames.indexOf(propertyName) < 0
 
   tags = JSON.parse(fs.readFileSync(path.join(__dirname, 'html-tags.json')))
   pseudoSelectors = JSON.parse(fs.readFileSync(path.join(__dirname, 'pseudo-selectors.json')))
