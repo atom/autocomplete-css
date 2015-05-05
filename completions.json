@@ -1217,6 +1217,24 @@
       ],
       "description": "Used to describe how the intermediate values of the CSS properties…CSS properties being affected by a transition effect are calculated."
     },
+    "background-attachment": {
+      "values": [
+        "fixed",
+        "local",
+        "scroll",
+        "inherit"
+      ],
+      "description": "If a background-image is specified, the background-attachment CSS property determines whether that image's"
+    },
+    "background-origin": {
+      "values": [
+        "border-box",
+        "content-box",
+        "padding-box",
+        "inherit"
+      ],
+      "description": "Determines the background positioning area, that is the position of…of the origin of an image specified using the background-image CSS property."
+    },
     "backface-visibility": {
       "values": [
         "hidden",
@@ -1248,24 +1266,6 @@
         "inherit"
       ],
       "description": " a widow is the last line of a paragraph appearing alone at the top of a page."
-    },
-    "background-attachment": {
-      "values": [
-        "fixed",
-        "local",
-        "scroll",
-        "inherit"
-      ],
-      "description": "If a background-image is specified, the background-attachment CSS property determines whether that image's"
-    },
-    "background-origin": {
-      "values": [
-        "border-box",
-        "content-box",
-        "padding-box",
-        "inherit"
-      ],
-      "description": "Determines the background positioning area, that is the position of…of the origin of an image specified using the background-image CSS property."
     },
     "counter-increment": {
       "values": [
