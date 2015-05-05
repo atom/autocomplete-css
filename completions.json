@@ -185,6 +185,10 @@
       "values": [],
       "description": "Of an element sets the height of the padding area at the bottom of an…Contrary to margin-bottom values, negative values of padding-bottom are invalid."
     },
+    "font": {
+      "values": [],
+      "description": "Either a shorthand property for setting font-style, font-variant, font-weight…font-weight, font-size, line-height and font-family, or a way to set the element's font to a system font, using"
+    },
     "font-size": {
       "values": [],
       "description": "Specifies the size of the font."
@@ -226,10 +230,6 @@
         "serif"
       ],
       "description": "Lets you specify a prioritized list of font family names and/or generic…first font on the list that is installed on the computer or that can be downloaded using a @font-face…generic family names for the selected element."
-    },
-    "font": {
-      "values": [],
-      "description": "Either a shorthand property for setting font-style, font-variant, font-weight…font-weight, font-size, line-height and font-family, or a way to set the element's font to a system font, using"
     },
     "border": {
       "values": [],
@@ -292,6 +292,10 @@
       ],
       "description": "Describes how inline content like text is aligned in its parent block element…element."
     },
+    "background": {
+      "values": [],
+      "description": "background-color, background-image, background-origin, background-position, background-repeat, background-size, and …sheet."
+    },
     "background-color": {
       "values": [
         "inherit"
@@ -330,6 +334,23 @@
         "url()"
       ],
       "description": "Sets one or several background images for an element."
+    },
+    "background-size": {
+      "values": [
+        "auto",
+        "contain",
+        "cover"
+      ],
+      "description": "Specifies the size of the background images."
+    },
+    "background-clip": {
+      "values": [
+        "border-box",
+        "content-box",
+        "padding-box",
+        "inherit"
+      ],
+      "description": "Specifies whether an element's background, either the color or image"
     },
     "right": {
       "values": [
@@ -487,18 +508,6 @@
         "inherit"
       ],
       "description": "Specifies that an element should be taken from the normal flow and placed along"
-    },
-    "background": {
-      "values": [],
-      "description": "background-color, background-image, background-origin, background-position, background-repeat, background-size, and …sheet."
-    },
-    "background-size": {
-      "values": [
-        "auto",
-        "contain",
-        "cover"
-      ],
-      "description": "Specifies the size of the background images."
     },
     "text-decoration": {
       "values": [
@@ -970,15 +979,6 @@
         "keep-all"
       ],
       "description": "Used to specify whether to break lines within words."
-    },
-    "background-clip": {
-      "values": [
-        "border-box",
-        "content-box",
-        "padding-box",
-        "inherit"
-      ],
-      "description": "Specifies whether an element's background, either the color or image"
     },
     "filter": {
       "values": [
