@@ -10,6 +10,11 @@ cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 module.exports =
   selector: '.source.css'
 
+  # Tell autocomplete to fuzzy filter the results of getSuggestions(). We are
+  # still filtering by the first character of the prefix in this provider for
+  # efficiency.
+  filterSuggestions: true
+
   getSuggestions: (request) ->
     completions = null
     isCompletingPseudoSelector = @isCompletingPseudoSelector(request)
@@ -102,8 +107,7 @@ module.exports =
 
     completions = []
     if @isPropertyValuePrefix(prefix)
-      lowerCasePrefix = prefix.toLowerCase()
-      for value in values when value.indexOf(lowerCasePrefix) is 0
+      for value in values when firstCharsEqual(value, prefix)
         completions.push(@buildPropertyValueCompletion(value, property))
     else
       for value in values
@@ -124,13 +128,8 @@ module.exports =
   getPropertyNameCompletions: ({bufferPosition, editor}) ->
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
     completions = []
-    if prefix
-      lowerCasePrefix = prefix.toLowerCase()
-      for property, options of @properties when property.indexOf(lowerCasePrefix) is 0
-        completions.push(@buildPropertyNameCompletion(property, prefix, options))
-    else
-      for property, options of @properties
-        completions.push(@buildPropertyNameCompletion(property, '', options))
+    for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
+      completions.push(@buildPropertyNameCompletion(property, prefix, options))
     completions
 
   buildPropertyNameCompletion: (propertyName, prefix, {description}) ->
@@ -150,8 +149,7 @@ module.exports =
     return null unless prefix
 
     completions = []
-    lowerCasePrefix = prefix.toLowerCase()
-    for pseudoSelector, options of @pseudoSelectors when pseudoSelector.indexOf(lowerCasePrefix) is 0
+    for pseudoSelector, options of @pseudoSelectors when firstCharsEqual(pseudoSelector, prefix)
       completions.push(@buildPseudoSelectorCompletion(pseudoSelector, prefix, options))
     completions
 
@@ -175,8 +173,7 @@ module.exports =
   getTagCompletions: ({bufferPosition, editor, prefix}) ->
     completions = []
     if prefix
-      lowerCasePrefix = prefix.toLowerCase()
-      for tag in @tags when tag.indexOf(lowerCasePrefix) is 0
+      for tag in @tags when firstCharsEqual(tag, prefix)
         completions.push(@buildTagCompletion(tag))
     completions
 
@@ -187,3 +184,6 @@ module.exports =
 
 hasScope = (scopesArray, scope) ->
   scopesArray.indexOf(scope) isnt -1
+
+firstCharsEqual = (str1, str2) ->
+  str1[0].toLowerCase() is str2[0].toLowerCase()

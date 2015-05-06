@@ -111,36 +111,14 @@ describe "CSS property name and value autocompletions", ->
 
         editor.setText """
           body {
-            border-
+            bord
           }
         """
-        editor.setCursorBufferPosition([1, 9])
+        editor.setCursorBufferPosition([1, 6])
         completions = getCompletions()
-        expect(completions.length).toBe 32
-        expect(completions[0].text).toBe 'border-radius: '
-        expect(completions[0].displayText).toBe 'border-radius'
-        expect(completions[0].replacementPrefix).toBe 'border-'
-
-        editor.setText """
-          body {
-            border-bot
-          }
-        """
-        editor.setCursorBufferPosition([1, 12])
-        completions = getCompletions()
-        expect(completions.length).toBe 6
-        expect(completions[0].text).toBe 'border-bottom: '
-        expect(completions[1].text).toBe 'border-bottom-color: '
-
-        editor.setText """
-          body {
-            border-bottom-
-          }
-        """
-        editor.setCursorBufferPosition([1, 16])
-        completions = getCompletions()
-        expect(completions.length).toBe 5
-        expect(completions[0].text).toBe 'border-bottom-color: '
+        expect(completions[0].text).toBe 'border: '
+        expect(completions[0].displayText).toBe 'border'
+        expect(completions[0].replacementPrefix).toBe 'bord'
 
       it "triggers autocomplete when an property name has been inserted", ->
         spyOn(atom.commands, 'dispatch')
@@ -235,11 +213,11 @@ describe "CSS property name and value autocompletions", ->
           """
           editor.setCursorBufferPosition([0, 2])
           completions = getCompletions()
-          expect(completions.length).toBe 2
+          expect(completions.length).toBe 7
           expect(completions[0].text).toBe 'canvas'
           expect(completions[0].type).toBe 'tag'
           expect(completions[0].description).toBe 'Selector for <canvas> elements'
-          expect(completions[1].text).toBe 'caption'
+          expect(completions[1].text).toBe 'code'
 
           editor.setText """
             canvas,ca {
@@ -247,7 +225,7 @@ describe "CSS property name and value autocompletions", ->
           """
           editor.setCursorBufferPosition([0, 9])
           completions = getCompletions()
-          expect(completions.length).toBe 2
+          expect(completions.length).toBe 7
           expect(completions[0].text).toBe 'canvas'
 
           editor.setText """
@@ -256,7 +234,7 @@ describe "CSS property name and value autocompletions", ->
           """
           editor.setCursorBufferPosition([0, 9])
           completions = getCompletions()
-          expect(completions.length).toBe 2
+          expect(completions.length).toBe 7
           expect(completions[0].text).toBe 'canvas'
 
           editor.setText """
@@ -265,7 +243,7 @@ describe "CSS property name and value autocompletions", ->
           """
           editor.setCursorBufferPosition([0, 10])
           completions = getCompletions()
-          expect(completions.length).toBe 2
+          expect(completions.length).toBe 7
           expect(completions[0].text).toBe 'canvas'
 
         it "does not autocompletes when prefix is preceded by class or id char", ->
@@ -299,7 +277,9 @@ describe "CSS property name and value autocompletions", ->
             expect(text.length).toBeGreaterThan 0
             expect(completion.type).toBe 'pseudo-selector'
 
-        it "autocompletes with a prefix", ->
+        # TODO: Enable these tests when we can enable autocomplete and test the
+        # entire path.
+        xit "autocompletes with a prefix", ->
           editor.setText """
             div:f {
             }
@@ -312,7 +292,7 @@ describe "CSS property name and value autocompletions", ->
           expect(completions[0].description.length).toBeGreaterThan 0
           expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
 
-        it "autocompletes with arguments", ->
+        xit "autocompletes with arguments", ->
           editor.setText """
             div:nth {
             }
@@ -325,7 +305,7 @@ describe "CSS property name and value autocompletions", ->
           expect(completions[0].description.length).toBeGreaterThan 0
           expect(completions[0].descriptionMoreURL.length).toBeGreaterThan 0
 
-        it "autocompletes when nothing precedes the colon", ->
+        xit "autocompletes when nothing precedes the colon", ->
           editor.setText """
             :f {
             }
