@@ -37,7 +37,7 @@ module.exports =
     setTimeout(@triggerAutocomplete.bind(this, editor), 1) if suggestion.type is 'property'
 
   triggerAutocomplete: (editor) ->
-    atom.commands.dispatch(atom.views.getView(editor), 'autocomplete-plus:activate')
+    atom.commands.dispatch(atom.views.getView(editor), 'autocomplete-plus:activate', {activatedManually: false})
 
   loadProperties: ->
     @properties = {}
