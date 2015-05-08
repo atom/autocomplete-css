@@ -9,7 +9,7 @@ cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
   selector: '.source.css'
-  disableForSelector: '.source.css .comment'
+  disableForSelector: '.source.css .comment, .source.css .string'
 
   # Tell autocomplete to fuzzy filter the results of getSuggestions(). We are
   # still filtering by the first character of the prefix in this provider for
