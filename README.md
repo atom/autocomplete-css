@@ -1,8 +1,7 @@
 # CSS Autocomplete Package [![Build Status](https://travis-ci.org/atom/autocomplete-css.svg?branch=master)](https://travis-ci.org/atom/autocomplete-css)
 
-CSS property name and value autocompletions in Atom. Install
-[autocomplete-plus](https://github.com/atom-community/autocomplete-plus) before
-installing this package.
+CSS property name and value autocompletions in Atom. Uses the 
+[autocomplete-plus](https://github.com/atom-community/autocomplete-plus) package.
 
 This is powered by the list of CSS property and values [here](https://github.com/adobe/brackets/blob/master/src/extensions/default/CSSCodeHints/CSSProperties.json)
 
