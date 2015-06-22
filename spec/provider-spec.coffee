@@ -205,6 +205,30 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[4].text).toBe 'inline-table;'
         expect(completions[5].text).toBe 'inherit;'
 
+        editor.setText """
+          body {
+            text-align:
+          }
+        """
+        editor.setCursorBufferPosition([1, 13])
+        completions = getCompletions()
+        expect(completions).toHaveLength 5
+        expect(completions[0].text).toBe 'center;'
+        expect(completions[1].text).toBe 'left;'
+        expect(completions[2].text).toBe 'justify;'
+        expect(completions[3].text).toBe 'right;'
+        expect(completions[4].text).toBe 'inherit;'
+
+        editor.setText """
+          body {
+            text-align: c
+          }
+        """
+        editor.setCursorBufferPosition([1, 15])
+        completions = getCompletions()
+        expect(completions).toHaveLength 1
+        expect(completions[0].text).toBe 'center;'
+
       describe "tags", ->
         it "autocompletes with a prefix", ->
           editor.setText """

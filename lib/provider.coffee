@@ -65,6 +65,7 @@ module.exports =
       true
     else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
       not hasScope(scopes, 'meta.property-value.scss') and
+        not hasScope(scopes, 'meta.property-value.css') and
         not hasScope(scopes, 'support.type.property-value.css')
     else
       false
