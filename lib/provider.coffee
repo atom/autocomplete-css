@@ -8,8 +8,8 @@ tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
-  selector: '.source.css'
-  disableForSelector: '.source.css .comment, .source.css .string'
+  selector: '.source.css, .source.sass'
+  disableForSelector: '.source.css .comment, .source.css .string, .source.sass .comment, .source.sass .string'
 
   # Tell autocomplete to fuzzy filter the results of getSuggestions(). We are
   # still filtering by the first character of the prefix in this provider for
@@ -18,15 +18,21 @@ module.exports =
 
   getSuggestions: (request) ->
     completions = null
-    isCompletingPseudoSelector = @isCompletingPseudoSelector(request)
-    if isCompletingPseudoSelector
-      completions = @getPseudoSelectorCompletions(request)
-    else if @isCompletingValue(request)
-      completions = @getPropertyValueCompletions(request)
-    else if @isCompletingName(request)
-      completions = @getPropertyNameCompletions(request)
+    scopes = request.scopeDescriptor.getScopesArray()
+    isSass = hasScope(scopes, 'source.sass')
 
-    if @isCompletingTagSelector(request)
+    if @isCompletingValue(request)
+      completions = @getPropertyValueCompletions(request)
+    else if @isCompletingPseudoSelector(request)
+      completions = @getPseudoSelectorCompletions(request)
+    else
+      if isSass and @isCompletingNameOrTag(request)
+        completions = completions = @getPropertyNameCompletions(request)
+          .concat(@getTagCompletions(request))
+      else if not isSass and @isCompletingName(request)
+        completions = @getPropertyNameCompletions(request)
+
+    if not isSass and @isCompletingTagSelector(request)
       tagCompletions = @getTagCompletions(request)
       if tagCompletions?.length
         completions ?= []
@@ -46,15 +52,29 @@ module.exports =
       {@pseudoSelectors, @properties, @tags} = JSON.parse(content) unless error?
       return
 
-  isCompletingValue: ({scopeDescriptor}) ->
+  isCompletingValue: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
-    (scopes.indexOf('meta.property-value.css') isnt -1 and scopes.indexOf('punctuation.separator.key-value.css') is -1) or
-    (scopes.indexOf('meta.property-value.scss') isnt -1 and scopes.indexOf('punctuation.separator.key-value.scss') is -1)
+
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+    previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
+    previousScopesArray = previousScopes.getScopesArray()
+
+    (hasScope(scopes, 'meta.property-value.css') and not hasScope(scopes, 'punctuation.separator.key-value.css')) or
+    (hasScope(scopes, 'meta.property-value.scss') and not hasScope(scopes, 'punctuation.separator.key-value.scss')) or
+    (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
+      (not hasScope(previousScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
+    ))
 
   isCompletingName: ({scopeDescriptor}) ->
     scopes = scopeDescriptor.getScopesArray()
-    scopes.indexOf('meta.property-list.css') isnt -1 or
-    scopes.indexOf('meta.property-list.scss') isnt -1
+    hasScope(scopes, 'meta.property-list.css') or
+    hasScope(scopes, 'meta.property-list.scss')
+
+  isCompletingNameOrTag: ({scopeDescriptor}) ->
+    scopes = scopeDescriptor.getScopesArray()
+    return hasScope(scopes, 'meta.selector.css') and
+      not hasScope(scopes, 'entity.other.attribute-name.id.css.sass') and
+      not hasScope(scopes, 'entity.other.attribute-name.class.sass')
 
   isCompletingTagSelector: ({editor, scopeDescriptor, bufferPosition}) ->
     scopes = scopeDescriptor.getScopesArray()
@@ -72,9 +92,9 @@ module.exports =
 
   isCompletingPseudoSelector: ({editor, scopeDescriptor, bufferPosition}) ->
     scopes = scopeDescriptor.getScopesArray()
-    if hasScope(scopes, 'meta.selector.css')
+    if hasScope(scopes, 'meta.selector.css') and not hasScope(scopes, 'source.sass')
       true
-    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
+    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less') or hasScope(scopes, 'source.sass')
       prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
       if prefix
         previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
@@ -102,32 +122,44 @@ module.exports =
       row--
     return
 
-  getPropertyValueCompletions: ({bufferPosition, editor, prefix}) ->
+  getPropertyValueCompletions: ({bufferPosition, editor, prefix, scopeDescriptor}) ->
     property = @getPreviousPropertyName(bufferPosition, editor)
     values = @properties[property]?.values
     return null unless values?
 
+    scopes = scopeDescriptor.getScopesArray()
+
     completions = []
     if @isPropertyValuePrefix(prefix)
       for value in values when firstCharsEqual(value, prefix)
-        completions.push(@buildPropertyValueCompletion(value, property))
+        completions.push(@buildPropertyValueCompletion(value, property, scopes))
     else
       for value in values
-        completions.push(@buildPropertyValueCompletion(value, property))
+        completions.push(@buildPropertyValueCompletion(value, property, scopes))
     completions
 
-  buildPropertyValueCompletion: (value, propertyName) ->
-    type: 'value'
-    text: "#{value};"
-    displayText: value
-    description: "#{value} value for the #{propertyName} property"
-    descriptionMoreURL: "#{cssDocsURL}/#{propertyName}#Values"
+  buildPropertyValueCompletion: (value, propertyName, scopes) ->
+    text = value
+    text += ';' unless hasScope(scopes, 'source.sass')
+
+    {
+      type: 'value'
+      text: text
+      displayText: value
+      description: "#{value} value for the #{propertyName} property"
+      descriptionMoreURL: "#{cssDocsURL}/#{propertyName}#Values"
+    }
 
   getPropertyNamePrefix: (bufferPosition, editor) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     propertyNamePrefixPattern.exec(line)?[0]
 
-  getPropertyNameCompletions: ({bufferPosition, editor}) ->
+  getPropertyNameCompletions: ({bufferPosition, editor, scopeDescriptor}) ->
+    # Don't autocomplete property names in SASS on root level
+    scopes = scopeDescriptor.getScopesArray()
+    line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
+    return [] if hasScope(scopes, 'source.sass') and not line.match(/^(\s|\t)/)
+
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
     completions = []
     for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
