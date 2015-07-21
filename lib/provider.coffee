@@ -65,11 +65,14 @@ module.exports =
       (not hasScope(previousScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
     ))
 
-  isCompletingName: ({scopeDescriptor, bufferPosition, editor}) ->
+  isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
     lineLength = editor.lineTextForBufferRow(bufferPosition.row).length
-    isInPropertyList = hasScope(scopes, 'meta.property-list.css') or
-      hasScope(scopes, 'meta.property-list.scss')
+    isAtTerminator = prefix.endsWith(';')
+    isInPropertyList = not isAtTerminator and
+      (hasScope(scopes, 'meta.property-list.css') or
+      hasScope(scopes, 'meta.property-list.scss'))
+
     isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.css') or
       hasScope(scopes, 'punctuation.section.property-list.begin.scss')
     isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.css') or

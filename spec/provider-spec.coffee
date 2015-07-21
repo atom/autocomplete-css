@@ -120,6 +120,16 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[0].displayText).toBe 'border'
         expect(completions[0].replacementPrefix).toBe 'bord'
 
+      it "does not autocomplete when at a terminator", ->
+        editor.setText """
+          body {
+            .somemixin();
+          }
+        """
+        editor.setCursorBufferPosition([1, 15])
+        completions = getCompletions()
+        expect(completions).toBe null
+
       it "does not autocomplete property names when preceding a {", ->
         editor.setText """
           body,{
@@ -150,6 +160,14 @@ describe "CSS property name and value autocompletions", ->
           body{}
         """
         editor.setCursorBufferPosition([0, 6])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+        editor.setText """
+          body{
+          }
+        """
+        editor.setCursorBufferPosition([1, 1])
         completions = getCompletions()
         expect(completions).toBe null
 
