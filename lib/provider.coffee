@@ -162,13 +162,13 @@ module.exports =
         completions.push(@buildPropertyValueCompletion(value, property, scopes))
 
     if importantPrefix = @getImportantPrefix(editor, bufferPosition)
-      # Dangereux
+      # attention: règle dangereux
       completions.push
         type: 'keyword'
         text: '!important'
         displayText: '!important'
         replacementPrefix: importantPrefix
-        description: "When !important is used, this property overrides any other declaration made, wherever it is in the declaration list. Use with caution."
+        description: "Forces this property to override any other declaration of the same property. Use with caution."
         descriptionMoreURL: "#{cssDocsURL}/Specificity#The_!important_exception"
 
     completions
