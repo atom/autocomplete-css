@@ -65,10 +65,31 @@ module.exports =
       (not hasScope(previousScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
     ))
 
-  isCompletingName: ({scopeDescriptor}) ->
+  isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
-    hasScope(scopes, 'meta.property-list.css') or
-    hasScope(scopes, 'meta.property-list.scss')
+    lineLength = editor.lineTextForBufferRow(bufferPosition.row).length
+    isAtTerminator = prefix.endsWith(';')
+    isInPropertyList = not isAtTerminator and
+      (hasScope(scopes, 'meta.property-list.css') or
+      hasScope(scopes, 'meta.property-list.scss'))
+
+    isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.css') or
+      hasScope(scopes, 'punctuation.section.property-list.begin.scss')
+    isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.css') or
+      hasScope(scopes, 'punctuation.section.property-list.end.scss')
+
+    if isInPropertyList and isAtBeginScopePunctuation
+      # This handles the case where the cursor is next to the punctuation
+      # * Disallow here: `canvas,|{}`
+      # * Allow here: `canvas,{| }`
+      prefix.endsWith('{')
+    else if isInPropertyList and isAtEndScopePunctuation
+      # This handles the case where the cursor is next to the punctuation
+      # * Disallow here: `canvas,{}|`
+      # * Allow here: `canvas,{ |}`
+      not prefix.endsWith('}')
+    else
+      isInPropertyList
 
   isCompletingNameOrTag: ({scopeDescriptor}) ->
     scopes = scopeDescriptor.getScopesArray()

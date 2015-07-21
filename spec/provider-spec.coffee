@@ -120,6 +120,88 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[0].displayText).toBe 'border'
         expect(completions[0].replacementPrefix).toBe 'bord'
 
+      it "does not autocomplete when at a terminator", ->
+        editor.setText """
+          body {
+            .somemixin();
+          }
+        """
+        editor.setCursorBufferPosition([1, 15])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+      it "does not autocomplete property names when preceding a {", ->
+        editor.setText """
+          body,{
+          }
+        """
+        editor.setCursorBufferPosition([0, 5])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+        editor.setText """
+          body,{}
+        """
+        editor.setCursorBufferPosition([0, 5])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+        editor.setText """
+          body
+          {
+          }
+        """
+        editor.setCursorBufferPosition([1, 0])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+      it "does not autocomplete property names when immediately after a }", ->
+        editor.setText """
+          body{}
+        """
+        editor.setCursorBufferPosition([0, 6])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+        editor.setText """
+          body{
+          }
+        """
+        editor.setCursorBufferPosition([1, 1])
+        completions = getCompletions()
+        expect(completions).toBe null
+
+      it "autocompletes property names when the cursor is up against the punctuation inside the property list", ->
+        editor.setText """
+          body {
+          }
+        """
+        editor.setCursorBufferPosition([0, 6])
+        completions = getCompletions()
+        expect(completions[0].displayText).toBe 'width'
+
+        editor.setText """
+          body {
+          }
+        """
+        editor.setCursorBufferPosition([1, 0])
+        completions = getCompletions()
+        expect(completions[0].displayText).toBe 'width'
+
+        editor.setText """
+          body { }
+        """
+        editor.setCursorBufferPosition([0, 6])
+        completions = getCompletions()
+        expect(completions[0].displayText).toBe 'width'
+
+        editor.setText """
+          body { }
+        """
+        editor.setCursorBufferPosition([0, 7])
+        completions = getCompletions()
+        expect(completions[0].displayText).toBe 'width'
+
       it "triggers autocomplete when an property name has been inserted", ->
         spyOn(atom.commands, 'dispatch')
         suggestion = {type: 'property', text: 'whatever'}
