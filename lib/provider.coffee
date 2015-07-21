@@ -78,30 +78,16 @@ module.exports =
     isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.css') or
       hasScope(scopes, 'punctuation.section.property-list.end.scss')
 
-    if isInPropertyList and isAtBeginScopePunctuation and bufferPosition.column is 0
-      # Disallow here:
-      # canvas
-      # |{
-      # }
-      false
-    else if isInPropertyList and isAtBeginScopePunctuation and bufferPosition.column < lineLength
+    if isInPropertyList and isAtBeginScopePunctuation
       # This handles the case where the cursor is next to the punctuation
       # * Disallow here: `canvas,|{}`
       # * Allow here: `canvas,{| }`
-      previousBufferPosition = [bufferPosition.row, bufferPosition.column - 1]
-      previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
-      previousScopesArray = previousScopes.getScopesArray()
-      hasScope(previousScopesArray, 'punctuation.section.property-list.begin.css') or
-        hasScope(previousScopesArray, 'punctuation.section.property-list.begin.scss')
-    else if isInPropertyList and isAtEndScopePunctuation and bufferPosition.column > 0
+      prefix.endsWith('{')
+    else if isInPropertyList and isAtEndScopePunctuation
       # This handles the case where the cursor is next to the punctuation
       # * Disallow here: `canvas,{}|`
       # * Allow here: `canvas,{ |}`
-      previousBufferPosition = [bufferPosition.row, bufferPosition.column - 1]
-      previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
-      previousScopesArray = previousScopes.getScopesArray()
-      not (hasScope(previousScopesArray, 'punctuation.section.property-list.end.css') or
-        hasScope(previousScopesArray, 'punctuation.section.property-list.end.scss'))
+      not prefix.endsWith('}')
     else
       isInPropertyList
 
