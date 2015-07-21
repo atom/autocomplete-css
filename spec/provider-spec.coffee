@@ -311,6 +311,36 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 1
         expect(completions[0].text).toBe 'center;'
 
+      it "autocompletes !important in property-value scope", ->
+        editor.setText """
+          body {
+            display: inherit !im
+          }
+        """
+        editor.setCursorBufferPosition([1, 22])
+        completions = getCompletions()
+
+        important = null
+        for c in completions
+          important = c if c.displayText is '!important'
+
+        expect(important.displayText).toBe '!important'
+
+      it "does not autocomplete !important in property-name scope", ->
+        editor.setText """
+          body {
+            !im
+          }
+        """
+        editor.setCursorBufferPosition([1, 5])
+        completions = getCompletions()
+
+        important = null
+        for c in completions
+          important = c if c.displayText is '!important'
+
+        expect(important).toBe null
+
       describe "tags", ->
         it "autocompletes with a prefix", ->
           editor.setText """
@@ -572,6 +602,35 @@ describe "CSS property name and value autocompletions", ->
       expect(completions[3].text).toBe 'inline-grid'
       expect(completions[4].text).toBe 'inline-table'
       expect(completions[5].text).toBe 'inherit'
+
+    it "autocompletes !important in property-value scope", ->
+      editor.setText """
+        body
+          display: inherit !im
+      """
+      editor.setCursorBufferPosition([1, 22])
+      completions = getCompletions()
+
+      important = null
+      for c in completions
+        important = c if c.displayText is '!important'
+
+      expect(important.displayText).toBe '!important'
+
+    it "does not autocomplete !important in property-name scope", ->
+      editor.setText """
+        body {
+          !im
+        }
+      """
+      editor.setCursorBufferPosition([1, 5])
+      completions = getCompletions()
+
+      important = null
+      for c in completions
+        important = c if c.displayText is '!important'
+
+      expect(important).toBe null
 
     describe "tags", ->
       it "autocompletes with a prefix", ->
