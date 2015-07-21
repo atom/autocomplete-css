@@ -5,6 +5,7 @@ propertyNameWithColonPattern = /^\s*(\S+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
+importantPrefixPattern = /(![a-z]+)$/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
@@ -132,6 +133,10 @@ module.exports =
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
 
+  getImportantPrefix: (editor, bufferPosition) ->
+    line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
+    importantPrefixPattern.exec(line)?[1]
+
   getPreviousPropertyName: (bufferPosition, editor) ->
     {row} = bufferPosition
     while row >= 0
@@ -155,6 +160,17 @@ module.exports =
     else
       for value in values
         completions.push(@buildPropertyValueCompletion(value, property, scopes))
+
+    if importantPrefix = @getImportantPrefix(editor, bufferPosition)
+      # Dangereux
+      completions.push
+        type: 'keyword'
+        text: '!important'
+        displayText: '!important'
+        replacementPrefix: importantPrefix
+        description: "When an !important rule is used, this declaration overrides any other declaration made, wherever it is in the declaration list. Use with caution."
+        descriptionMoreURL: "#{cssDocsURL}/Specificity#The_!important_exception"
+
     completions
 
   buildPropertyValueCompletion: (value, propertyName, scopes) ->
