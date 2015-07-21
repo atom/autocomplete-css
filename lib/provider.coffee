@@ -79,12 +79,10 @@ module.exports =
       hasScope(scopes, 'punctuation.section.property-list.end.scss')
 
     if isInPropertyList and isAtBeginScopePunctuation
-      # This handles the case where the cursor is next to the punctuation
       # * Disallow here: `canvas,|{}`
       # * Allow here: `canvas,{| }`
       prefix.endsWith('{')
     else if isInPropertyList and isAtEndScopePunctuation
-      # This handles the case where the cursor is next to the punctuation
       # * Disallow here: `canvas,{}|`
       # * Allow here: `canvas,{ |}`
       not prefix.endsWith('}')
