@@ -168,7 +168,7 @@ module.exports =
         text: '!important'
         displayText: '!important'
         replacementPrefix: importantPrefix
-        description: "When an !important rule is used, this declaration overrides any other declaration made, wherever it is in the declaration list. Use with caution."
+        description: "When !important is used, this property overrides any other declaration made, wherever it is in the declaration list. Use with caution."
         descriptionMoreURL: "#{cssDocsURL}/Specificity#The_!important_exception"
 
     completions
