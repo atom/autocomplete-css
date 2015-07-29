@@ -70,25 +70,40 @@ module.exports =
     scopes = scopeDescriptor.getScopesArray()
     lineLength = editor.lineTextForBufferRow(bufferPosition.row).length
     isAtTerminator = prefix.endsWith(';')
+    isAtParentSymbol = prefix.endsWith('&')
     isInPropertyList = not isAtTerminator and
       (hasScope(scopes, 'meta.property-list.css') or
       hasScope(scopes, 'meta.property-list.scss'))
+
+    return false unless isInPropertyList
+    return false if isAtParentSymbol
+
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+    previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
+    previousScopesArray = previousScopes.getScopesArray()
+
+    return false if hasScope(previousScopesArray, 'entity.other.attribute-name.class.css') or
+      hasScope(previousScopesArray, 'entity.other.attribute-name.id.css') or
+      hasScope(previousScopesArray, 'entity.other.attribute-name.id') or
+      hasScope(previousScopesArray, 'entity.other.attribute-name.parent-selector.css') or
+      hasScope(previousScopesArray, 'entity.name.tag.reference.scss') or
+      hasScope(previousScopesArray, 'entity.name.tag.scss')
 
     isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.css') or
       hasScope(scopes, 'punctuation.section.property-list.begin.scss')
     isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.css') or
       hasScope(scopes, 'punctuation.section.property-list.end.scss')
 
-    if isInPropertyList and isAtBeginScopePunctuation
+    if isAtBeginScopePunctuation
       # * Disallow here: `canvas,|{}`
       # * Allow here: `canvas,{| }`
       prefix.endsWith('{')
-    else if isInPropertyList and isAtEndScopePunctuation
+    else if isAtEndScopePunctuation
       # * Disallow here: `canvas,{}|`
       # * Allow here: `canvas,{ |}`
       not prefix.endsWith('}')
     else
-      isInPropertyList
+      true
 
   isCompletingNameOrTag: ({scopeDescriptor}) ->
     scopes = scopeDescriptor.getScopesArray()
@@ -189,13 +204,15 @@ module.exports =
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     propertyNamePrefixPattern.exec(line)?[0]
 
-  getPropertyNameCompletions: ({bufferPosition, editor, scopeDescriptor}) ->
+  getPropertyNameCompletions: ({bufferPosition, editor, scopeDescriptor, activatedManually}) ->
     # Don't autocomplete property names in SASS on root level
     scopes = scopeDescriptor.getScopesArray()
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     return [] if hasScope(scopes, 'source.sass') and not line.match(/^(\s|\t)/)
 
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
+    return null unless activatedManually or prefix
+
     completions = []
     for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
       completions.push(@buildPropertyNameCompletion(property, prefix, options))
