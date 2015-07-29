@@ -452,8 +452,8 @@ describe "CSS property name and value autocompletions", ->
           expect(completions[0].text).toBe ':first'
 
   Object.keys(packagesToTest).forEach (packageLabel) ->
-    if packageLabel[name] is 'language-css'
-      describe "#{packageLabel[name]} files", ->
+    if packagesToTest[packageLabel].name in ['language-sass', 'language-less']
+      describe "#{packageLabel} files", ->
         beforeEach ->
           waitsForPromise -> atom.packages.activatePackage(packagesToTest[packageLabel].name)
           waitsForPromise -> atom.workspace.open(packagesToTest[packageLabel].file)
@@ -467,11 +467,9 @@ describe "CSS property name and value autocompletions", ->
           """
           editor.setCursorBufferPosition([1, 4])
           completions = getCompletions()
-          expect(completions.length).toBe 4
-          expect(completions[0].text).toBe 'direction: '
-          expect(completions[1].text).toBe 'display: '
-          expect(completions[2].text).toBe 'dialog'
-          expect(completions[3].text).toBe 'div'
+          expect(completions[0].text).toBe 'display: '
+          expect(completions[1].text).toBe 'direction: '
+          expect(completions[2].text).toBe 'div'
 
         it "autocompletes pseudo selectors when nested in LESS and SCSS files", ->
           editor.setText """
