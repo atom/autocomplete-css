@@ -482,6 +482,16 @@ describe "CSS property name and value autocompletions", ->
           expect(completions.length).toBe 5
           expect(completions[0].text).toBe ':first'
 
+        it "does not show property names when in a selector", ->
+          editor.setText """
+            body {
+              .something,
+            }
+          """
+          editor.setCursorBufferPosition([1, 13])
+          completions = getCompletions()
+          expect(completions).toBe null
+
   describe "SASS files", ->
     beforeEach ->
       waitsForPromise -> atom.packages.activatePackage('language-sass')
