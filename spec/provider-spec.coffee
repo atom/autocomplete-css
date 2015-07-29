@@ -495,13 +495,43 @@ describe "CSS property name and value autocompletions", ->
           expect(completions.length).toBe 5
           expect(completions[0].text).toBe ':first'
 
-        it "does not show property names when in a selector", ->
+        it "does not show property names when in a class selector", ->
           editor.setText """
             body {
-              .something,
+              .a
             }
           """
-          editor.setCursorBufferPosition([1, 13])
+          editor.setCursorBufferPosition([1, 4])
+          completions = getCompletions()
+          expect(completions).toBe null
+
+        it "does not show property names when in an id selector", ->
+          editor.setText """
+            body {
+              #a
+            }
+          """
+          editor.setCursorBufferPosition([1, 4])
+          completions = getCompletions()
+          expect(completions).toBe null
+
+        it "does not show property names when in a parent selector", ->
+          editor.setText """
+            body {
+              &
+            }
+          """
+          editor.setCursorBufferPosition([1, 4])
+          completions = getCompletions()
+          expect(completions).toBe null
+
+        it "does not show property names when in a parent selector with a prefix", ->
+          editor.setText """
+            body {
+              &a
+            }
+          """
+          editor.setCursorBufferPosition([1, 4])
           completions = getCompletions()
           expect(completions).toBe null
 
