@@ -189,13 +189,15 @@ module.exports =
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     propertyNamePrefixPattern.exec(line)?[0]
 
-  getPropertyNameCompletions: ({bufferPosition, editor, scopeDescriptor}) ->
+  getPropertyNameCompletions: ({bufferPosition, editor, scopeDescriptor, activatedManually}) ->
     # Don't autocomplete property names in SASS on root level
     scopes = scopeDescriptor.getScopesArray()
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
     return [] if hasScope(scopes, 'source.sass') and not line.match(/^(\s|\t)/)
 
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
+    return null unless activatedManually or prefix
+
     completions = []
     for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
       completions.push(@buildPropertyNameCompletion(property, prefix, options))

@@ -12,7 +12,7 @@ packagesToTest =
 describe "CSS property name and value autocompletions", ->
   [editor, provider] = []
 
-  getCompletions = ->
+  getCompletions = (options={}) ->
     cursor = editor.getLastCursor()
     start = cursor.getBeginningOfCurrentWordBufferPosition()
     end = cursor.getBufferPosition()
@@ -22,6 +22,7 @@ describe "CSS property name and value autocompletions", ->
       bufferPosition: end
       scopeDescriptor: cursor.getScopeDescriptor()
       prefix: prefix
+      activatedManually: options.activatedManually ? true
     provider.getSuggestions(request)
 
   beforeEach ->
@@ -54,19 +55,29 @@ describe "CSS property name and value autocompletions", ->
           expect(completion.text.length).toBeGreaterThan 0
           expect(completion.type).toBe 'tag'
 
-      it "autocompletes property names without a prefix", ->
+      it "autocompletes property names without a prefix when activated manually", ->
         editor.setText """
           body {
 
           }
         """
         editor.setCursorBufferPosition([1, 0])
-        completions = getCompletions()
+        completions = getCompletions(activatedManually: true)
         expect(completions.length).toBe 209
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
           expect(completion.type).toBe 'property'
           expect(completion.descriptionMoreURL.length).toBeGreaterThan 0
+
+      it "does not autocomplete property names without a prefix when not activated manually", ->
+        editor.setText """
+          body {
+
+          }
+        """
+        editor.setCursorBufferPosition([1, 0])
+        completions = getCompletions(activatedManually: false)
+        expect(completions).toBe null
 
       it "autocompletes property names with a prefix", ->
         editor.setText """
