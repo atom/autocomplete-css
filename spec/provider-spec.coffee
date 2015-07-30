@@ -668,7 +668,7 @@ describe "CSS property name and value autocompletions", ->
 
       expect(important.displayText).toBe '!important'
 
-    it "does not autocomplete when indented and prefix is a dot or a hash", ->
+    it "does not autocomplete when indented and prefix is not a char", ->
       editor.setText """
         body
           .
@@ -685,11 +685,24 @@ describe "CSS property name and value autocompletions", ->
       completions = getCompletions(activatedManually: false)
       expect(completions).toBe null
 
-    it "does not autocomplete when indented and prefix is a comma", ->
       editor.setText """
         body
           .foo,
       """
+      editor.setCursorBufferPosition([1, 7])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      editor.setText """
+        body
+          foo -
+      """
+      editor.setCursorBufferPosition([1, 8])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      # As spaces at end of line will be removed, we'll test with a char
+      # after the space and with the cursor before that char.
       editor.setCursorBufferPosition([1, 7])
       completions = getCompletions(activatedManually: false)
       expect(completions).toBe null

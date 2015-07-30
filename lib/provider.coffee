@@ -27,8 +27,7 @@ module.exports =
     else if @isCompletingPseudoSelector(request)
       completions = @getPseudoSelectorCompletions(request)
     else
-      {prefix} = request
-      if isSass and @isCompletingNameOrTag(request) and not @isEmptyClassOrIdPrefix(prefix) and not @isCommaPrefix(prefix)
+      if isSass and @isCompletingNameOrTag(request)
         completions = @getPropertyNameCompletions(request)
           .concat(@getTagCompletions(request))
       else if not isSass and @isCompletingName(request)
@@ -106,9 +105,10 @@ module.exports =
     else
       true
 
-  isCompletingNameOrTag: ({scopeDescriptor}) ->
+  isCompletingNameOrTag: ({scopeDescriptor, prefix}) ->
     scopes = scopeDescriptor.getScopesArray()
-    return hasScope(scopes, 'meta.selector.css') and
+    return @isPropertyNamePrefix(prefix) and
+      hasScope(scopes, 'meta.selector.css') and
       not hasScope(scopes, 'entity.other.attribute-name.id.css.sass') and
       not hasScope(scopes, 'entity.other.attribute-name.class.sass')
 
@@ -149,13 +149,9 @@ module.exports =
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
 
-  isEmptyClassOrIdPrefix: (prefix) ->
+  isPropertyNamePrefix: (prefix) ->
     prefix = prefix.trim()
-    prefix.length > 0 and (prefix is '.' or prefix is '#')
-
-  isCommaPrefix: (prefix) ->
-    prefix = prefix.trim()
-    prefix.length > 0 and prefix is ','
+    prefix.length > 0 and prefix.match(/\w/)
 
   getImportantPrefix: (editor, bufferPosition) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
