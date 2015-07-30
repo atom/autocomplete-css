@@ -685,6 +685,15 @@ describe "CSS property name and value autocompletions", ->
       completions = getCompletions(activatedManually: false)
       expect(completions).toBe null
 
+    it "does not autocomplete when indented and prefix is a comma", ->
+      editor.setText """
+        body
+          .foo,
+      """
+      editor.setCursorBufferPosition([1, 7])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
     it "does not autocomplete !important in property-name scope", ->
       editor.setText """
         body {
