@@ -668,6 +668,23 @@ describe "CSS property name and value autocompletions", ->
 
       expect(important.displayText).toBe '!important'
 
+    it "does not autocomplete when indented and prefix is a dot or a hash", ->
+      editor.setText """
+        body
+          .
+      """
+      editor.setCursorBufferPosition([1, 3])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      editor.setText """
+        body
+          #
+      """
+      editor.setCursorBufferPosition([1, 3])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
     it "does not autocomplete !important in property-name scope", ->
       editor.setText """
         body {

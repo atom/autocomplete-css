@@ -27,8 +27,8 @@ module.exports =
     else if @isCompletingPseudoSelector(request)
       completions = @getPseudoSelectorCompletions(request)
     else
-      if isSass and @isCompletingNameOrTag(request)
-        completions = completions = @getPropertyNameCompletions(request)
+      if isSass and @isCompletingNameOrTag(request) and not @isEmptyClassOrIdPrefix(request.prefix)
+        completions = @getPropertyNameCompletions(request)
           .concat(@getTagCompletions(request))
       else if not isSass and @isCompletingName(request)
         completions = @getPropertyNameCompletions(request)
@@ -147,6 +147,10 @@ module.exports =
   isPropertyValuePrefix: (prefix) ->
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
+
+  isEmptyClassOrIdPrefix: (prefix) ->
+    prefix = prefix.trim()
+    prefix.length > 0 and (prefix is '.' or prefix is '#')
 
   getImportantPrefix: (editor, bufferPosition) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
