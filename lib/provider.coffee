@@ -28,7 +28,7 @@ module.exports =
       completions = @getPseudoSelectorCompletions(request)
     else
       if isSass and @isCompletingNameOrTag(request)
-        completions = completions = @getPropertyNameCompletions(request)
+        completions = @getPropertyNameCompletions(request)
           .concat(@getTagCompletions(request))
       else if not isSass and @isCompletingName(request)
         completions = @getPropertyNameCompletions(request)
@@ -105,9 +105,10 @@ module.exports =
     else
       true
 
-  isCompletingNameOrTag: ({scopeDescriptor}) ->
+  isCompletingNameOrTag: ({scopeDescriptor, prefix}) ->
     scopes = scopeDescriptor.getScopesArray()
-    return hasScope(scopes, 'meta.selector.css') and
+    return @isPropertyNamePrefix(prefix) and
+      hasScope(scopes, 'meta.selector.css') and
       not hasScope(scopes, 'entity.other.attribute-name.id.css.sass') and
       not hasScope(scopes, 'entity.other.attribute-name.class.sass')
 
@@ -147,6 +148,10 @@ module.exports =
   isPropertyValuePrefix: (prefix) ->
     prefix = prefix.trim()
     prefix.length > 0 and prefix isnt ':'
+
+  isPropertyNamePrefix: (prefix) ->
+    prefix = prefix.trim()
+    prefix.length > 0 and prefix.match(/\w/)
 
   getImportantPrefix: (editor, bufferPosition) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])

@@ -668,6 +668,45 @@ describe "CSS property name and value autocompletions", ->
 
       expect(important.displayText).toBe '!important'
 
+    it "does not autocomplete when indented and prefix is not a char", ->
+      editor.setText """
+        body
+          .
+      """
+      editor.setCursorBufferPosition([1, 3])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      editor.setText """
+        body
+          #
+      """
+      editor.setCursorBufferPosition([1, 3])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      editor.setText """
+        body
+          .foo,
+      """
+      editor.setCursorBufferPosition([1, 7])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      editor.setText """
+        body
+          foo -
+      """
+      editor.setCursorBufferPosition([1, 8])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+      # As spaces at end of line will be removed, we'll test with a char
+      # after the space and with the cursor before that char.
+      editor.setCursorBufferPosition([1, 7])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
     it "does not autocomplete !important in property-name scope", ->
       editor.setText """
         body {
