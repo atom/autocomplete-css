@@ -105,8 +105,9 @@ module.exports =
     else
       true
 
-  isCompletingNameOrTag: ({scopeDescriptor, prefix}) ->
+  isCompletingNameOrTag: ({scopeDescriptor, bufferPosition, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
+    prefix = @getPropertyNamePrefix(bufferPosition, editor)
     return @isPropertyNamePrefix(prefix) and
       hasScope(scopes, 'meta.selector.css') and
       not hasScope(scopes, 'entity.other.attribute-name.id.css.sass') and
@@ -150,8 +151,9 @@ module.exports =
     prefix.length > 0 and prefix isnt ':'
 
   isPropertyNamePrefix: (prefix) ->
+    return false unless prefix?
     prefix = prefix.trim()
-    prefix.length > 0 and prefix.match(/\w/)
+    prefix.length > 0 and prefix.match(/^[a-zA-Z-]+$/)
 
   getImportantPrefix: (editor, bufferPosition) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
