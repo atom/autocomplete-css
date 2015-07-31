@@ -707,6 +707,32 @@ describe "CSS property name and value autocompletions", ->
       completions = getCompletions(activatedManually: false)
       expect(completions).toBe null
 
+    it 'does not autocomplete when inside a nth-child selector', ->
+      editor.setText """
+        body
+          &:nth-child(4
+      """
+      editor.setCursorBufferPosition([1, 15])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).toBe null
+
+    it 'autocompletes a property name with a dash', ->
+      editor.setText """
+        body
+          border-
+      """
+      editor.setCursorBufferPosition([1, 9])
+      completions = getCompletions(activatedManually: false)
+      expect(completions).not.toBe null
+
+      expect(completions[0].text).toBe 'border: '
+      expect(completions[0].displayText).toBe 'border'
+      expect(completions[0].replacementPrefix).toBe 'border-'
+
+      expect(completions[1].text).toBe 'border-radius: '
+      expect(completions[1].displayText).toBe 'border-radius'
+      expect(completions[1].replacementPrefix).toBe 'border-'
+
     it "does not autocomplete !important in property-name scope", ->
       editor.setText """
         body {
