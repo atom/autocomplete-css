@@ -77,7 +77,7 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 0])
         completions = getCompletions(activatedManually: false)
-        expect(completions).toBe null
+        expect(completions).toEqual []
 
       it "autocompletes property names with a prefix", ->
         editor.setText """
