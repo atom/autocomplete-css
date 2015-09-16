@@ -218,7 +218,7 @@ module.exports =
     return [] if hasScope(scopes, 'source.sass') and not line.match(/^(\s|\t)/)
 
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
-    return null unless activatedManually or prefix
+    return [] unless activatedManually or prefix
 
     completions = []
     for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
