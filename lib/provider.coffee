@@ -131,7 +131,7 @@ module.exports =
     scopes = scopeDescriptor.getScopesArray()
     if hasScope(scopes, 'meta.selector.css') and not hasScope(scopes, 'source.sass')
       true
-    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.stylus') or hasScope(scopes, 'source.css.less') or hasScope(scopes, 'source.sass')
+    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less') or hasScope(scopes, 'source.css.stylus') or hasScope(scopes, 'source.sass')
       prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
       if prefix
         previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
