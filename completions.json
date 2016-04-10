@@ -257,7 +257,9 @@
     },
     "border-color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "A shorthand for setting the color of the four sides of an element's…element's border: border-top-color, border-right-color, border-bottom-color, border-left-color"
@@ -298,7 +300,9 @@
     },
     "background-color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the background color of an element, either through a color value"
@@ -486,7 +490,9 @@
     },
     "color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the foreground color of an element's text content, and its decorations."
@@ -700,7 +706,9 @@
     },
     "border-left-color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the color of the bottom border of an element."
@@ -732,7 +740,9 @@
     },
     "border-right-color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the color of the right border of an element."
@@ -764,7 +774,9 @@
     },
     "border-top-color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the color of the top border of an element."
@@ -796,7 +808,9 @@
     },
     "border-bottom-color": {
       "values": [
-        "inherit"
+        "currentColor",
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the color of the bottom border of an element."
@@ -1050,8 +1064,10 @@
     },
     "outline-color": {
       "values": [
+        "currentColor",
         "invert",
-        "inherit"
+        "inherit",
+        "transparent"
       ],
       "type": "color",
       "description": "Sets the color of the outline of an element."
@@ -1566,7 +1582,10 @@
       "description": "Describes how the last line of a block or a line, right before a forced…forced line break, is aligned."
     },
     "text-decoration-color": {
-      "values": [],
+      "values": [
+        "currentColor",
+        "transparent"
+      ],
       "type": "color",
       "description": "Sets the color used when drawing underlines, overlines, or strike-throughs…strike-throughs specified by text-decoration-line."
     },
@@ -1671,7 +1690,10 @@
       "description": "properties separately : column-rule-width, column-rule-style and column-rule-color."
     },
     "column-rule-color": {
-      "values": [],
+      "values": [
+        "currentColor",
+        "transparent"
+      ],
       "type": "color",
       "description": "Lets you set the color of the rule drawn between columns in multi-column…multi-column layouts."
     },
@@ -1872,7 +1894,10 @@
       "values": []
     },
     "text-emphasis-color": {
-      "values": [],
+      "values": [
+        "currentColor",
+        "transparent"
+      ],
       "type": "color"
     },
     "text-emphasis-position": {
