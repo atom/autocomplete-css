@@ -61,7 +61,8 @@ module.exports =
     previousScopesArray = previousScopes.getScopesArray()
 
     (hasScope(scopes, 'meta.property-value.css') and not hasScope(scopes, 'punctuation.separator.key-value.css')) or
-    (hasScope(scopes, 'meta.property-value.scss') and not hasScope(scopes, 'punctuation.separator.key-value.scss')) or
+    (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
+    (hasScope(scopes, 'meta.property-value.scss')) or
     (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
       (not hasScope(previousScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
     ))
@@ -90,9 +91,9 @@ module.exports =
       hasScope(previousScopesArray, 'entity.name.tag.scss')
 
     isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.css') or
-      hasScope(scopes, 'punctuation.section.property-list.begin.scss')
+      hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.scss')
     isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.css') or
-      hasScope(scopes, 'punctuation.section.property-list.end.scss')
+      hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.scss')
 
     if isAtBeginScopePunctuation
       # * Disallow here: `canvas,|{}`
