@@ -16,6 +16,7 @@ module.exports =
   # still filtering by the first character of the prefix in this provider for
   # efficiency.
   filterSuggestions: true
+  excludeLowerPriority: false
 
   getSuggestions: (request) ->
     completions = null
