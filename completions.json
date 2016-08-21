@@ -623,25 +623,27 @@
     },
     "list-style": {
       "values": [
+        "none",
+        "inherit",
+        "initial",
+        "unset",
+        "url()",
         "armenian",
         "circle",
         "decimal",
         "decimal-leading-zero",
         "disc",
         "georgian",
-        "inherit",
         "inside",
         "lower-alpha",
         "lower-greek",
         "lower-latin",
         "lower-roman",
-        "none",
         "outside",
         "square",
         "upper-alpha",
         "upper-latin",
-        "upper-roman",
-        "url()"
+        "upper-roman"
       ],
       "description": "A shorthand property for setting list-style-type, list-style-image and list-style-position"
     },
