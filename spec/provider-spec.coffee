@@ -110,16 +110,15 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[1].text).toBe 'direction: '
         expect(completions[1].replacementPrefix).toBe 'D'
 
-        # TODO: Re-enable test after Atom 1.10.0 reaches stable
-        # editor.setText """
-        #   body {
-        #     d:
-        #   }
-        # """
-        # editor.setCursorBufferPosition([1, 3])
-        # completions = getCompletions()
-        # expect(completions[0].text).toBe 'display: '
-        # expect(completions[1].text).toBe 'direction: '
+        editor.setText """
+          body {
+            d:
+          }
+        """
+        editor.setCursorBufferPosition([1, 3])
+        completions = getCompletions()
+        expect(completions[0].text).toBe 'display: '
+        expect(completions[1].text).toBe 'direction: '
 
         editor.setText """
           body {
@@ -158,15 +157,14 @@ describe "CSS property name and value autocompletions", ->
         completions = getCompletions()
         expect(completions).toBe null
 
-        # TODO: Re-enable after Atom 1.10.0 reaches stable
-        # editor.setText """
-        #   body
-        #   {
-        #   }
-        # """
-        # editor.setCursorBufferPosition([1, 0])
-        # completions = getCompletions()
-        # expect(completions).toBe null
+        editor.setText """
+          body
+          {
+          }
+        """
+        editor.setCursorBufferPosition([1, 0])
+        completions = getCompletions()
+        expect(completions).toBe null
 
       it "does not autocomplete property names when immediately after a }", ->
         editor.setText """
@@ -176,14 +174,13 @@ describe "CSS property name and value autocompletions", ->
         completions = getCompletions()
         expect(completions).toBe null
 
-        # TODO: Re-enable after Atom 1.10.0 reaches stable
-        # editor.setText """
-        #   body{
-        #   }
-        # """
-        # editor.setCursorBufferPosition([1, 1])
-        # completions = getCompletions()
-        # expect(completions).toBe null
+        editor.setText """
+          body{
+          }
+        """
+        editor.setCursorBufferPosition([1, 1])
+        completions = getCompletions()
+        expect(completions).toBe null
 
       it "autocompletes property names when the cursor is up against the punctuation inside the property list", ->
         editor.setText """
