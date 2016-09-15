@@ -140,7 +140,7 @@
         "auto",
         "inherit"
       ],
-      "description": "width, margin-left, border, padding, the content area and margin-right are defined), margin-left is ignored…The margin-left CSS property of an element sets the margin space required on the left side of a box associated…allowed."
+      "description": "width, margin-left, border, padding, the content area and margin-right are defined), margin-left is ignored…The margin-left CSS property sets the margin space required on the left side of a box associated with…allowed."
     },
     "margin-right": {
       "values": [
@@ -191,7 +191,7 @@
     },
     "font-size": {
       "values": [],
-      "description": "Specifies the size of the font."
+      "description": "Specifies the size of the font (historically the width of the capital \"M\")…\"M\")."
     },
     "font-style": {
       "values": [
@@ -257,9 +257,7 @@
     },
     "border-color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "A shorthand for setting the color of the four sides of an element's…element's border: border-top-color, border-right-color, border-bottom-color, border-left-color"
@@ -271,7 +269,7 @@
         "thick",
         "inherit"
       ],
-      "description": "Sets the width of the border of a box."
+      "description": "A shorthand property for setting border-top-width, border-right-width, border-bottom-width…border-bottom-width and border-left-width of a box at the same place."
     },
     "position": {
       "values": [
@@ -300,9 +298,7 @@
     },
     "background-color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "Sets the background color of an element, either through a color value"
@@ -315,7 +311,7 @@
         "bottom",
         "top"
       ],
-      "description": "Sets the initial position, relative to the background position layer…layer defined by background-origin for each defined background image."
+      "description": "Sets the initial position for each defined background image, relative…relative to the background position layer defined by background-origin."
     },
     "background-repeat": {
       "values": [
@@ -490,9 +486,7 @@
     },
     "color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "Sets the foreground color of an element's text content, and its decorations."
@@ -560,7 +554,7 @@
         "padding-box",
         "inherit"
       ],
-      "description": "Used to alter the default CSS box model used to calculate widths and heights…of browsers that do not correctly support the CSS box model specification."
+      "description": "Used to alter the default CSS box model used to calculate width and height…of browsers that do not correctly support the CSS box model specification."
     },
     "clear": {
       "values": [
@@ -623,25 +617,27 @@
     },
     "list-style": {
       "values": [
+        "none",
+        "inherit",
+        "initial",
+        "unset",
+        "url()",
         "armenian",
         "circle",
         "decimal",
         "decimal-leading-zero",
         "disc",
         "georgian",
-        "inherit",
         "inside",
         "lower-alpha",
         "lower-greek",
         "lower-latin",
         "lower-roman",
-        "none",
         "outside",
         "square",
         "upper-alpha",
         "upper-latin",
-        "upper-roman",
-        "url()"
+        "upper-roman"
       ],
       "description": "A shorthand property for setting list-style-type, list-style-image and list-style-position"
     },
@@ -657,7 +653,7 @@
       "values": [
         "inherit"
       ],
-      "description": "Specifies how much horizontal space should be left before the beginning of the…the first line of the text content of an element."
+      "description": "Specifies the amount of indentation (empty space) should be left before lines…lines of text in a block."
     },
     "max-height": {
       "values": [
@@ -672,7 +668,7 @@
         "ellipsis",
         "inherit"
       ],
-      "description": "Determines how overflowed content that is not displayed is signaled to users"
+      "description": "Determines how overflowed content that is not displayed is signaled to"
     },
     "border-style": {
       "values": [
@@ -688,7 +684,7 @@
         "solid",
         "inherit"
       ],
-      "description": "A shorthand property for setting the line style for all four sides of the…the elements border."
+      "description": "A shorthand property for setting the line style for all four sides of the…the element´s border."
     },
     "border-spacing": {
       "values": [
@@ -706,12 +702,10 @@
     },
     "border-left-color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
-      "description": "Sets the color of the bottom border of an element."
+      "description": "Sets the color of the left border of an element."
     },
     "border-left-style": {
       "values": [
@@ -740,9 +734,7 @@
     },
     "border-right-color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "Sets the color of the right border of an element."
@@ -774,9 +766,7 @@
     },
     "border-top-color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "Sets the color of the top border of an element."
@@ -808,9 +798,7 @@
     },
     "border-bottom-color": {
       "values": [
-        "currentColor",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "Sets the color of the bottom border of an element."
@@ -892,8 +880,7 @@
       "values": [
         "break-word",
         "normal"
-      ],
-      "description": "Used to specify whether or not the browser may break lines within words in order"
+      ]
     },
     "transition": {
       "values": [],
@@ -1010,7 +997,7 @@
         "saturate()",
         "url()"
       ],
-      "description": "Provides for effects like blurring or color shifting on an element’s rendering before…before the element is displayed."
+      "description": "Provides graphical effects like blurring, sharpening, or color shifting an element…element."
     },
     "transform-origin": {
       "values": [
@@ -1028,7 +1015,7 @@
         "small-caps",
         "inherit"
       ],
-      "description": "properties: font-variant-caps, font-variant-numeric, font-variant-alternates, font-variant-ligatures,…and font-variant-east-asian."
+      "description": "font-variant-numeric, font-variant-alternates, font-variant-ligatures, and font-variant-east-asian."
     },
     "quotes": {
       "values": [
@@ -1051,7 +1038,7 @@
         "normal",
         "inherit"
       ],
-      "description": "Specifies spacing behavior between tags and words."
+      "description": "Specifies the spacing behavior between tags and words."
     },
     "text-rendering": {
       "values": [
@@ -1064,10 +1051,8 @@
     },
     "outline-color": {
       "values": [
-        "currentColor",
         "invert",
-        "inherit",
-        "transparent"
+        "inherit"
       ],
       "type": "color",
       "description": "Sets the color of the outline of an element."
@@ -1177,8 +1162,7 @@
       "description": "Specifies an image to be used as the list item marker."
     },
     "unicode-range": {
-      "values": [],
-      "description": "The unicode-range CSS descriptor sets the specific range of characters to be downloaded from a font defined"
+      "values": []
     },
     "align-items": {
       "values": [
@@ -1192,7 +1176,7 @@
     },
     "transition-delay": {
       "values": [],
-      "description": "Specifies the amount of time to wait between a change being requested to…to a property that is to be transitioned and the start of the transition effect."
+      "description": "Specifies the amount of time to wait between a change being requested…to a property that is to be transitioned and the start of the transition effect."
     },
     "transition-duration": {
       "values": [],
@@ -1217,11 +1201,11 @@
     },
     "order": {
       "values": [],
-      "description": "ascending order of the order value."
+      "description": "the ascending order of the order value."
     },
     "transition-timing-function": {
       "values": [
-        "cubic-bezier(.42, 0, .58, 1)",
+        "cubic-bezier()",
         "ease",
         "ease-in",
         "ease-in-out",
@@ -1256,7 +1240,7 @@
         "hidden",
         "visible"
       ],
-      "description": "CSS backface-visibility property determines whether or not the back face of the element is visible when…always is a transparent background, letting, when visible, a mirror image of the front face be displayed"
+      "description": "CSS backface-visibility property determines whether or not the back face of the element is visible when…always a transparent background, letting, when visible, a mirror image of the front face be displayed"
     },
     "page-break-inside": {
       "values": [
@@ -1281,7 +1265,7 @@
       "values": [
         "inherit"
       ],
-      "description": " a widow is the last line of a paragraph appearing alone at the top of a page."
+      "description": "new page."
     },
     "counter-increment": {
       "values": [
@@ -1401,7 +1385,7 @@
       "values": [
         "auto"
       ],
-      "description": "Defines the width of the border."
+      "description": "from the border edges."
     },
     "border-image-outset": {
       "values": [],
@@ -1459,7 +1443,7 @@
     },
     "animation-timing-function": {
       "values": [
-        "cubic-bezier(.42, 0, .58, 1)",
+        "cubic-bezier()",
         "ease",
         "ease-in",
         "ease-in-out",
@@ -1582,12 +1566,9 @@
       "description": "Describes how the last line of a block or a line, right before a forced…forced line break, is aligned."
     },
     "text-decoration-color": {
-      "values": [
-        "currentColor",
-        "transparent"
-      ],
+      "values": [],
       "type": "color",
-      "description": "Sets the color used when drawing underlines, overlines, or strike-throughs…strike-throughs specified by text-decoration-line."
+      "description": "Sets the line color used when drawing underlines, overlines, and…specified by the corresponding text-decoration-line property."
     },
     "text-decoration-style": {
       "values": [
@@ -1643,7 +1624,7 @@
         "region",
         "right"
       ],
-      "description": "Describes how the page, column or region break behavior after the generated"
+      "description": "Describes the page, column, or region break behavior (in other words, how…how and whether to break) after the generated box."
     },
     "break-before": {
       "values": [
@@ -1659,7 +1640,7 @@
         "region",
         "right"
       ],
-      "description": "Describes how the page, column or region break behavior before the generated"
+      "description": "Describes the page, column or region break behavior before the generated"
     },
     "break-inside": {
       "values": [
@@ -1683,19 +1664,16 @@
       "values": [
         "normal"
       ],
-      "description": "Sets the size of the gap between columns for elements which are specified…specified to display as a multi-column element."
+      "description": "Sets the size of the gap between columns for elements which are specified…specified to be displayed as multi-column elements."
     },
     "column-rule": {
       "values": [],
       "description": "properties separately : column-rule-width, column-rule-style and column-rule-color."
     },
     "column-rule-color": {
-      "values": [
-        "currentColor",
-        "transparent"
-      ],
+      "values": [],
       "type": "color",
-      "description": "Lets you set the color of the rule drawn between columns in multi-column…multi-column layouts."
+      "description": "Lets you set the color of the \"rule\" or line drawn between columns…columns in multi-column layouts."
     },
     "column-rule-style": {
       "values": [
@@ -1773,7 +1751,7 @@
       "values": [
         "normal"
       ],
-      "description": "Controls the usage of alternate glyphs associated to alternative…alternative names defined in @font-feature-values."
+      "description": "Controls the usage of alternate glyphs."
     },
     "font-variant-caps": {
       "values": [
@@ -1888,17 +1866,17 @@
         "none",
         "objects",
         "spaces"
-      ]
+      ],
+      "description": "The property defines horizontally where the text-decoration property applies."
     },
     "text-emphasis": {
-      "values": []
+      "values": [],
+      "description": "A shorthand property for setting text-emphasis-style and text-emphasis-color…will apply the specified emphasis mark to each character of the element's text, except separator characters"
     },
     "text-emphasis-color": {
-      "values": [
-        "currentColor",
-        "transparent"
-      ],
-      "type": "color"
+      "values": [],
+      "type": "color",
+      "description": "Defines the color used to draw an emphasis mark."
     },
     "text-emphasis-position": {
       "values": [
@@ -1906,7 +1884,8 @@
         "below",
         "left",
         "right"
-      ]
+      ],
+      "description": "Describes where emphasis marks are drawn at."
     },
     "text-emphasis-style": {
       "values": [
@@ -1918,7 +1897,8 @@
         "open",
         "sesame",
         "triangle"
-      ]
+      ],
+      "description": "Defines the type of emphasis used."
     }
   },
   "pseudoSelectors": {
