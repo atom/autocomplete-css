@@ -110,15 +110,16 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[1].text).toBe 'direction: '
         expect(completions[1].replacementPrefix).toBe 'D'
 
-        editor.setText """
-          body {
-            d:
-          }
-        """
-        editor.setCursorBufferPosition([1, 3])
-        completions = getCompletions()
-        expect(completions[0].text).toBe 'display: '
-        expect(completions[1].text).toBe 'direction: '
+        # TODO: Re-enable test after Atom 1.12.0 reaches stable
+        # editor.setText """
+        #   body {
+        #     d:
+        #   }
+        # """
+        # editor.setCursorBufferPosition([1, 3])
+        # completions = getCompletions()
+        # expect(completions[0].text).toBe 'display: '
+        # expect(completions[1].text).toBe 'direction: '
 
         editor.setText """
           body {
