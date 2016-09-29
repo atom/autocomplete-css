@@ -323,6 +323,26 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 1
         expect(completions[0].text).toBe 'center;'
 
+      it "autocompletes inline property values", ->
+        editor.setText "body { display: }"
+        editor.setCursorBufferPosition([0, 16])
+        completions = getCompletions()
+        expect(completions).toHaveLength 21
+        expect(completions[0].text).toBe 'block;'
+
+      it "autocompletes more than one inline property value", ->
+        editor.setText "body { display: block; float: }"
+        editor.setCursorBufferPosition([0, 30])
+        completions = getCompletions()
+        expect(completions).toHaveLength 4
+        expect(completions[0].text).toBe 'left;'
+
+        editor.setText "body { display: block; float: left; cursor: alias; text-decoration: }"
+        editor.setCursorBufferPosition([0, 68])
+        completions = getCompletions()
+        expect(completions).toHaveLength 5
+        expect(completions[0].text).toBe 'line-through;'
+
       it "autocompletes !important in property-value scope", ->
         editor.setText """
           body {
