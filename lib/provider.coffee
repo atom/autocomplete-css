@@ -1,7 +1,9 @@
 fs = require 'fs'
 path = require 'path'
 
-propertyNameWithColonPattern = /^\s*(\S+)\s*:/
+firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: }
+inlinePropertyNameWithColonPattern = /(?:;.+?)*;\s*(\S+)\s*:/ # .example { display: block; float: left; color: } (match the last one)
+propertyNameWithColonPattern = /^\s*(\S+)\s*:/ # display:
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
@@ -165,6 +167,8 @@ module.exports =
     while row >= 0
       line = editor.lineTextForBufferRow(row)
       propertyName = propertyNameWithColonPattern.exec(line)?[1]
+      propertyName ?= inlinePropertyNameWithColonPattern.exec(line)?[1]
+      propertyName ?= firstInlinePropertyNameWithColonPattern.exec(line)?[1]
       return propertyName if propertyName
       row--
     return
