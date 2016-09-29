@@ -60,7 +60,8 @@ module.exports =
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
     previousScopesArray = previousScopes.getScopesArray()
 
-    (hasScope(scopes, 'meta.property-value.css') and not hasScope(scopes, 'punctuation.separator.key-value.css')) or
+    (hasScope(scopes, 'meta.property-list.css') and prefix.trim() is ":") or
+    (hasScope(scopes, 'meta.property-value.css')) or
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
     (hasScope(scopes, 'meta.property-value.scss')) or
     (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
