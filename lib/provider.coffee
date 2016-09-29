@@ -58,16 +58,21 @@ module.exports =
   isCompletingValue: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
 
-    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+    beforePrefixBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+    beforePrefixScopes = editor.scopeDescriptorForBufferPosition(beforePrefixBufferPosition)
+    beforePrefixScopesArray = beforePrefixScopes.getScopesArray()
+
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
     previousScopesArray = previousScopes.getScopesArray()
 
+
     (hasScope(scopes, 'meta.property-list.css') and prefix.trim() is ":") or
-    (hasScope(scopes, 'meta.property-value.css')) or
+    (hasScope(previousScopesArray, 'meta.property-value.css')) or
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
     (hasScope(scopes, 'meta.property-value.scss')) or
     (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
-      (not hasScope(previousScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
+      (not hasScope(beforePrefixScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
     ))
 
   isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
