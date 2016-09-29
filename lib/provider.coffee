@@ -69,7 +69,6 @@ module.exports =
 
   isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
-    lineLength = editor.lineTextForBufferRow(bufferPosition.row).length
     isAtTerminator = prefix.endsWith(';')
     isAtParentSymbol = prefix.endsWith('&')
     isInPropertyList = not isAtTerminator and

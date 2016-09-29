@@ -31,7 +31,7 @@ Promise.settle([propertiesPromise, propertyDescriptionsPromise]).then (results) 
     properties[propertyName] = metadata
     console.warn "No description for property #{propertyName}" unless propertyDescriptions[propertyName]?
 
-  for propertyName, d of propertiesRaw
+  for propertyName of propertiesRaw
     console.warn "Ignoring #{propertyName}; not in sorted-property-names.json" if sortedPropertyNames.indexOf(propertyName) < 0
 
   tags = JSON.parse(fs.readFileSync(path.join(__dirname, 'html-tags.json')))

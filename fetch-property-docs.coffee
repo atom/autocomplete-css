@@ -20,7 +20,7 @@ fetch = ->
 
       resolve(properties)
 
-  docsPromise = propertiesPromise.then (properties) ->
+  propertiesPromise.then (properties) ->
     return unless properties?
 
     MAX = 10
@@ -46,7 +46,7 @@ fetch = ->
       run = (propertyName) ->
         url = "#{mdnJSONAPI}?q=#{propertyName}"
         request {json: true, url}, (error, response, searchResults) ->
-          if !error? and response.statusCode is 200
+          if not error? and response.statusCode is 200
             handleRequest(propertyName, searchResults)
           else
             console.error "Req failed #{url}; #{response.statusCode}, #{error}"
@@ -62,7 +62,7 @@ fetch = ->
               break
         return
 
-      runNext() for i in [0..MAX]
+      runNext() for [0..MAX]
       return
 
 FixesForCrappyDescriptions =
