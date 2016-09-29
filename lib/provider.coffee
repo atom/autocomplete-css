@@ -66,7 +66,6 @@ module.exports =
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
     previousScopesArray = previousScopes.getScopesArray()
 
-
     (hasScope(scopes, 'meta.property-list.css') and prefix.trim() is ":") or
     (hasScope(previousScopesArray, 'meta.property-value.css')) or
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
