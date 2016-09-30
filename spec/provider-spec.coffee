@@ -323,6 +323,49 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 1
         expect(completions[0].text).toBe 'center;'
 
+      it "autocompletes inline property values", ->
+        editor.setText "body { display: }"
+        editor.setCursorBufferPosition([0, 16])
+        completions = getCompletions()
+        expect(completions).toHaveLength 21
+        expect(completions[0].text).toBe 'block;'
+
+      it "autocompletes more than one inline property value", ->
+        editor.setText "body { display: block; float: }"
+        editor.setCursorBufferPosition([0, 30])
+        completions = getCompletions()
+        expect(completions).toHaveLength 4
+        expect(completions[0].text).toBe 'left;'
+
+        editor.setText "body { display: block; float: left; cursor: alias; text-decoration: }"
+        editor.setCursorBufferPosition([0, 68])
+        completions = getCompletions()
+        expect(completions).toHaveLength 5
+        expect(completions[0].text).toBe 'line-through;'
+
+      it "autocompletes inline property values with a prefix", ->
+        editor.setText "body { display: i }"
+        editor.setCursorBufferPosition([0, 17])
+        completions = getCompletions()
+        expect(completions).toHaveLength 6
+        expect(completions[0].text).toBe 'inline;'
+        expect(completions[1].text).toBe 'inline-block;'
+        expect(completions[2].text).toBe 'inline-flex;'
+        expect(completions[3].text).toBe 'inline-grid;'
+        expect(completions[4].text).toBe 'inline-table;'
+        expect(completions[5].text).toBe 'inherit;'
+
+        editor.setText "body { display: i}"
+        editor.setCursorBufferPosition([0, 17])
+        completions = getCompletions()
+        expect(completions).toHaveLength 6
+        expect(completions[0].text).toBe 'inline;'
+        expect(completions[1].text).toBe 'inline-block;'
+        expect(completions[2].text).toBe 'inline-flex;'
+        expect(completions[3].text).toBe 'inline-grid;'
+        expect(completions[4].text).toBe 'inline-table;'
+        expect(completions[5].text).toBe 'inherit;'
+
       it "autocompletes !important in property-value scope", ->
         editor.setText """
           body {

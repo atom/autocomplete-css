@@ -1,7 +1,9 @@
 fs = require 'fs'
 path = require 'path'
 
-propertyNameWithColonPattern = /^\s*(\S+)\s*:/
+firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: }
+inlinePropertyNameWithColonPattern = /(?:;.+?)*;\s*(\S+)\s*:/ # .example { display: block; float: left; color: } (match the last one)
+propertyNameWithColonPattern = /^\s*(\S+)\s*:/ # display:
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
@@ -56,16 +58,20 @@ module.exports =
   isCompletingValue: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
 
-    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+    beforePrefixBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
+    beforePrefixScopes = editor.scopeDescriptorForBufferPosition(beforePrefixBufferPosition)
+    beforePrefixScopesArray = beforePrefixScopes.getScopesArray()
+
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
     previousScopesArray = previousScopes.getScopesArray()
 
     (hasScope(scopes, 'meta.property-list.css') and prefix.trim() is ":") or
-    (hasScope(scopes, 'meta.property-value.css')) or
+    (hasScope(previousScopesArray, 'meta.property-value.css')) or
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
-    (hasScope(scopes, 'meta.property-value.scss')) or
+    (hasScope(previousScopesArray, 'meta.property-value.scss')) or
     (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
-      (not hasScope(previousScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
+      (not hasScope(beforePrefixScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
     ))
 
   isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
@@ -119,12 +125,16 @@ module.exports =
     tagSelectorPrefix = @getTagSelectorPrefix(editor, bufferPosition)
     return false unless tagSelectorPrefix?.length
 
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
+    previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
+    previousScopesArray = previousScopes.getScopesArray()
+
     if hasScope(scopes, 'meta.selector.css')
       true
     else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
-      not hasScope(scopes, 'meta.property-value.scss') and
-        not hasScope(scopes, 'meta.property-value.css') and
-        not hasScope(scopes, 'support.type.property-value.css')
+      not hasScope(previousScopesArray, 'meta.property-value.scss') and
+        not hasScope(previousScopesArray, 'meta.property-value.css') and
+        not hasScope(previousScopesArray, 'support.type.property-value.css')
     else
       false
 
@@ -165,6 +175,8 @@ module.exports =
     while row >= 0
       line = editor.lineTextForBufferRow(row)
       propertyName = propertyNameWithColonPattern.exec(line)?[1]
+      propertyName ?= inlinePropertyNameWithColonPattern.exec(line)?[1]
+      propertyName ?= firstInlinePropertyNameWithColonPattern.exec(line)?[1]
       return propertyName if propertyName
       row--
     return
