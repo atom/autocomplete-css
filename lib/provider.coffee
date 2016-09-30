@@ -125,12 +125,16 @@ module.exports =
     tagSelectorPrefix = @getTagSelectorPrefix(editor, bufferPosition)
     return false unless tagSelectorPrefix?.length
 
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
+    previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
+    previousScopesArray = previousScopes.getScopesArray()
+
     if hasScope(scopes, 'meta.selector.css')
       true
     else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
-      not hasScope(scopes, 'meta.property-value.scss') and
-        not hasScope(scopes, 'meta.property-value.css') and
-        not hasScope(scopes, 'support.type.property-value.css')
+      not hasScope(previousScopesArray, 'meta.property-value.scss') and
+        not hasScope(previousScopesArray, 'meta.property-value.css') and
+        not hasScope(previousScopesArray, 'support.type.property-value.css')
     else
       false
 

@@ -343,6 +343,29 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 5
         expect(completions[0].text).toBe 'line-through;'
 
+      it "autocompletes inline property values with a prefix", ->
+        editor.setText "body { display: i }"
+        editor.setCursorBufferPosition([0, 17])
+        completions = getCompletions()
+        expect(completions).toHaveLength 6
+        expect(completions[0].text).toBe 'inline;'
+        expect(completions[1].text).toBe 'inline-block;'
+        expect(completions[2].text).toBe 'inline-flex;'
+        expect(completions[3].text).toBe 'inline-grid;'
+        expect(completions[4].text).toBe 'inline-table;'
+        expect(completions[5].text).toBe 'inherit;'
+
+        editor.setText "body { display: i}"
+        editor.setCursorBufferPosition([0, 17])
+        completions = getCompletions()
+        expect(completions).toHaveLength 6
+        expect(completions[0].text).toBe 'inline;'
+        expect(completions[1].text).toBe 'inline-block;'
+        expect(completions[2].text).toBe 'inline-flex;'
+        expect(completions[3].text).toBe 'inline-grid;'
+        expect(completions[4].text).toBe 'inline-table;'
+        expect(completions[5].text).toBe 'inherit;'
+
       it "autocompletes !important in property-value scope", ->
         editor.setText """
           body {
