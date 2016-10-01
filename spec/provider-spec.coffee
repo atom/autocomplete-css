@@ -330,6 +330,16 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 21
         expect(completions[0].text).toBe 'block;'
 
+        editor.setText """
+          body {
+            display: block; float:
+          }
+        """
+        editor.setCursorBufferPosition([1, 24])
+        completions = getCompletions()
+        expect(completions).toHaveLength 4
+        expect(completions[0].text).toBe 'left;'
+
       it "autocompletes more than one inline property value", ->
         editor.setText "body { display: block; float: }"
         editor.setCursorBufferPosition([0, 30])

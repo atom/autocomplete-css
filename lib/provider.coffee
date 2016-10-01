@@ -174,9 +174,9 @@ module.exports =
     {row} = bufferPosition
     while row >= 0
       line = editor.lineTextForBufferRow(row)
-      propertyName = propertyNameWithColonPattern.exec(line)?[1]
-      propertyName ?= inlinePropertyNameWithColonPattern.exec(line)?[1]
+      propertyName = inlinePropertyNameWithColonPattern.exec(line)?[1]
       propertyName ?= firstInlinePropertyNameWithColonPattern.exec(line)?[1]
+      propertyName ?= propertyNameWithColonPattern.exec(line)?[1]
       return propertyName if propertyName
       row--
     return
