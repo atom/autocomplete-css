@@ -448,5 +448,12 @@
   "text-emphasis",
   "text-emphasis-color",
   "text-emphasis-position",
-  "text-emphasis-style"
+  "text-emphasis-style",
+  "font-display",
+  "grid",
+  "grid-area",
+  "grid-column-gap",
+  "grid-gap",
+  "grid-row-gap",
+  "grid-template-areas"
 ]

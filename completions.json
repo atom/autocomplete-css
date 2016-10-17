@@ -1172,7 +1172,7 @@
         "flex-start",
         "stretch"
       ],
-      "description": "Aligns flex items of the current flex line the same way as justify-content"
+      "description": "CSS align-items property defines how the browser distributes space between and around flex items along"
     },
     "transition-delay": {
       "values": [],
@@ -1606,6 +1606,62 @@
       ],
       "description": "Specifies the position of the underline which is set using the…the text-decoration property underline value."
     },
+    "grid-column": {
+      "values": [
+        "auto"
+      ],
+      "description": "A shorthand property for grid-column-start and grid-column-end specifying…specifying a grid item’s size and location within the grid row by contributing a line, a span, or nothing…(automatic) to its grid placement, thereby specifying the inline-start and inline-end edge of its grid area."
+    },
+    "grid-row": {
+      "values": [
+        "auto"
+      ],
+      "description": "A shorthand property for grid-row-start and grid-row-end specifying a grid…location within the grid row by contributing a line, a span, or nothing (automatic) to its grid placement, thereby…specifying the inline-start and inline-end edge of its grid area."
+    },
+    "grid-template-columns": {
+      "values": [
+        "auto"
+      ],
+      "description": "Defines the line names and track sizing functions of the grid's…grid's columns."
+    },
+    "grid-auto-columns": {
+      "values": [],
+      "description": "Specifies the size of an implicitly-created grid column track."
+    },
+    "grid-auto-flow": {
+      "values": [
+        "row",
+        "column",
+        "dense"
+      ],
+      "description": "Controls how the auto-placement algorithm works, specifying exactly how…how auto-placed items get flowed into the grid."
+    },
+    "grid-auto-rows": {
+      "values": [],
+      "description": "Specifies the size of an implicitly-created grid row track."
+    },
+    "grid-column-start": {
+      "values": [],
+      "description": "Specifies a grid item’s start position within the grid column by contributing…(automatic) to its grid placement, thereby specifying the block-start edge of its grid area."
+    },
+    "grid-template-rows": {
+      "values": [
+        "auto"
+      ],
+      "description": "Defines the line names and track sizing functions of the grid's rows"
+    },
+    "grid-row-end": {
+      "values": [],
+      "description": "Specifies a grid item’s end position within the grid row by contributing…(automatic) to its grid placement, thereby specifying the inline-end edge of its grid area."
+    },
+    "grid-column-end": {
+      "values": [],
+      "description": "Specifies a grid item’s end position within the grid column by contributing…(automatic) to its grid placement, thereby specifying the block-end edge of its grid area."
+    },
+    "grid-row-start": {
+      "values": [],
+      "description": "Specifies a grid item’s start position within the grid row by contributing…(automatic) to its grid placement, thereby specifying the inline-start edge of its grid area."
+    },
     "box-decoration-break": {
       "values": [],
       "description": "Specifies how the background, padding, border, border-image, box-shadow…applied when the box for the element is fragmented."
@@ -1899,6 +1955,39 @@
         "triangle"
       ],
       "description": "Defines the type of emphasis used."
+    },
+    "font-display": {
+      "values": [
+        "auto",
+        "block",
+        "swap",
+        "fallback",
+        "optional"
+      ]
+    },
+    "grid": {
+      "values": [],
+      "description": "(grid-template-rows, grid-template-columns, and grid-template-areas), all the implicit grid properties (grid-auto-rows…(grid-auto-rows, grid-auto-columns, and grid-auto-flow), and the gutter properties (grid-column-gap and grid-row-gap)…The grid CSS property is a shorthand property that sets all of the explicit grid properties (grid-template-rows"
+    },
+    "grid-area": {
+      "values": [],
+      "description": "A shorthand property for grid-row-start, grid-row-end, grid-column-start…(automatic) to its grid placement, thereby specifying the edges of its grid area."
+    },
+    "grid-column-gap": {
+      "values": [],
+      "description": "Specifies the gutter between grid columns."
+    },
+    "grid-gap": {
+      "values": [],
+      "description": "A shorthand property for grid-row-gap and grid-column-gap specifying the…the gutters between grid rows and columns."
+    },
+    "grid-row-gap": {
+      "values": [],
+      "description": "Specifies the gutter between grid rows."
+    },
+    "grid-template-areas": {
+      "values": [],
+      "description": "Specifies named grid areas."
     }
   },
   "pseudoSelectors": {
