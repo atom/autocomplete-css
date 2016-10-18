@@ -63,7 +63,7 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 0])
         completions = getCompletions(activatedManually: true)
-        expect(completions.length).toBe 209
+        expect(completions.length).toBe 227
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
           expect(completion.type).toBe 'property'
