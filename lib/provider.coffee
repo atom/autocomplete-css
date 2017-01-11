@@ -96,9 +96,9 @@ module.exports =
       hasScope(previousScopesArray, 'entity.name.tag.reference.scss') or
       hasScope(previousScopesArray, 'entity.name.tag.scss')
 
-    isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.css') or
+    isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.css') or
       hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.scss')
-    isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.css') or
+    isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.css') or
       hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.scss')
 
     if isAtBeginScopePunctuation
@@ -129,7 +129,7 @@ module.exports =
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
     previousScopesArray = previousScopes.getScopesArray()
 
-    if hasScope(scopes, 'meta.selector.css')
+    if hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')
       true
     else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
       not hasScope(previousScopesArray, 'meta.property-value.scss') and
@@ -140,7 +140,10 @@ module.exports =
 
   isCompletingPseudoSelector: ({editor, scopeDescriptor, bufferPosition}) ->
     scopes = scopeDescriptor.getScopesArray()
-    if hasScope(scopes, 'meta.selector.css') and not hasScope(scopes, 'source.sass')
+    previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
+    previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
+    previousScopesArray = previousScopes.getScopesArray()
+    if (hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')) and not hasScope(scopes, 'source.sass')
       true
     else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less') or hasScope(scopes, 'source.sass')
       prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
