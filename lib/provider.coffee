@@ -97,9 +97,11 @@ module.exports =
       hasScope(previousScopesArray, 'entity.name.tag.scss')
 
     isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.css') or
-      hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.scss')
+      hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.scss') or
+      hasScope(scopes, 'punctuation.section.property-list.css') # TODO: Remove in Atom 1.15
     isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.css') or
-      hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.scss')
+      hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.scss') or
+      hasScope(scopes, 'punctuation.section.property-list.css') # TODO: Remove in Atom 1.15
 
     if isAtBeginScopePunctuation
       # * Disallow here: `canvas,|{}`
