@@ -322,6 +322,17 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 1
         expect(completions[0].text).toBe 'center;'
 
+      it "it doesn't add semicolon after a property if one is already present", ->
+        editor.setText """
+          body {
+            display: i;
+          }
+        """
+        editor.setCursorBufferPosition([1, 12])
+        completions = getCompletions()
+        completions.forEach (completion) ->
+          expect(completion.text).not.toMatch(/;\s*$/)
+
       it "autocompletes inline property values", ->
         editor.setText "body { display: }"
         editor.setCursorBufferPosition([0, 16])

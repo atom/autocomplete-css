@@ -192,14 +192,15 @@ module.exports =
     return null unless values?
 
     scopes = scopeDescriptor.getScopesArray()
+    addSemicolon = not lineEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass')
 
     completions = []
     if @isPropertyValuePrefix(prefix)
       for value in values when firstCharsEqual(value, prefix)
-        completions.push(@buildPropertyValueCompletion(value, property, scopes))
+        completions.push(@buildPropertyValueCompletion(value, property, addSemicolon))
     else
       for value in values
-        completions.push(@buildPropertyValueCompletion(value, property, scopes))
+        completions.push(@buildPropertyValueCompletion(value, property, addSemicolon))
 
     if importantPrefix = @getImportantPrefix(editor, bufferPosition)
       # attention: règle dangereux
@@ -213,9 +214,9 @@ module.exports =
 
     completions
 
-  buildPropertyValueCompletion: (value, propertyName, scopes) ->
+  buildPropertyValueCompletion: (value, propertyName, addSemicolon) ->
     text = value
-    text += ';' unless hasScope(scopes, 'source.sass')
+    text += ';' if addSemicolon
 
     {
       type: 'value'
@@ -292,6 +293,11 @@ module.exports =
     type: 'tag'
     text: tag
     description: "Selector for <#{tag}> elements"
+
+lineEndsWithSemicolon = (bufferPosition, editor) ->
+  {row} = bufferPosition
+  line = editor.lineTextForBufferRow(row)
+  /;\s*$/.test(line)
 
 hasScope = (scopesArray, scope) ->
   scopesArray.indexOf(scope) isnt -1
