@@ -78,13 +78,16 @@ module.exports =
     scopes = scopeDescriptor.getScopesArray()
     isAtTerminator = prefix.endsWith(';')
     isAtParentSymbol = prefix.endsWith('&')
+    isVariable = hasScope(scopes, 'variable.css') or
+      hasScope(scopes, 'variable.scss') or
+      hasScope(scopes, 'variable.var.postcss')
     isInPropertyList = not isAtTerminator and
       (hasScope(scopes, 'meta.property-list.css') or
       hasScope(scopes, 'meta.property-list.scss') or
       hasScope(scopes, 'meta.property-list.postcss'))
 
     return false unless isInPropertyList
-    return false if isAtParentSymbol
+    return false if isAtParentSymbol or isVariable
 
     previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
