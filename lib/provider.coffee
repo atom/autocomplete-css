@@ -24,7 +24,7 @@ module.exports =
     scopes = request.scopeDescriptor.getScopesArray()
     isSass = hasScope(scopes, 'source.sass')
 
-    if not @isCompletingCustomProperty(request)
+    unless @isCompletingCustomProperty(request)
       if @isCompletingValue(request)
         completions = @getPropertyValueCompletions(request)
       else if @isCompletingPseudoSelector(request)
@@ -59,8 +59,8 @@ module.exports =
   isCompletingCustomProperty: ({scopeDescriptor}) ->
     scopes = scopeDescriptor.getScopesArray()
 
-    (hasScope(scopes, 'variable.css')) or
-    (hasScope(scopes, 'meta.function.variable.css'))
+    hasScope(scopes, 'variable.css') or
+    hasScope(scopes, 'meta.function.variable.css')
 
   isCompletingValue: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
