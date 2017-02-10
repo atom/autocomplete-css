@@ -176,9 +176,10 @@ module.exports =
     importantPrefixPattern.exec(line)?[1]
 
   getPreviousPropertyName: (bufferPosition, editor) ->
-    {row} = bufferPosition
+    {row, column} = bufferPosition
     while row >= 0
       line = editor.lineTextForBufferRow(row)
+      line = line.substr(0, column) if row is bufferPosition.row
       propertyName = inlinePropertyNameWithColonPattern.exec(line)?[1]
       propertyName ?= firstInlinePropertyNameWithColonPattern.exec(line)?[1]
       propertyName ?= propertyNameWithColonPattern.exec(line)?[1]

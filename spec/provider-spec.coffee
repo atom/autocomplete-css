@@ -386,6 +386,16 @@ describe "CSS property name and value autocompletions", ->
         expect(completions[4].text).toBe 'inline-table;'
         expect(completions[5].text).toBe 'inherit;'
 
+      it "autocompletes inline property values that aren't at the end of the line", ->
+        editor.setText "body { float: display: inline; font-weight: bold; }"
+        editor.setCursorBufferPosition([0, 14]) # right before display
+        completions = getCompletions()
+        expect(completions).toHaveLength 4
+        expect(completions[0].text).toBe 'left;'
+        expect(completions[1].text).toBe 'right;'
+        expect(completions[2].text).toBe 'none;'
+        expect(completions[3].text).toBe 'inherit;'
+
       it "autocompletes !important in property-value scope", ->
         editor.setText """
           body {
