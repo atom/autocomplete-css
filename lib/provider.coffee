@@ -5,7 +5,7 @@ firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: 
 inlinePropertyNameWithColonPattern = /(?:;.+?)*;\s*(\S+)\s*:/ # .example { display: block; float: left; color: } (match the last one)
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/ # display:
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
-pesudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
+pseudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
 importantPrefixPattern = /(![a-z]+)$/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
@@ -97,11 +97,9 @@ module.exports =
       hasScope(previousScopesArray, 'entity.name.tag.scss')
 
     isAtBeginScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.css') or
-      hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.scss') or
-      hasScope(scopes, 'punctuation.section.property-list.begin.css') # TODO: Remove in Atom 1.15
+      hasScope(scopes, 'punctuation.section.property-list.begin.bracket.curly.scss')
     isAtEndScopePunctuation = hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.css') or
-      hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.scss') or
-      hasScope(scopes, 'punctuation.section.property-list.end.css') # TODO: Remove in Atom 1.15
+      hasScope(scopes, 'punctuation.section.property-list.end.bracket.curly.scss')
 
     if isAtBeginScopePunctuation
       # * Disallow here: `canvas,|{}`
@@ -255,7 +253,7 @@ module.exports =
 
   getPseudoSelectorPrefix: (editor, bufferPosition) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
-    line.match(pesudoSelectorPrefixPattern)?[0]
+    line.match(pseudoSelectorPrefixPattern)?[0]
 
   getPseudoSelectorCompletions: ({bufferPosition, editor}) ->
     prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
