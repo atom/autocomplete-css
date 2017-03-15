@@ -24,16 +24,17 @@ module.exports =
     scopes = request.scopeDescriptor.getScopesArray()
     isSass = hasScope(scopes, 'source.sass')
 
-    if @isCompletingValue(request)
-      completions = @getPropertyValueCompletions(request)
-    else if @isCompletingPseudoSelector(request)
-      completions = @getPseudoSelectorCompletions(request)
-    else
-      if isSass and @isCompletingNameOrTag(request)
-        completions = @getPropertyNameCompletions(request)
-          .concat(@getTagCompletions(request))
-      else if not isSass and @isCompletingName(request)
-        completions = @getPropertyNameCompletions(request)
+    unless @isCompletingCustomProperty(request)
+      if @isCompletingValue(request)
+        completions = @getPropertyValueCompletions(request)
+      else if @isCompletingPseudoSelector(request)
+        completions = @getPseudoSelectorCompletions(request)
+      else
+        if isSass and @isCompletingNameOrTag(request)
+          completions = @getPropertyNameCompletions(request)
+            .concat(@getTagCompletions(request))
+        else if not isSass and @isCompletingName(request)
+          completions = @getPropertyNameCompletions(request)
 
     if not isSass and @isCompletingTagSelector(request)
       tagCompletions = @getTagCompletions(request)
@@ -54,6 +55,12 @@ module.exports =
     fs.readFile path.resolve(__dirname, '..', 'completions.json'), (error, content) =>
       {@pseudoSelectors, @properties, @tags} = JSON.parse(content) unless error?
       return
+
+  isCompletingCustomProperty: ({scopeDescriptor}) ->
+    scopes = scopeDescriptor.getScopesArray()
+
+    hasScope(scopes, 'variable.css') or
+    hasScope(scopes, 'meta.function.variable.css')
 
   isCompletingValue: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
