@@ -1,6 +1,6 @@
 provider = require './provider'
 
 module.exports =
-  activate: -> provider.loadProperties()
+  activate: ->
 
   getProvider: -> provider

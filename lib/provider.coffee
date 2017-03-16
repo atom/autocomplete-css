@@ -1,5 +1,6 @@
-fs = require 'fs'
 path = require 'path'
+
+COMPLETIONS = require('../completions.json')
 
 firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: }
 inlinePropertyNameWithColonPattern = /(?:;.+?)*;\s*(\S+)\s*:/ # .example { display: block; float: left; color: } (match the last one)
@@ -13,6 +14,9 @@ cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 module.exports =
   selector: '.source.css, .source.sass'
   disableForSelector: '.source.css .comment, .source.css .string, .source.sass .comment, .source.sass .string'
+  properties: COMPLETIONS.properties
+  pseudoSelectors: COMPLETIONS.pseudoSelectors
+  tags: COMPLETIONS.tags
 
   # Tell autocomplete to fuzzy filter the results of getSuggestions(). We are
   # still filtering by the first character of the prefix in this provider for
@@ -48,12 +52,6 @@ module.exports =
 
   triggerAutocomplete: (editor) ->
     atom.commands.dispatch(atom.views.getView(editor), 'autocomplete-plus:activate', {activatedManually: false})
-
-  loadProperties: ->
-    @properties = {}
-    fs.readFile path.resolve(__dirname, '..', 'completions.json'), (error, content) =>
-      {@pseudoSelectors, @properties, @tags} = JSON.parse(content) unless error?
-      return
 
   isCompletingValue: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
