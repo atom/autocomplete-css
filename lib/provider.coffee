@@ -71,7 +71,7 @@ module.exports =
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
     (hasScope(previousScopesArray, 'meta.property-value.scss')) or
     (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
-      (not hasScope(beforePrefixScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
+      (not hasScope(beforePrefixScopesArray, "entity.name.tag.css") and prefix.trim() is ":")
     ))
 
   isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
