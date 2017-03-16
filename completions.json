@@ -191,7 +191,7 @@
     },
     "font-size": {
       "values": [],
-      "description": "Specifies the size of the font (historically the width of the capital \"M\")…\"M\")."
+      "description": "Specifies the size of the font."
     },
     "font-style": {
       "values": [
@@ -290,7 +290,7 @@
         "right",
         "inherit"
       ],
-      "description": "Describes how inline content like text is aligned in its parent block element…element."
+      "description": "Summary The text-align CSS property describes how inline content like text is aligned in its parent block…block element."
     },
     "background": {
       "values": [],
@@ -531,7 +531,7 @@
         "auto",
         "inherit"
       ],
-      "description": "Specifies the z-order of an element and its descendants."
+      "description": "Specifies the z-order of a positioned element and its descendants."
     },
     "vertical-align": {
       "values": [
@@ -956,7 +956,7 @@
         "fixed",
         "inherit"
       ],
-      "description": "Defines the algorithm to be used to layout the table cells, rows, and columns"
+      "description": "Defines the algorithm to be used to lay out table cells, rows, and columns"
     },
     "src": {
       "values": [
@@ -1190,7 +1190,7 @@
         "space-around",
         "space-between"
       ],
-      "description": "Defines how the browser distributes space between and around flex items"
+      "description": "CSS justify-content property defines how the browser distributes space between and around content items"
     },
     "transition-property": {
       "values": [
@@ -1240,7 +1240,7 @@
         "hidden",
         "visible"
       ],
-      "description": "CSS backface-visibility property determines whether or not the back face of the element is visible when…always a transparent background, letting, when visible, a mirror image of the front face be displayed"
+      "description": "Determines whether or not the back face of the element is visible…always a transparent background, letting, when visible, a mirror image of the front face be displayed"
     },
     "page-break-inside": {
       "values": [
@@ -1340,6 +1340,19 @@
       ],
       "description": "Selects a normal, condensed, or expanded face from a font."
     },
+    "will-change": {
+      "values": [
+        "auto",
+        "contents",
+        "opacity",
+        "scroll-position",
+        "transform",
+        "inherit",
+        "initial",
+        "unset"
+      ],
+      "description": "will-change CSS property provides a way for authors to hint browsers about the kind of changes to be…optimizations ahead of time before the element is actually changed."
+    },
     "animation": {
       "values": [],
       "description": "A shorthand property for animation-name, animation-duration, animation-timing-function…animation-timing-function, animation-delay, animation-iteration-count, animation-direction, animation-fill-mode and…and animation-play-state."
@@ -1375,7 +1388,7 @@
         "space-between",
         "stretch"
       ],
-      "description": "Aligns a flex container's lines within the flex container when there is"
+      "description": "CSS align-content property defines how the browser distributes space between and around content items"
     },
     "border-image-slice": {
       "values": [],
@@ -1459,7 +1472,7 @@
       "values": [
         "infinite"
       ],
-      "description": "Defines the number of times an animation cycle should be played"
+      "description": "Defines the number of times an animation cycle should be played…multiple values are specified, each time the animation is played, the next value in the list is used"
     },
     "animation-delay": {
       "values": [],
@@ -1622,7 +1635,7 @@
       "values": [
         "auto"
       ],
-      "description": "Defines the line names and track sizing functions of the grid's…grid's columns."
+      "description": "Defines the line names and track sizing functions of the grid columns"
     },
     "grid-auto-columns": {
       "values": [],
@@ -1648,7 +1661,7 @@
       "values": [
         "auto"
       ],
-      "description": "Defines the line names and track sizing functions of the grid's rows"
+      "description": "Defines the line names and track sizing functions of the grid rows"
     },
     "grid-row-end": {
       "values": [],
@@ -1724,7 +1737,7 @@
     },
     "column-rule": {
       "values": [],
-      "description": "properties separately : column-rule-width, column-rule-style and column-rule-color."
+      "description": "properties separately: column-rule-width, column-rule-style and column-rule-color."
     },
     "column-rule-color": {
       "values": [],
@@ -1923,7 +1936,7 @@
         "objects",
         "spaces"
       ],
-      "description": "The property defines horizontally where the text-decoration property applies."
+      "description": "Specifies what parts of the element’s content any text decoration…decoration affecting the element must skip over."
     },
     "text-emphasis": {
       "values": [],
