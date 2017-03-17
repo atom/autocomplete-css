@@ -69,8 +69,10 @@ module.exports =
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
     (hasScope(previousScopesArray, 'meta.property-value.scss')) or
     (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
-      (not hasScope(beforePrefixScopesArray, "entity.name.tag.css.sass") and prefix.trim() is ":")
+      (not hasScope(beforePrefixScopesArray, 'entity.name.tag.css') and
+       not hasScope(beforePrefixScopesArray, 'entity.name.tag.css.sass') and prefix.trim() is ":")
     ))
+    # TODO: ^ Remove entity.name.tag.css.sass in Atom 1.17.0
 
   isCompletingName: ({scopeDescriptor, bufferPosition, prefix, editor}) ->
     scopes = scopeDescriptor.getScopesArray()
