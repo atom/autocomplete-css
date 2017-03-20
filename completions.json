@@ -290,7 +290,7 @@
         "right",
         "inherit"
       ],
-      "description": "Summary The text-align CSS property describes how inline content like text is aligned in its parent block element."
+      "description": "Describes how inline content like text is aligned in its parent block element."
     },
     "background": {
       "values": [],
