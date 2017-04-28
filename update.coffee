@@ -1,15 +1,13 @@
-# Run this to update the static list of properties stored in the properties.json
+# Run this to update the static list of completions stored in the completions.json
 # file at the root of this repository.
 
 path = require 'path'
 fs = require 'fs'
 request = require 'request'
-Promise = require 'bluebird'
 fetchPropertyDescriptions = require './fetch-property-docs'
 
 PropertiesURL = 'https://raw.githubusercontent.com/adobe/brackets/master/src/extensions/default/CSSCodeHints/CSSProperties.json'
 
-propertyDescriptionsPromise = fetchPropertyDescriptions()
 propertiesPromise = new Promise (resolve) ->
   request {json: true, url: PropertiesURL}, (error, response, properties) ->
     if error?
@@ -20,10 +18,12 @@ propertiesPromise = new Promise (resolve) ->
       resolve(null)
     resolve(properties)
 
-Promise.settle([propertiesPromise, propertyDescriptionsPromise]).then (results) ->
+propertyDescriptionsPromise = fetchPropertyDescriptions()
+
+Promise.all([propertiesPromise, propertyDescriptionsPromise]).then (values) ->
   properties = {}
-  propertiesRaw = results[0].value()
-  propertyDescriptions = results[1].value()
+  propertiesRaw = values[0]
+  propertyDescriptions = values[1]
   sortedPropertyNames = JSON.parse(fs.readFileSync(path.join(__dirname, 'sorted-property-names.json')))
   for propertyName in sortedPropertyNames
     continue unless metadata = propertiesRaw[propertyName]
