@@ -1,15 +1,14 @@
 path = require 'path'
 fs = require 'fs'
 request = require 'request'
-Promise = require 'bluebird'
 
 mdnCSSURL = 'https://developer.mozilla.org/en-US/docs/Web/CSS'
 mdnJSONAPI = 'https://developer.mozilla.org/en-US/search.json?topic=css&highlight=false'
-propertiesURL = 'https://raw.githubusercontent.com/adobe/brackets/master/src/extensions/default/CSSCodeHints/CSSProperties.json'
+PropertiesURL = 'https://raw.githubusercontent.com/adobe/brackets/master/src/extensions/default/CSSCodeHints/CSSProperties.json'
 
 fetch = ->
   propertiesPromise = new Promise (resolve) ->
-    request {json: true, url: propertiesURL}, (error, response, properties) ->
+    request {json: true, url: PropertiesURL}, (error, response, properties) ->
       if error?
         console.error(error.message)
         resolve(null)

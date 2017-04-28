@@ -16,7 +16,6 @@
     }
   },
   "devDependencies": {
-    "bluebird": "^2.9.25",
     "coffeelint": "^1.9.7",
     "request": "^2.53.0"
   }
