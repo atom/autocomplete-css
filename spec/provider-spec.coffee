@@ -234,7 +234,7 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([1, 10])
         completions = getCompletions()
-        expect(completions.length).toBe 21
+        expect(completions.length).toBe 22
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
           expect(completion.description.length).toBeGreaterThan 0
@@ -248,7 +248,7 @@ describe "CSS property name and value autocompletions", ->
         """
         editor.setCursorBufferPosition([2, 0])
         completions = getCompletions()
-        expect(completions.length).toBe 21
+        expect(completions.length).toBe 22
         for completion in completions
           expect(completion.text.length).toBeGreaterThan 0
 
@@ -338,7 +338,7 @@ describe "CSS property name and value autocompletions", ->
         editor.setText "body { display: }"
         editor.setCursorBufferPosition([0, 16])
         completions = getCompletions()
-        expect(completions).toHaveLength 21
+        expect(completions).toHaveLength 22
         expect(completions[0].text).toBe 'block;'
 
         editor.setText """
@@ -683,7 +683,7 @@ describe "CSS property name and value autocompletions", ->
       """
       editor.setCursorBufferPosition([1, 10])
       completions = getCompletions()
-      expect(completions.length).toBe 21
+      expect(completions.length).toBe 22
       for completion in completions
         expect(completion.text.length).toBeGreaterThan 0
         expect(completion.description.length).toBeGreaterThan 0
@@ -695,7 +695,7 @@ describe "CSS property name and value autocompletions", ->
       """
       editor.setCursorBufferPosition([2, 0])
       completions = getCompletions()
-      expect(completions.length).toBe 21
+      expect(completions.length).toBe 22
       for completion in completions
         expect(completion.text.length).toBeGreaterThan 0
 
