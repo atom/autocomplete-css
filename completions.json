@@ -147,21 +147,21 @@
         "auto",
         "inherit"
       ],
-      "description": "Of an element sets the margin space required on the right side of an element."
+      "description": "Sets the margin space required on the right side of an element."
     },
     "margin-top": {
       "values": [
         "auto",
         "inherit"
       ],
-      "description": "Of an element sets the margin space required on the top of an element."
+      "description": "Sets the margin space required on the top of an element."
     },
     "margin-bottom": {
       "values": [
         "auto",
         "inherit"
       ],
-      "description": "Of an element sets the margin space required on the bottom of an element."
+      "description": "Sets the margin space required on the bottom of an element."
     },
     "padding": {
       "values": [
@@ -171,19 +171,19 @@
     },
     "padding-left": {
       "values": [],
-      "description": "Of an element sets the padding space required on the left side of an element."
+      "description": "Sets the padding space required on the left side of an element."
     },
     "padding-right": {
       "values": [],
-      "description": "Of an element sets the padding space required on the right side of an element."
+      "description": "Sets the padding space required on the right side of an element."
     },
     "padding-top": {
       "values": [],
-      "description": "Of an element sets the padding space required on the top of an element."
+      "description": "Sets the padding space required on the top of an element."
     },
     "padding-bottom": {
       "values": [],
-      "description": "Of an element sets the height of the padding area at the bottom of an element."
+      "description": "Sets the height of the padding area at the bottom of an element."
     },
     "font": {
       "values": [],
@@ -462,6 +462,7 @@
       "values": [
         "block",
         "flex",
+        "flow-root",
         "grid",
         "inline",
         "inline-block",
@@ -507,7 +508,7 @@
         "none",
         "inherit"
       ],
-      "description": "Specifies that an element should be taken from the normal flow and placed along the left or right side of its container, where text and inline elements will wrap around it."
+      "description": "Specifies that an element should be placed along the left or right side of its container, where text and inline elements will wrap around it."
     },
     "text-decoration": {
       "values": [
@@ -517,7 +518,7 @@
         "underline",
         "inherit"
       ],
-      "description": "Used to set the text formatting to underline, overline, line-through or blink."
+      "description": "Used to set the text formatting to underline, overline or line-through."
     },
     "line-height": {
       "values": [
@@ -1388,7 +1389,7 @@
         "space-between",
         "stretch"
       ],
-      "description": "Defines how the browser distributes space between and around content items along the main-axis of their container."
+      "description": "Defines how the browser distributes space between and around content items along the main-axis of their container, which is serving as a flexible box container."
     },
     "border-image-slice": {
       "values": [],
