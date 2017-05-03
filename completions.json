@@ -461,6 +461,7 @@
     "display": {
       "values": [
         "block",
+        "contents",
         "flex",
         "flow-root",
         "grid",
@@ -472,6 +473,7 @@
         "list-item",
         "none",
         "run-in",
+        "subgrid",
         "table",
         "table-caption",
         "table-cell",
@@ -552,7 +554,6 @@
       "values": [
         "border-box",
         "content-box",
-        "padding-box",
         "inherit"
       ],
       "description": "Used to alter the default CSS box model used to calculate width and height of the elements."
@@ -844,6 +845,16 @@
     "border-bottom-right-radius": {
       "values": [],
       "description": "Sets the rounding of the bottom-right corner of the element."
+    },
+    "user-select": {
+      "values": [
+        "all",
+        "auto",
+        "contain",
+        "none",
+        "text"
+      ],
+      "description": "Controls the actual Selection operation."
     },
     "text-transform": {
       "values": [
@@ -1414,6 +1425,10 @@
       ],
       "description": "Defines how the middle part of a border image is handled so that it can match the size of the border."
     },
+    "tab-size": {
+      "values": [],
+      "description": "Used to customize the width of a tab (U+0009) character."
+    },
     "object-fit": {
       "values": [
         "contain",
@@ -1498,8 +1513,8 @@
         "hue",
         "lighten",
         "luminosity",
-        "normal",
         "multiply",
+        "normal",
         "overlay",
         "saturation",
         "screen",
@@ -1516,6 +1531,27 @@
         "top"
       ],
       "description": "Determines the alignment of the replaced element inside its box."
+    },
+    "mix-blend-mode": {
+      "values": [
+        "color",
+        "color-burn",
+        "color-dodge",
+        "darken",
+        "difference",
+        "exclusion",
+        "hard-light",
+        "hue",
+        "lighten",
+        "luminosity",
+        "multiply",
+        "normal",
+        "overlay",
+        "saturation",
+        "screen",
+        "soft-light"
+      ],
+      "description": "Describes how an element's content should blend with the content of the element's direct parent and the element's background."
     },
     "shape-outside": {
       "values": [
@@ -1542,6 +1578,13 @@
       "values": [],
       "description": "Adds a margin to shape-outside."
     },
+    "isolation": {
+      "values": [
+        "auto",
+        "isolate"
+      ],
+      "description": "Defines if the element must create a new stacking context."
+    },
     "shape-image-threshold": {
       "values": [],
       "description": "Defines the alpha channel threshold used to extract the shape using an image as the value for shape-outside."
@@ -1561,6 +1604,10 @@
         "running"
       ],
       "description": "Determines whether an animation is running or paused."
+    },
+    "all": {
+      "values": [],
+      "description": "The CSS all shorthand property resets all properties, apart from unicode-bidi and direction, to their initial or inherited value."
     },
     "column-fill": {
       "values": [
@@ -1620,6 +1667,13 @@
       ],
       "description": "Specifies the position of the underline which is set using the text-decoration property underline value."
     },
+    "scroll-behavior": {
+      "values": [
+        "auto",
+        "smooth"
+      ],
+      "description": "Specifies the scrolling behavior for a scrolling box, when scrolling happens due to navigation or CSSOM scrolling APIs."
+    },
     "grid-column": {
       "values": [
         "auto"
@@ -1631,6 +1685,19 @@
         "auto"
       ],
       "description": "A shorthand property for grid-row-start and grid-row-end specifying a grid item’s size and location within the grid row by contributing a line, a span, or nothing (automatic) to its grid placement, thereby specifying the inline-start and inline-end edge of its grid area."
+    },
+    "grid-template": {
+      "values": [
+        "none"
+      ],
+      "description": "A shorthand property for defining grid columns, rows and areas."
+    },
+    "caret-color": {
+      "values": [
+        "auto"
+      ],
+      "type": "color",
+      "description": "Specifies the color of the caret, the visible indicator of the insertion point in an element where text and other content is inserted by the user's typing or editing."
     },
     "grid-template-columns": {
       "values": [
@@ -1677,7 +1744,10 @@
       "description": "Specifies a grid item’s start position within the grid row by contributing a line, a span, or nothing (automatic) to its grid placement, thereby specifying the inline-start edge of its grid area."
     },
     "box-decoration-break": {
-      "values": [],
+      "values": [
+        "clone",
+        "slice"
+      ],
       "description": "Specifies how the background, padding, border, border-image, box-shadow, margin and clip of an element is applied when the box for the element is fragmented."
     },
     "break-after": {
@@ -2002,6 +2072,16 @@
     "grid-template-areas": {
       "values": [],
       "description": "Specifies named grid areas."
+    },
+    "hanging-punctuation": {
+      "values": [
+        "allow-end",
+        "first",
+        "force-end",
+        "last",
+        "none"
+      ],
+      "description": "Specifies whether a punctuation mark, at the start or end of a line of text, hangs and may be placed outside the line box."
     }
   },
   "pseudoSelectors": {
