@@ -86,6 +86,7 @@
   "border-top-right-radius",
   "border-bottom-left-radius",
   "border-bottom-right-radius",
+  "user-select",
   "text-transform",
   "webkit-transition",
   "zoom",
@@ -392,6 +393,7 @@
   "grid-row",
   "grid-template",
   "text-line-through-width",
+  "caret-color",
   "justify-items",
   "grid-template-columns",
   "grid-auto-columns",
@@ -455,5 +457,6 @@
   "grid-column-gap",
   "grid-gap",
   "grid-row-gap",
-  "grid-template-areas"
+  "grid-template-areas",
+  "hanging-punctuation"
 ]
