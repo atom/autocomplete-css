@@ -195,7 +195,10 @@ module.exports =
     if @isPropertyValuePrefix(prefix)
       for value in values when firstCharsEqual(value, prefix)
         completions.push(@buildPropertyValueCompletion(value, property, addSemicolon))
-    else
+    else if not hasScope(scopes, 'keyword.other.unit.percentage.css') and # CSS
+    not hasScope(scopes, 'keyword.other.unit.scss') and # SCSS (TODO: remove in Atom 1.19.0)
+    not hasScope(scopes, 'keyword.other.unit.css') # Less, Sass (TODO: remove in Atom 1.19.0)
+      # Don't complete here: `width: 100%|`
       for value in values
         completions.push(@buildPropertyValueCompletion(value, property, addSemicolon))
 

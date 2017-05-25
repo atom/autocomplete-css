@@ -323,6 +323,16 @@ describe "CSS property name and value autocompletions", ->
         expect(completions).toHaveLength 1
         expect(completions[0].text).toBe 'center;'
 
+      it "does not complete property values after percentage signs", ->
+        editor.setText """
+          body {
+            width: 100%
+          }
+        """
+        editor.setCursorBufferPosition([1, 13])
+        completions = getCompletions()
+        expect(completions).toHaveLength 0
+
       it "it doesn't add semicolon after a property if one is already present", ->
         editor.setText """
           body {
