@@ -10,7 +10,7 @@ packagesToTest =
     file: 'test.less'
   PostCSS:
     name: 'language-postcss'
-    file: 'test.css'
+    file: 'test.postcss'
 
 describe "CSS property name and value autocompletions", ->
   [editor, provider] = []
