@@ -326,12 +326,12 @@
     },
     "background-image": {
       "values": [
-        "image()",
+        "url()",
         "linear-gradient()",
         "radial-gradient()",
         "repeating-linear-gradient()",
         "repeating-radial-gradient()",
-        "url()"
+        "image()"
       ],
       "description": "Sets one or several background images for an element."
     },
