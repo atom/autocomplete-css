@@ -301,7 +301,7 @@ lineEndsWithSemicolon = (bufferPosition, editor) ->
 
 hasScope = (scopesArray, scope, checkEmbedded = false) ->
   scopesArray.indexOf(scope) isnt -1 or
-    (checkEmbedded and scopesArray.indexOf(scope + '.embedded.html') isnt -1)
+    (checkEmbedded and scopesArray.indexOf("#{scope}.embedded.html") isnt -1)
 
 firstCharsEqual = (str1, str2) ->
   str1[0].toLowerCase() is str2[0].toLowerCase()
