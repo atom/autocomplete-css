@@ -26,7 +26,7 @@ module.exports =
   getSuggestions: (request) ->
     completions = null
     scopes = request.scopeDescriptor.getScopesArray()
-    isSass = hasScope(scopes, 'source.sass')
+    isSass = hasScope(scopes, 'source.sass', true)
 
     if @isCompletingValue(request)
       completions = @getPropertyValueCompletions(request)
@@ -68,7 +68,7 @@ module.exports =
     (hasScope(previousScopesArray, 'meta.property-value.css')) or
     (hasScope(scopes, 'meta.property-list.scss') and prefix.trim() is ":") or
     (hasScope(previousScopesArray, 'meta.property-value.scss')) or
-    (hasScope(scopes, 'source.sass') and (hasScope(scopes, 'meta.property-value.sass') or
+    (hasScope(scopes, 'source.sass', true) and (hasScope(scopes, 'meta.property-value.sass') or
       (not hasScope(beforePrefixScopesArray, 'entity.name.tag.css') and prefix.trim() is ":")
     ))
 
@@ -129,7 +129,7 @@ module.exports =
 
     if hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')
       true
-    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less')
+    else if hasScope(scopes, 'source.css.scss', true) or hasScope(scopes, 'source.css.less', true)
       not hasScope(previousScopesArray, 'meta.property-value.scss') and
         not hasScope(previousScopesArray, 'meta.property-value.css') and
         not hasScope(previousScopesArray, 'support.type.property-value.css')
@@ -141,9 +141,9 @@ module.exports =
     previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
     previousScopes = editor.scopeDescriptorForBufferPosition(previousBufferPosition)
     previousScopesArray = previousScopes.getScopesArray()
-    if (hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')) and not hasScope(scopes, 'source.sass')
+    if (hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')) and not hasScope(scopes, 'source.sass', true)
       true
-    else if hasScope(scopes, 'source.css.scss') or hasScope(scopes, 'source.css.less') or hasScope(scopes, 'source.sass')
+    else if hasScope(scopes, 'source.css.scss', true) or hasScope(scopes, 'source.css.less', true) or hasScope(scopes, 'source.sass', true)
       prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
       if prefix
         previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
@@ -189,7 +189,7 @@ module.exports =
     return null unless values?
 
     scopes = scopeDescriptor.getScopesArray()
-    addSemicolon = not lineEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass')
+    addSemicolon = not lineEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass', true)
 
     completions = []
     if @isPropertyValuePrefix(prefix)
@@ -234,7 +234,7 @@ module.exports =
     # Don't autocomplete property names in SASS on root level
     scopes = scopeDescriptor.getScopesArray()
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
-    return [] if hasScope(scopes, 'source.sass') and not line.match(/^(\s|\t)/)
+    return [] if hasScope(scopes, 'source.sass', true) and not line.match(/^(\s|\t)/)
 
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
     return [] unless activatedManually or prefix
@@ -299,8 +299,9 @@ lineEndsWithSemicolon = (bufferPosition, editor) ->
   line = editor.lineTextForBufferRow(row)
   /;\s*$/.test(line)
 
-hasScope = (scopesArray, scope) ->
-  scopesArray.indexOf(scope) isnt -1
+hasScope = (scopesArray, scope, checkEmbedded = false) ->
+  scopesArray.indexOf(scope) isnt -1 or
+    (checkEmbedded and scopesArray.indexOf("#{scope}.embedded.html") isnt -1)
 
 firstCharsEqual = (str1, str2) ->
   str1[0].toLowerCase() is str2[0].toLowerCase()
