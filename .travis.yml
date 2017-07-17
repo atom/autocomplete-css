@@ -1,5 +1,9 @@
 language: objective-c
 
+env:
+  global:
+    - APM_TEST_PACKAGES="language-postcss"
+
 notifications:
   email:
     on_success: never

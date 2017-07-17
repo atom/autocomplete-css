@@ -8,6 +8,9 @@ packagesToTest =
   Less:
     name: 'language-less'
     file: 'test.less'
+  PostCSS:
+    name: 'language-postcss'
+    file: 'test.postcss'
 
 describe "CSS property name and value autocompletions", ->
   [editor, provider] = []
@@ -548,7 +551,7 @@ describe "CSS property name and value autocompletions", ->
           expect(completions[0].text).toBe ':first'
 
   Object.keys(packagesToTest).forEach (packageLabel) ->
-    if packagesToTest[packageLabel].name in ['language-sass', 'language-less']
+    if packagesToTest[packageLabel].name in ['language-sass', 'language-less', 'language-postcss']
       describe "#{packageLabel} files", ->
         beforeEach ->
           waitsForPromise -> atom.packages.activatePackage(packagesToTest[packageLabel].name)
