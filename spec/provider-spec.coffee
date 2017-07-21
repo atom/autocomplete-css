@@ -12,6 +12,11 @@ packagesToTest =
     name: 'language-postcss'
     file: 'test.postcss'
 
+Object.keys(packagesToTest).forEach (packageLabel) ->
+  unless atom.packages.getAvailablePackageNames().includes(packagesToTest[packageLabel].name)
+    console.warn "Skipping tests for #{packageLabel} because it is not installed"
+    delete packagesToTest[packageLabel]
+
 describe "CSS property name and value autocompletions", ->
   [editor, provider] = []
 
@@ -551,7 +556,7 @@ describe "CSS property name and value autocompletions", ->
           expect(completions[0].text).toBe ':first'
 
   Object.keys(packagesToTest).forEach (packageLabel) ->
-    if packagesToTest[packageLabel].name in ['language-sass', 'language-less', 'language-postcss']
+    unless packagesToTest[packageLabel].name is ['language-css']
       describe "#{packageLabel} files", ->
         beforeEach ->
           waitsForPromise -> atom.packages.activatePackage(packagesToTest[packageLabel].name)
