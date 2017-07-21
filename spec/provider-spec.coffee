@@ -556,7 +556,7 @@ describe "CSS property name and value autocompletions", ->
           expect(completions[0].text).toBe ':first'
 
   Object.keys(packagesToTest).forEach (packageLabel) ->
-    unless packagesToTest[packageLabel].name is ['language-css']
+    unless packagesToTest[packageLabel].name is 'language-css'
       describe "#{packageLabel} files", ->
         beforeEach ->
           waitsForPromise -> atom.packages.activatePackage(packagesToTest[packageLabel].name)
