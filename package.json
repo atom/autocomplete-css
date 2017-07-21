@@ -1,6 +1,6 @@
 {
   "name": "autocomplete-css",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "description": "CSS property name and value autocompletions",
   "main": "./lib/main",
   "license": "MIT",
