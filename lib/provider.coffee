@@ -1,5 +1,3 @@
-path = require 'path'
-
 COMPLETIONS = require('../completions.json')
 
 firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: }
