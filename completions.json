@@ -510,7 +510,7 @@
         "none",
         "inherit"
       ],
-      "description": "Specifies that an element should be placed along the left or right side of its container, where text and inline elements will wrap around it."
+      "description": "Specifies that an element should be placed along the left or right side of its container, allowing text and inline elements to wrap around it."
     },
     "text-decoration": {
       "values": [
@@ -1690,7 +1690,7 @@
       "values": [
         "none"
       ],
-      "description": "A shorthand property for defining grid columns, rows and areas."
+      "description": "A shorthand property for defining grid columns, rows, and areas."
     },
     "caret-color": {
       "values": [
