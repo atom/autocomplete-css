@@ -196,7 +196,7 @@ module.exports =
     return null unless values?
 
     scopes = scopeDescriptor.getScopesArray()
-    addSemicolon = not lineEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass', true)
+    addSemicolon = not propertyEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass', true)
 
     completions = []
     if @isPropertyValuePrefix(prefix)
@@ -301,10 +301,9 @@ module.exports =
     text: tag
     description: "Selector for <#{tag}> elements"
 
-lineEndsWithSemicolon = (bufferPosition, editor) ->
-  {row} = bufferPosition
-  line = editor.lineTextForBufferRow(row)
-  /;\s*$/.test(line)
+propertyEndsWithSemicolon = (bufferPosition, editor) ->
+  {row, column} = bufferPosition
+  /^[^:]*;/.test(editor.lineTextForBufferRow(row).substr(column))
 
 hasScope = (scopesArray, scope, checkEmbedded = false) ->
   scopesArray.indexOf(scope) isnt -1 or
