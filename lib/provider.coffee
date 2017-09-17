@@ -1,6 +1,6 @@
 COMPLETIONS = require('../completions.json')
 
-propertyNameWithColonPattern = /(?:(?:\s*[\w-]+\s*:.+?;)*\s*)?([\w-]+)\s*:/
+propertyNameWithColonPattern = /(?:\s*[\w-]+\s*:.+?;)*\s*([\w-]+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pseudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
