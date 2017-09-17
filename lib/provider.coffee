@@ -1,8 +1,6 @@
 COMPLETIONS = require('../completions.json')
 
-firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: }
-inlinePropertyNameWithColonPattern = /(?:;.+?)*;\s*(\S+)\s*:/ # .example { display: block; float: left; color: } (match the last one)
-propertyNameWithColonPattern = /^\s*(\S+)\s*:/ # display:
+propertyNameWithColonPattern = /(?:(?:\s*[\w-]+\s*:.+?;)*\s*)?([\w-]+)\s*:/
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pseudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
@@ -187,9 +185,7 @@ module.exports =
     while row >= 0
       line = editor.lineTextForBufferRow(row)
       line = line.substr(0, column) if row is bufferPosition.row
-      propertyName = inlinePropertyNameWithColonPattern.exec(line)?[1]
-      propertyName ?= firstInlinePropertyNameWithColonPattern.exec(line)?[1]
-      propertyName ?= propertyNameWithColonPattern.exec(line)?[1]
+      propertyName = propertyNameWithColonPattern.exec(line)?[1]
       return propertyName if propertyName
       row--
     return
