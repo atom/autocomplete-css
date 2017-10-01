@@ -22,7 +22,6 @@ module.exports =
   filterSuggestions: true
 
   getSuggestions: (request) ->
-    console.log(request)
     completions = null
     scopes = request.scopeDescriptor.getScopesArray()
     isSass = hasScope(scopes, 'source.sass', true) or hasScope(scopes, 'source.css.stylus')
