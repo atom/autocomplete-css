@@ -10,8 +10,8 @@ importantPrefixPattern = /(![a-z]+)$/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
-  selector: '.source.css, .source.sass, .source.css.postcss'
-  disableForSelector: '.source.css .comment, .source.css .string, .source.sass .comment, .source.sass .string, .source.css.postcss .comment, source.css.postcss .string'
+  selector: '.source.css, .source.sass, .source.css.postcss, .source.css.stylus'
+  disableForSelector: '.source.css .comment, .source.css .string, .source.sass .comment, .source.sass .string, .source.css.postcss .comment, .source.css.postcss .string, .source.css.stylus .comment, .source.css.stylus .string'
   properties: COMPLETIONS.properties
   pseudoSelectors: COMPLETIONS.pseudoSelectors
   tags: COMPLETIONS.tags
@@ -22,9 +22,10 @@ module.exports =
   filterSuggestions: true
 
   getSuggestions: (request) ->
+    console.log(request)
     completions = null
     scopes = request.scopeDescriptor.getScopesArray()
-    isSass = hasScope(scopes, 'source.sass', true)
+    isSass = hasScope(scopes, 'source.sass', true) or hasScope(scopes, 'source.css.stylus')
 
     if @isCompletingValue(request)
       completions = @getPropertyValueCompletions(request)
@@ -68,7 +69,7 @@ module.exports =
     (hasScope(previousScopesArray, 'meta.property-value.scss')) or
     (hasScope(scopes, 'meta.property-list.postcss') and prefix.trim() is ":") or
     (hasScope(previousScopesArray, 'meta.property-value.postcss')) or
-    (hasScope(scopes, 'source.sass', true) and (hasScope(scopes, 'meta.property-value.sass') or
+    ((hasScope(scopes, 'source.sass', true) or hasScope('source.css.stylus')) and ((hasScope(scopes, 'meta.property-value.sass') or hasScope(scopes, 'meta.property-value.css')) or
       (not hasScope(beforePrefixScopesArray, 'entity.name.tag.css') and prefix.trim() is ":")
     ))
 
@@ -78,6 +79,7 @@ module.exports =
     isAtParentSymbol = prefix.endsWith('&')
     isVariable = hasScope(scopes, 'variable.css') or
       hasScope(scopes, 'variable.scss') or
+      hasScope(scopes, 'variable.stylus') or
       hasScope(scopes, 'variable.var.postcss')
     isInPropertyList = not isAtTerminator and
       (hasScope(scopes, 'meta.property-list.css') or
@@ -97,6 +99,7 @@ module.exports =
       hasScope(previousScopesArray, 'entity.other.attribute-name.parent-selector.css') or
       hasScope(previousScopesArray, 'entity.name.tag.reference.scss') or
       hasScope(previousScopesArray, 'entity.name.tag.scss') or
+      hasScope(previousScopesArray, 'entity.name.tag.css') or
       hasScope(previousScopesArray, 'entity.name.tag.reference.postcss') or
       hasScope(previousScopesArray, 'entity.name.tag.postcss')
 
@@ -122,7 +125,7 @@ module.exports =
     scopes = scopeDescriptor.getScopesArray()
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
     return @isPropertyNamePrefix(prefix) and
-      hasScope(scopes, 'meta.selector.css') and
+      (hasScope(scopes, 'meta.selector.css') or hasScope(scopes, 'source.css.stylus')) and
       not hasScope(scopes, 'entity.other.attribute-name.id.css.sass') and
       not hasScope(scopes, 'entity.other.attribute-name.class.sass')
 
@@ -142,6 +145,8 @@ module.exports =
         not hasScope(previousScopesArray, 'meta.property-value.css') and
         not hasScope(previousScopesArray, 'meta.property-value.postcss') and
         not hasScope(previousScopesArray, 'support.type.property-value.css')
+    else if hasScope(scopes, 'source.css.stylus')
+      hasScope(scopes, 'entity.name.tag.css')
     else
       false
 
@@ -164,8 +169,8 @@ module.exports =
           not hasScope(previousScopesArray, 'support.type.property-name.css') and
           not hasScope(previousScopesArray, 'support.type.property-value.css') and
           not hasScope(previousScopesArray, 'support.type.property-name.postcss')
-      else
-        false
+    else if hasScope(scopes, 'source.css.stylus')
+      hasScope(scopes, 'entity.other.attribute-name.pseudo-class.css')
     else
       false
 
@@ -200,7 +205,7 @@ module.exports =
     return null unless values?
 
     scopes = scopeDescriptor.getScopesArray()
-    addSemicolon = not lineEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass', true)
+    addSemicolon = not lineEndsWithSemicolon(bufferPosition, editor) and not hasScope(scopes, 'source.sass', true) and not hasScope(scopes, 'source.css.stylus')
 
     completions = []
     if @isPropertyValuePrefix(prefix)
@@ -245,6 +250,7 @@ module.exports =
     # Don't autocomplete property names in SASS on root level
     scopes = scopeDescriptor.getScopesArray()
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
+    suffix = if hasScope(scopes, 'source.css.stylus') then '' else ':'
     return [] if hasScope(scopes, 'source.sass', true) and not line.match(/^(\s|\t)/)
 
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
@@ -252,12 +258,12 @@ module.exports =
 
     completions = []
     for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
-      completions.push(@buildPropertyNameCompletion(property, prefix, options))
+      completions.push(@buildPropertyNameCompletion(property, prefix, suffix, options))
     completions
 
-  buildPropertyNameCompletion: (propertyName, prefix, {description}) ->
+  buildPropertyNameCompletion: (propertyName, prefix, suffix, {description}) ->
     type: 'property'
-    text: "#{propertyName}: "
+    text: "#{propertyName}#{suffix} "
     displayText: propertyName
     replacementPrefix: prefix
     description: description
