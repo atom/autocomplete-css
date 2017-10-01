@@ -68,7 +68,7 @@ module.exports =
     (hasScope(previousScopesArray, 'meta.property-value.scss')) or
     (hasScope(scopes, 'meta.property-list.postcss') and prefix.trim() is ":") or
     (hasScope(previousScopesArray, 'meta.property-value.postcss')) or
-    ((hasScope(scopes, 'source.sass', true) or hasScope('source.css.stylus')) and ((hasScope(scopes, 'meta.property-value.sass') or hasScope(scopes, 'meta.property-value.css')) or
+    ((hasScope(scopes, 'source.sass', true) or hasScope(scopes, 'source.css.stylus')) and ((hasScope(scopes, 'meta.property-value.sass') or hasScope(scopes, 'meta.property-value.css')) or
       (not hasScope(beforePrefixScopesArray, 'entity.name.tag.css') and prefix.trim() is ":")
     ))
 
