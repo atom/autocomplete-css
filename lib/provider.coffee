@@ -3,11 +3,12 @@ COMPLETIONS = require('../completions.json')
 firstInlinePropertyNameWithColonPattern = /{\s*(\S+)\s*:/ # .example { display: }
 inlinePropertyNameWithColonPattern = /(?:;.+?)*;\s*(\S+)\s*:/ # .example { display: block; float: left; color: } (match the last one)
 propertyNameWithColonPattern = /^\s*(\S+)\s*:/ # display:
-propertyNameWithSpacePattern = /^\s*(\S+)\s* / # display:
+propertyNameWithSpacePattern = /^\s+(\S+)\s* / # `  display `
 propertyNamePrefixPattern = /[a-zA-Z]+[-a-zA-Z]*$/
 pseudoSelectorPrefixPattern = /:(:)?([a-z]+[a-z-]*)?$/
 tagSelectorPrefixPattern = /(^|\s|,)([a-z]+)?$/
 importantPrefixPattern = /(![a-z]+)$/
+stylusInterpolationPrefixPattern = /{/
 cssDocsURL = "https://developer.mozilla.org/en-US/docs/Web/CSS"
 
 module.exports =
@@ -25,7 +26,7 @@ module.exports =
   getSuggestions: (request) ->
     completions = null
     scopes = request.scopeDescriptor.getScopesArray()
-    isSass = hasScope(scopes, 'source.sass', true) or hasScope(scopes, 'source.css.stylus', true)
+    isSass = hasScope(scopes, 'source.sass', true)
 
     if @isCompletingValue(request)
       completions = @getPropertyValueCompletions(request)
@@ -132,7 +133,7 @@ module.exports =
 
   isCompletingTagSelector: ({editor, scopeDescriptor, bufferPosition}) ->
     scopes = scopeDescriptor.getScopesArray()
-    tagSelectorPrefix = @getTagSelectorPrefix(editor, bufferPosition)
+    tagSelectorPrefix = @getTagSelectorPrefix(editor, bufferPosition, scopes)
     return false unless tagSelectorPrefix?.length
 
     previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - 1)]
@@ -141,13 +142,11 @@ module.exports =
 
     if hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')
       true
-    else if hasScope(scopes, 'source.css.scss', true) or hasScope(scopes, 'source.css.less', true) or hasScope(scopes, 'source.css.postcss', true)
+    else if hasScope(scopes, 'source.css.scss', true) or hasScope(scopes, 'source.css.less', true) or hasScope(scopes, 'source.css.postcss', true) or hasScope(scopes, 'source.css.stylus', true)
       not hasScope(previousScopesArray, 'meta.property-value.scss') and
         not hasScope(previousScopesArray, 'meta.property-value.css') and
         not hasScope(previousScopesArray, 'meta.property-value.postcss') and
         not hasScope(previousScopesArray, 'support.type.property-value.css')
-    else if hasScope(scopes, 'source.css.stylus', true)
-      hasScope(scopes, 'entity.name.tag.css')
     else
       false
 
@@ -158,7 +157,7 @@ module.exports =
     previousScopesArray = previousScopes.getScopesArray()
     if (hasScope(scopes, 'meta.selector.css') or hasScope(previousScopesArray, 'meta.selector.css')) and not hasScope(scopes, 'source.sass', true)
       true
-    else if hasScope(scopes, 'source.css.scss', true) or hasScope(scopes, 'source.css.less', true) or hasScope(scopes, 'source.sass', true) or hasScope(scopes, 'source.css.postcss', true)
+    else if hasScope(scopes, 'source.css.scss', true) or hasScope(scopes, 'source.css.less', true) or hasScope(scopes, 'source.sass', true) or hasScope(scopes, 'source.css.postcss', true) or hasScope(scopes, 'source.css.stylus', true)
       prefix = @getPseudoSelectorPrefix(editor, bufferPosition)
       if prefix
         previousBufferPosition = [bufferPosition.row, Math.max(0, bufferPosition.column - prefix.length - 1)]
@@ -170,8 +169,6 @@ module.exports =
           not hasScope(previousScopesArray, 'support.type.property-name.css') and
           not hasScope(previousScopesArray, 'support.type.property-value.css') and
           not hasScope(previousScopesArray, 'support.type.property-name.postcss')
-    else if hasScope(scopes, 'source.css.stylus', true)
-      hasScope(scopes, 'entity.other.attribute-name.pseudo-class.css')
     else
       false
 
@@ -252,11 +249,12 @@ module.exports =
     # Don't autocomplete property names in SASS on root level
     scopes = scopeDescriptor.getScopesArray()
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
-    suffix = if hasScope(scopes, 'source.css.stylus', true) then '' else ':'
     return [] if hasScope(scopes, 'source.sass', true) and not line.match(/^(\s|\t)/)
 
     prefix = @getPropertyNamePrefix(bufferPosition, editor)
     return [] unless activatedManually or prefix
+
+    suffix = if hasScope(scopes, 'source.css.stylus', true) then '' else ':'
 
     completions = []
     for property, options of @properties when not prefix or firstCharsEqual(property, prefix)
@@ -297,8 +295,9 @@ module.exports =
       completion.text = pseudoSelector
     completion
 
-  getTagSelectorPrefix: (editor, bufferPosition) ->
+  getTagSelectorPrefix: (editor, bufferPosition, scopes) ->
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
+    return null if hasScope(scopes, 'source.css.stylus') and stylusInterpolationPrefixPattern.exec(line)
     tagSelectorPrefixPattern.exec(line)?[2]
 
   getTagCompletions: ({bufferPosition, editor, prefix}) ->
