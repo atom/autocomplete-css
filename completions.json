@@ -260,7 +260,7 @@
         "inherit"
       ],
       "type": "color",
-      "description": "A shorthand property for setting the color of the four sides of an element's border: border-top-color, border-right-color, border-bottom-color, border-left-color"
+      "description": "A shorthand property for setting the color of the four sides of an element's border."
     },
     "border-width": {
       "values": [
@@ -294,14 +294,14 @@
     },
     "background": {
       "values": [],
-      "description": "A shorthand for setting the individual background values in a single place in the style sheet."
+      "description": "The CSS background shorthand property lets you adjust all of the available background style options at once, including color image, origin and size, repeat method, and other features."
     },
     "background-color": {
       "values": [
         "inherit"
       ],
       "type": "color",
-      "description": "Sets the background color of an element, either through a color value or the keyword transparent."
+      "description": "Sets the background color of an element, using either a color value or the keyword transparent."
     },
     "background-position": {
       "values": [
@@ -333,7 +333,7 @@
         "repeating-radial-gradient()",
         "url()"
       ],
-      "description": "Sets one or several background images for an element."
+      "description": "Sets one or more background images on an element."
     },
     "background-size": {
       "values": [
@@ -341,7 +341,7 @@
         "contain",
         "cover"
       ],
-      "description": "Specifies the size of the background images."
+      "description": "Specifies the size of an element's background image."
     },
     "background-clip": {
       "values": [
@@ -584,7 +584,7 @@
         "none",
         "inherit"
       ],
-      "description": "Used to set the maximum width of an element."
+      "description": "Sets the maximum width of an element."
     },
     "outline": {
       "values": [
@@ -609,13 +609,13 @@
       "values": [
         "inherit"
       ],
-      "description": "Used to set the minimum width of an element."
+      "description": "Sets the minimum width of an element."
     },
     "min-height": {
       "values": [
         "inherit"
       ],
-      "description": "Used to set the minimum height of an element."
+      "description": "Sets the minimum height of an element."
     },
     "list-style": {
       "values": [
@@ -645,7 +645,7 @@
     },
     "box-shadow": {
       "values": [],
-      "description": "Describes one or more shadow effects as a comma-separated list."
+      "description": "Used to add shadow effects around an element's frame."
     },
     "text-shadow": {
       "values": [],
@@ -662,7 +662,7 @@
         "none",
         "inherit"
       ],
-      "description": "Used to set the maximum height of an element."
+      "description": "Sets the maximum height of an element."
     },
     "text-overflow": {
       "values": [
@@ -700,7 +700,7 @@
         "separate",
         "inherit"
       ],
-      "description": "Specifies whether a table's borders are separated or collapsed."
+      "description": "Specifies whether a table's borders are separated (cells have distinct borders from each other) or collapsed (adjacent cells share borders)."
     },
     "border-left-color": {
       "values": [
@@ -854,7 +854,7 @@
         "none",
         "text"
       ],
-      "description": "Controls the actual Selection operation."
+      "description": "Controls whether the user can select text."
     },
     "text-transform": {
       "values": [
@@ -1009,7 +1009,7 @@
         "saturate()",
         "url()"
       ],
-      "description": "Lets you apply graphical effects like blurring, sharpening, or color shifting to an element."
+      "description": "Lets you apply graphical effects like blurring or color shifting to an element."
     },
     "transform-origin": {
       "values": [
@@ -1087,7 +1087,7 @@
       "values": [
         "inherit"
       ],
-      "description": "Refers to the minimum number of lines in a block container that must be left at the bottom of the page."
+      "description": "Specifies the minimum number of lines in a block container that must be shown at the bottom of a page, region, or column."
     },
     "outline-style": {
       "values": [
@@ -1163,7 +1163,7 @@
       "values": [
         "auto"
       ],
-      "description": "Specifies the flex basis which is the initial main size of a flex item."
+      "description": "Specifies the initial main size of a flex item."
     },
     "list-style-image": {
       "values": [
@@ -1245,7 +1245,7 @@
         "padding-box",
         "inherit"
       ],
-      "description": "Determines the background positioning area, that is the position of the origin of an image specified using the background-image CSS property."
+      "description": "Sets the background positioning area, i."
     },
     "backface-visibility": {
       "values": [
@@ -1277,14 +1277,14 @@
       "values": [
         "inherit"
       ],
-      "description": "When a paragraph is split over two pages in paged media, the widows CSS property defines the minimum number of lines that must be left at the top of the second page."
+      "description": "Specifies the minimum number of lines in a block container that must be shown at the top of a page, region, or column."
     },
     "counter-increment": {
       "values": [
         "none",
         "inherit"
       ],
-      "description": "Increases or decreases the value of a CSS counter by a given amount."
+      "description": "Increases or decreases the value of a CSS counter by a given value."
     },
     "counter-reset": {
       "values": [
@@ -1445,7 +1445,7 @@
         "none",
         "normal"
       ],
-      "description": "Controls the usage of the kerning information; that is, it controls how letters are spaced."
+      "description": "Controls the usage of the kerning information stored in a font."
     },
     "animation-name": {
       "values": [
@@ -1572,7 +1572,7 @@
         "repeating-linear-gradient()",
         "repeating-radial-gradient()"
       ],
-      "description": "Uses shape values to define the float area for a float and will cause inline content to wrap around the shape instead of the float's bounding box."
+      "description": "Defines a shape around which inline content should wrap."
     },
     "shape-margin": {
       "values": [],
@@ -1629,7 +1629,7 @@
     "text-decoration-color": {
       "values": [],
       "type": "color",
-      "description": "Sets the color of the lines specified by text-decoration-line."
+      "description": "Sets the color of the decorative additions to text that are specified by text-decoration-line ; these include underlines and overlines, strikethroughs, and wavy lines like those typically used to indicate content is misspelled (for example)."
     },
     "text-decoration-style": {
       "values": [
@@ -1697,7 +1697,7 @@
         "auto"
       ],
       "type": "color",
-      "description": "Sets the color of the caret in an element."
+      "description": "Sets the color of the insertion caret—the visible indicator of the point at which the next character typed by the user will be inserted—within an element such as input or one with the contenteditable attribute set."
     },
     "grid-template-columns": {
       "values": [
@@ -1748,7 +1748,7 @@
         "clone",
         "slice"
       ],
-      "description": "Specifies how the background, padding, border, border-image, box-shadow, margin and clip of an element is applied when the box for the element is fragmented."
+      "description": "Specifies how the background, padding, border, border-image, box-shadow, margin, and clip-path of an element are applied when the box for the element is fragmented."
     },
     "break-after": {
       "values": [
@@ -1764,7 +1764,7 @@
         "region",
         "right"
       ],
-      "description": "Describes the page, column, or region break behavior (in other words, how and whether to break) after the generated box."
+      "description": "Defines how page, column, or region breaks should behave after a generated box."
     },
     "break-before": {
       "values": [
@@ -1780,7 +1780,7 @@
         "region",
         "right"
       ],
-      "description": "Describes the page, column or region break behavior before the generated box."
+      "description": "Defines how page, column, or region breaks should behave before a generated box."
     },
     "break-inside": {
       "values": [
@@ -1790,7 +1790,7 @@
         "avoid-page",
         "avoid-region"
       ],
-      "description": "Describes how the page, column or region break inside the generated box."
+      "description": "Defines how page, column, or region breaks should behave inside a generated box."
     },
     "columns": {
       "values": [],
@@ -1813,7 +1813,7 @@
     "column-rule-color": {
       "values": [],
       "type": "color",
-      "description": "Lets you set the color of the \"rule\" or line drawn between columns in multi-column layouts."
+      "description": "Lets you set the color of the rule or line drawn between columns in multi-column layouts."
     },
     "column-rule-style": {
       "values": [
@@ -2016,7 +2016,7 @@
     "text-emphasis-color": {
       "values": [],
       "type": "color",
-      "description": "Defines the color used to draw an emphasis mark."
+      "description": "Defines the color used to draw emphasis marks on text being rendered in the HTML document."
     },
     "text-emphasis-position": {
       "values": [
@@ -2081,7 +2081,7 @@
         "last",
         "none"
       ],
-      "description": "Specifies whether a punctuation mark, at the start or end of a line of text, hangs and may be placed outside the line box."
+      "description": "Specifies whether a punctuation mark should hang at the start or end of a line of text."
     }
   },
   "pseudoSelectors": {
