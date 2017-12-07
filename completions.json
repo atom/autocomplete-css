@@ -388,7 +388,7 @@
         "visible",
         "inherit"
       ],
-      "description": "Specifies whether to clip content, show scrollbars, or display overflowing content when it is too large for its block-level container."
+      "description": "Shorthand for the overflow-x and overflow-y properties, and specifies what to do when content is too large to fit in its block-level container."
     },
     "overflow-x": {
       "values": [
@@ -1315,7 +1315,7 @@
         "show",
         "inherit"
       ],
-      "description": "Specifies how user agents should render borders and backgrounds around table cells that have no visible content."
+      "description": "Specifies how the user agent should render borders and backgrounds around table cells that have no visible content."
     },
     "caption-side": {
       "values": [
