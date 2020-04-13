@@ -1194,6 +1194,27 @@
       "values": [],
       "description": "Specifies the number of seconds or milliseconds a transition animation should take to complete."
     },
+    "justify-items": {
+      "values": [
+        "baseline",
+        "center",
+        "end",
+        "start",
+        "stretch"
+      ],
+      "description": "Defines the default justify-self value for all items of the box."
+    },
+    "justify-self": {
+      "values": [
+        "auto",
+        "baseline",
+        "center",
+        "end",
+        "start",
+        "stretch"
+      ],
+      "description": "Specifies how the box is justified along the inline axis of its container."
+    },
     "justify-content": {
       "values": [
         "center",
