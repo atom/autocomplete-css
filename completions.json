@@ -1609,6 +1609,15 @@
       "values": [],
       "description": "The CSS all shorthand property resets all properties, apart from unicode-bidi and direction, to their initial or inherited value."
     },
+    "text-justify": {
+      "values": [
+        "auto",
+        "none",
+        "inter-word",
+        "inter-character",
+        "inherit"
+      ]
+    },
     "column-fill": {
       "values": [
         "auto",
@@ -1674,6 +1683,29 @@
       ],
       "description": "Specifies the scrolling behavior for a scrolling box, when scrolling happens due to navigation or CSSOM scrolling APIs."
     },
+    "justify-self": {
+      "values": [
+        "auto",
+        "normal",
+        "stretch",
+        "center",
+        "start",
+        "end",
+        "flex-start",
+        "flex-end",
+        "self-start",
+        "self-end",
+        "left",
+        "right",
+        "baseline",
+        "first",
+        "last",
+        "safe",
+        "unsafe",
+        "inherit",
+        "initial"
+      ]
+    },
     "grid-column": {
       "values": [
         "auto"
@@ -1698,6 +1730,30 @@
       ],
       "type": "color",
       "description": "Sets the color of the insertion caret—the visible indicator of the point at which the next character typed by the user will be inserted—within an element such as input or one with the contenteditable attribute set."
+    },
+    "justify-items": {
+      "values": [
+        "auto",
+        "normal",
+        "stretch",
+        "center",
+        "start",
+        "end",
+        "flex-start",
+        "flex-end",
+        "self-start",
+        "self-end",
+        "left",
+        "right",
+        "baseline",
+        "first",
+        "last",
+        "safe",
+        "unsafe",
+        "legacy",
+        "inherit",
+        "initial"
+      ]
     },
     "grid-template-columns": {
       "values": [
